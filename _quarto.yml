@@ -1,0 +1,28 @@
+project:
+  type: book
+  post-render: 
+   - R/cleanup.R
+
+book:
+  title: "BachelorBayes"
+  author: "Norah Jones"
+  date: "17. 7. 2024"
+  chapters:
+    - index.qmd
+    - zacatek.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: report
+    classoption: 
+      - 11pt
+      - a4paper
+    include-in-header: preamble.tex
+
+
+
+

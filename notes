@@ -1,0 +1,4 @@
+tlmgr install babel-english
+tlmgr install babel-slovak
+tlmgr install babel-czech
+tlmgr install colorprofiles
