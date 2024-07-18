@@ -1,63 +1,46 @@
-%%% Titulní strana a různé povinné informativní strany
-%%% Title page and various mandatory information pages
-\include{zacatek}
+```{=tex}
+\setcounter{chapter}{1}
+\input{interim/intro.tex}
+```
 
-%%% Strana s automaticky generovaným obsahem práce
-%%% A page with automatically generated content of the thesis
-\setcounter{tocdepth}{2}
-\tableofcontents
+```{=tex}
+\input{interim/toc.tex}
+```
 
-%%% Seznam obrázků v práci
-%%% List of figures in the thesis
-\openright
-\listoffigures
-Poznámka: Seznam obrázků je vhodné použít, pokud počet obrázků v textu práce je větší než 20.
+```{=tex}
+\input{interim/lof.tex}
+```
 
-%%% Seznam tabulek v práci (volitelně)
-%%% List of tables in the thesis (optionally)
-\clearpage
-\listoftables
-Poznámka: Seznam tabulek je vhodný použít, pokud počet tabulek v textu práce je větší než 20.
+```{=tex}
+\input{interim/lot.tex}
+```
 
-%%% Seznam zdrojových kódů v práci (volitelně)
-%%% List of source listings in the thesis (optionally)
-\clearpage
-\lstlistoflistings
-Poznámka: Seznam výpisů programového kódu je vhodné použít, pokud počet vložených objektů tohoto typu je větší než 20. 
+```{=tex}
+\input{interim/lol.tex}
+```
 
-%%% Seznam zkratek v práci (volitelně)
-%%% List of abbreviations in the thesis (optionally)
-\include{zkratky}
+```{=tex}
+\input{interim/zkratky.tex}
+```
 
-\pagestyle{fancyx}
-%%% Jednotlivé kapitoly práce jsou pro přehlednost uloženy v samostatných souborech
-%%% The individual chapters of the thesis are stored in separate files for clarity
-{%
-\pagestyle{plain}
-\include{doporuceni}
-\include{uvod}
-}
-\include{tabulky-obrazky}
-\include{prace-s-prameny}
-\include{pdf-a}
-% \include{...}
-% \include{...}
-{%
-\pagestyle{plain}
-\include{zaver}
-}
+# Doporučení pro tvorbu závěrečných prací na FIS
 
-%%% Seznam použité literatury
-%%% Bibliography
-\include{literatura}
+```{=tex}
+\input{doporuceni.tex}
+```
 
-%%% Přílohy k práci, existují-li. Každá příloha musí být alespoň jednou
-%%% odkazována z vlastního textu práce. Přílohy se číslují.
-%%% Attachments to thesis, if any. Each attachment must be referenced at 
-%%% least once in your own text. The appendices are numbered.
-\part*{\Prilohy\thispagestyle{empty}}
-\appendix
-\include{app01}
-\include{app02}
-% \include{...}
-% \include{...}
+## b
+
+ahoj
+
+```{r}
+1 + 1
+```
+
+### c
+
+test
+
+# D
+
+a
