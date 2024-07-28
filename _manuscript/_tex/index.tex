@@ -89,44 +89,42 @@
 \def\TypPrace{BP}                % bakalářská práce/bachelor thesis
 %\def\TypPrace{DP}               % diplomová práce/master thesis
 \def\Jazyk{cze}                  % čeština/czech
-%\def\Jazyk{slo}                 % slovenština/slovak
-%\def\Jazyk{eng}                 % angličtina/english
 
 %%% Definice různých užitečných maker (viz popis uvnitř souboru)
 \input{setup/makra}
 
 %%% Název práce v jazyce práce (přesně podle zadání)
 %%% Title of the thesis in the language used in the text (exact according to assignment)
-\def\NazevPrace{Název práce}
+\def\NazevPrace{Odhad relativní četnosti binomického rozdělení pomocí klasického a bayesovského přístupu v jazyce R}
 
 %%% Jméno autora
 %%% Author's name - First name Surname
-\def\AutorPrace{[jméno a příjmení autora vč. již dosažených titulů}
+\def\AutorPrace{[Bc. Michal Lauer]}
 
 %%% Rok odevzdání a měsíc (slovně)
 %%% Year of submission and month (verbally) - month YYYY
-\def\DatumOdevzdani{měsíc RRRR}
+\def\DatumOdevzdani{Prosinec 2024}
 
 %%% Vedoucí práce: Jméno a příjmení s~tituly
 %%% Supervisor: First name and surname with titles
-\def\Vedouci{[jméno a příjmení vedoucího vč. titulů]}
+\def\Vedouci{[Ing. Ondřej Vilikus, Ph.D.]}
 
-%%% Konzultant práce: Jméno a příjmení s~tituly
-%%% Consultant: First name and surname with titles
-\def\Konzultant{[jméno a příjmení vedoucího vč. titulů]}
+% %%% Konzultant práce: Jméno a příjmení s~tituly
+% %%% Consultant: First name and surname with titles
+\def\Konzultant{}
 
 %%% Studijní program
 %%% Study program
-\def\StudijniProgram{[Název studijního programu]}
+\def\StudijniProgram{[Data Analytics]}
 
 %%% Studijní program - specializace
 %%% Study program - specialization
-\def\Specializace{[Název specializace, pokud je do nich studijní program členěn]}
+\def\Specializace{}
 
 %%% Nepovinné poděkování (vedoucímu práce, konzultantovi, tomu, kdo zapůjčil software, literaturu apod.)
 %%% Optional thanks (the supervisor, the consultant, the borrower of software, literature, etc.)
 \def\Podekovani{%
-Poděkování.
+Děkuji svému vedoucímu za odborné vedení práce a průběžné konzultace a své přítelkyni za neocenitelnou podporu.
 }
 
 %%% Abstrakt (doporučený rozsah cca 150-250 slov; nejedná se o zadání práce)
@@ -138,8 +136,8 @@ Abstract.
 }
 
 %%% 3 až 5 klíčových slov (doporučeno)
-\def\KlicovaSlova{klíčové slovo, další pojem, jiný důležitý termín, a ještě jeden}
-\def\KlicovaSlovaEN{keyword, important term, another topic, and another one}
+\def\KlicovaSlova{Bayesovská statistika, odhad relativní četnosti, jazyk R}
+\def\KlicovaSlovaEN{Bayesian statistics, relative frequency estimation, R language}
 
 % Quarto fixes
 \setcounter{secnumdepth}{2}
@@ -225,6 +223,21 @@ Abstract.
 \include{interim/lol.tex}
 
 \include{interim/zkratky.tex}
+
+\chapter*{Úvod}\label{uxfavod}
+\addcontentsline{toc}{chapter}{Úvod}
+
+\addcontentsline{toc}{chapter}{Úvod}
+
+V úvodu závěrečné práce autor vysvětlí, proč si vybral zvolené téma,
+tedy \textbf{motivaci} celé závěrečné práce. V úvodu nesmí chybět přesně
+formulovaný \textbf{hlavní cíl} závěrečné práce (popř. dílčí cíle), měla
+by zde být nastíněna \textbf{metodika} celé závěrečné práce (popř.
+výzkumné otázky či hypotézy). Zvykem bývá rovněž nastínit
+\textbf{hlavní výsledky/výstupy} závěrečné práce.
+
+Po úvodu následují jednotlivé \textbf{číslované kapitoly} členěné do
+podkapitol.
 
 \chapter{a}\label{a}
 

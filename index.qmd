@@ -22,6 +22,8 @@
 \include{interim/zkratky.tex}
 ```
 
+{{< include uvod.tex >}}
+
 # a
 
 ## bb
