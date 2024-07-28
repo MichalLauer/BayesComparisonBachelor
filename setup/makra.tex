@@ -9,18 +9,16 @@
 
 %%% Nastavení pro použití samostatné bibliografické databáze.
 %%% Settings for using a separate bibliographic database.
-\input biblatex-setup
+\input setup/biblatex-setup
 
 %% Přepneme na českou sazbu, fonty Latin Modern a kódování češtiny
 \ifthenelse{\boolean{xetex}\OR\boolean{luatex}}
    { % use fontspec and OpenType fonts with utf8 engines
-			\usepackage[english,slovak,czech]{babel}
 			\usepackage[autostyle,english=british,czech=quotes]{csquotes}
 			\usepackage{fontspec}
 			\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
    }
    {
-			\usepackage[english,slovak,czech]{babel}
 			\usepackage{lmodern}
 			\usepackage[T1]{fontenc}
 			\usepackage{textcomp}

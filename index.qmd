@@ -1,46 +1,31 @@
 ```{=tex}
-\setcounter{chapter}{1}
-\input{interim/intro.tex}
+\include{interim/intro.tex}
 ```
 
 ```{=tex}
-\input{interim/toc.tex}
+\include{interim/toc.tex}
 ```
 
 ```{=tex}
-\input{interim/lof.tex}
+\include{interim/lof.tex}
 ```
 
 ```{=tex}
-\input{interim/lot.tex}
+\include{interim/lot.tex}
 ```
 
 ```{=tex}
-\input{interim/lol.tex}
+\include{interim/lol.tex}
 ```
 
 ```{=tex}
-\input{interim/zkratky.tex}
+\include{interim/zkratky.tex}
 ```
 
-# Doporučení pro tvorbu závěrečných prací na FIS
+# a
 
-```{=tex}
-\input{doporuceni.tex}
-```
+## bb
 
-## b
+### cc
 
-ahoj
-
-```{r}
-1 + 1
-```
-
-### c
-
-test
-
-# D
-
-a
+# d

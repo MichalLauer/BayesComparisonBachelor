@@ -1,7 +1,7 @@
 project:
   type: manuscript
   post-render: 
-   - R/cleanup.R
+   - R/cleanup.r
 
 bibliography: references.bib
 
@@ -11,8 +11,9 @@ format:
     classoption: 
       - 11pt
       - a4paper
-    include-in-header: preamble.tex
+    include-in-header: setup/preamble.tex
     toc: false
+    lang: cs
 
 
 

@@ -93,7 +93,7 @@
 %\def\Jazyk{eng}                 % angličtina/english
 
 %%% Definice různých užitečných maker (viz popis uvnitř souboru)
-\input{makra}
+\input{setup/makra}
 
 %%% Název práce v jazyce práce (přesně podle zadání)
 %%% Title of the thesis in the language used in the text (exact according to assignment)
@@ -140,40 +140,43 @@ Abstract.
 %%% 3 až 5 klíčových slov (doporučeno)
 \def\KlicovaSlova{klíčové slovo, další pojem, jiný důležitý termín, a ještě jeden}
 \def\KlicovaSlovaEN{keyword, important term, another topic, and another one}
+
+% Quarto fixes
+\setcounter{secnumdepth}{2}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
 \ifdefined\contentsname
-  \renewcommand*\contentsname{Table of contents}
+  \renewcommand*\contentsname{Obsah}
 \else
-  \newcommand\contentsname{Table of contents}
+  \newcommand\contentsname{Obsah}
 \fi
 \ifdefined\listfigurename
-  \renewcommand*\listfigurename{List of Figures}
+  \renewcommand*\listfigurename{Seznam obrázků}
 \else
-  \newcommand\listfigurename{List of Figures}
+  \newcommand\listfigurename{Seznam obrázků}
 \fi
 \ifdefined\listtablename
-  \renewcommand*\listtablename{List of Tables}
+  \renewcommand*\listtablename{Seznam tabulek}
 \else
-  \newcommand\listtablename{List of Tables}
+  \newcommand\listtablename{Seznam tabulek}
 \fi
 \ifdefined\figurename
-  \renewcommand*\figurename{Figure}
+  \renewcommand*\figurename{Obrázek}
 \else
-  \newcommand\figurename{Figure}
+  \newcommand\figurename{Obrázek}
 \fi
 \ifdefined\tablename
-  \renewcommand*\tablename{Table}
+  \renewcommand*\tablename{Tabulka}
 \else
-  \newcommand\tablename{Table}
+  \newcommand\tablename{Tabulka}
 \fi
 }
 \@ifpackageloaded{float}{}{\usepackage{float}}
 \floatstyle{ruled}
 \@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
-\floatname{codelisting}{Listing}
-\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\floatname{codelisting}{Výpis}
+\newcommand*\listoflistings{\listof{codelisting}{Seznam výpisů}}
 \makeatother
 \makeatletter
 \makeatother
@@ -182,6 +185,15 @@ Abstract.
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 \ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{czech}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 \usepackage{bookmark}
@@ -189,6 +201,7 @@ Abstract.
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
+  pdflang={cs},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -201,39 +214,25 @@ Abstract.
 
 \begin{document}
 
-\setcounter{chapter}{1}
-\input{interim/intro.tex}
+\include{interim/intro.tex}
 
-\input{interim/toc.tex}
+\include{interim/toc.tex}
 
-\input{interim/lof.tex}
+\include{interim/lof.tex}
 
-\input{interim/lot.tex}
+\include{interim/lot.tex}
 
-\input{interim/lol.tex}
+\include{interim/lol.tex}
 
-\input{interim/zkratky.tex}
+\include{interim/zkratky.tex}
 
-\chapter{Doporučení pro tvorbu závěrečných prací na
-FIS}\label{doporuux10denuxed-pro-tvorbu-zuxe1vux11breux10dnuxfdch-pracuxed-na-fis}
+\chapter{a}\label{a}
 
-\input{doporuceni.tex}
+\section{bb}\label{bb}
 
-\section{b}\label{b}
+\subsection{cc}\label{cc}
 
-ahoj
-
-\begin{verbatim}
-[1] 2
-\end{verbatim}
-
-\subsection{c}\label{c}
-
-test
-
-\chapter{D}\label{d}
-
-a
+\chapter{d}\label{d}
 
 
 
