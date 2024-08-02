@@ -22,12 +22,111 @@
 \include{interim/zkratky.tex}
 ```
 
-{{< include uvod.tex >}}
+```{=tex}
+\include{uvod.tex}
+```
+# Úvod
 
-# a
 
-## bb
 
-### cc
+# Statistické metody
 
-# d
+Krátký úvod do historie, bayes, inferenční
+bayes (rozdělení) vs. inference (bod)
+citace Karla
+
+## Inference
+
+proč to používáme, výběr vs. populace, reprezentativnost
+
+### Problematika výběrových šetření
+
+reprezentativnost, definice populace, čas sběru, organizace sběru...
+
+## Frekventistická inference
+
+Jak to funguje, jak to spoléhá na sampling distributions
+
+### Testování hypotéz
+
+Testovací statistika, kritický obor, 1/2 stranný test
+p-hodnota, interval spolehlivosti
+
+### Metriky při testování hypotéz
+
+Chyba I. a II. druhu, síla testu, velikost efektu
+
+### Jednovýběrový odhad poměru s velkým vzorkem
+
+použití, předpoklady, poměrový Z test, binomický test, síla testu, velikost efektu
+
+### Jednovýběrový odhad poměru s malým vzorkem
+
+Proč jsou důležité speciální metody, nějaké typy (wiki)
+
+## Bayesovská inference
+
+Odvození bayesova vzorce, popis likelihood/aprior/data, druhy aprior/posterior
+
+# Monte Carlo generování
+
+Halsing, Gibs, HMC
+
+## Vyhodnocení generovaného rozdělení
+
+korelace, ESS, monte carlo error...
+
+### Vyhodocení hypotéz
+
+Interval kredibility, ROPE, Bayesův faktor
+
+### Odhad poměru
+
+# Praktické odhady
+
+dostupné balíčku bugs, jags, stan, jazyk R
+
+## Balíčky pro frekventistickou inferenci
+
+### base r
+
+použití, výhody/nevýhody
+
+### easystats
+
+použití, výhody/nevýhody
+
+### inferencer
+
+použití, výhody/nevýhody
+
+## Software pro bayesovskou statistiku
+
+### bugs
+
+aplikace, R implementace, výhody/nevýhody, používá ???
+
+### jags
+
+aplikace, R implementace, výhody/nevýhody, používá gibse
+
+### stan
+
+aplikace, R implementace, výhody/nevýhody, používá hmc
+
+## Simulace
+
+jak budou simulace provedné, jak budou vyhodnocené, nastavení ROPE/alternativ.
+pro odhad chyb
+
+### Malý vzorek
+
+Bayes vs. vybraný vzorec vs. binomic
+
+### Velký vzorek
+
+Bayes vs. vybraný vzorec vs. binomic
+
+### Porovnání výsledků
+
+Jak testy dopadly
