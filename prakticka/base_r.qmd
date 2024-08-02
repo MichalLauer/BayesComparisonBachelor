@@ -1,0 +1,9 @@
+Test
+
+test
+
+**test**
+
+```{r echo=T}
+t.test(rnorm(50))
+```

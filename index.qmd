@@ -90,7 +90,7 @@ dostupné balíčku bugs, jags, stan, jazyk R
 
 ### base r
 
-použití, výhody/nevýhody
+{{< include prakticka/base_r.qmd >}}
 
 ### easystats
 

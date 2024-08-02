@@ -3,8 +3,6 @@ project:
   post-render: 
    - R/cleanup.r
 
-bibliography: references.bib
-
 format:
   pdf:
     documentclass: report
@@ -14,6 +12,9 @@ format:
     include-in-header: setup/preamble.tex
     toc: false
     lang: cs
+    notebook-links: false
+    
+bibliography: references.bib
 
 
 
