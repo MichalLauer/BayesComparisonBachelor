@@ -25,9 +25,6 @@
 ```{=tex}
 \include{uvod.tex}
 ```
-# Úvod
-
-
 
 # Statistické metody
 
@@ -49,6 +46,7 @@ Jak to funguje, jak to spoléhá na sampling distributions
 
 ### Testování hypotéz
 
+hladina významnosti, úroveň spolehlivosti,
 Testovací statistika, kritický obor, 1/2 stranný test
 p-hodnota, interval spolehlivosti
 
@@ -84,7 +82,7 @@ Interval kredibility, ROPE, Bayesův faktor
 
 # Praktické odhady
 
-dostupné balíčku bugs, jags, stan, jazyk R
+{{< include prakticka/base_r.qmd >}}
 
 ## Balíčky pro frekventistickou inferenci
 
@@ -102,11 +100,11 @@ použití, výhody/nevýhody
 
 ## Software pro bayesovskou statistiku
 
-### bugs
+### Balíček R2WinBUGS
 
-aplikace, R implementace, výhody/nevýhody, používá ???
+{{< include prakticka/r2winbugs.qmd >}}
 
-### jags
+### Balíček jags
 
 aplikace, R implementace, výhody/nevýhody, používá gibse
 

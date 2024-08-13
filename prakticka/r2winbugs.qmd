@@ -1,0 +1,70 @@
+podporuje WinBUGS, OpenBUGS
+
+```{r echo=TRUE}
+set.seed(123)
+x <- rbinom(10, 1, .6)
+
+bugs <- R2WinBUGS::bugs(
+    data = list(
+        N     = length(x), # Počet pozorování
+        x     = x,         # Vstupní data
+        alpha = 0.01,      # Hodnota parametru alpha
+        beta  = 0.01       # Hodnota parametru beta
+    ),
+    # Počáteční hodnoty
+    inits = list(
+        list(p = 0.5),
+        list(p = 0.5)
+    ),
+    n.chains = 2, n.iter = 5000, n.burnin = 1000, n.thin = 1,
+    # Parametry, které uložit
+    parameters.to.save = c("p"),
+    # Cesta k modelu
+    working.directory = "prakticka",
+    model.file = "r2winbugs.txt",
+    # Cesta k programu WinBUGS
+    bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",
+    # Odstraň pracovní soubory
+    clearWD = T,
+    # Replikovatelnost
+    bugs.seed = 123
+)
+```
+
+Výsledek
+
+```{r echo=TRUE}
+print(bugs)
+```
+
+Odhad parametru p.
+
+```{r echo=TRUE}
+mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
+                     parms = "p",                # Vybraný parametr
+                     val.lim = c(0, 1),          # Limity na ose X
+                     quantiles = list(
+                        outer = c(0.025, 0.975), # 95% interval kredibility
+                        inner = c(0.055, 0.945)  # 89% interval kredibility
+                     )
+)
+```
+
+Posteriorní rozdělení jednotlivých chainů.
+
+```{r echo=TRUE}
+mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   xlim = c(0, 1), # Limity na ose X
+                   ci = 0.89       # 89% Interval kredibility
+)
+```
+
+Vývoj jednotlivých chainů.
+
+```{r echo=TRUE}
+mcmcplots::traplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   ylim = c(0, 1)  # Limity na ose Y
+)
+```
