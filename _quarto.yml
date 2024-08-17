@@ -9,10 +9,12 @@ format:
     classoption: 
       - 11pt
       - a4paper
-    include-in-header: setup/preamble.tex
+    include-in-header:
+      - setup/preamble.tex
     toc: false
     lang: cs
     notebook-links: false
+    keep-tex: true
     
 bibliography: references.bib
 

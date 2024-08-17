@@ -9,11 +9,16 @@ test
 Jednoduchý T-test
 
 ```{r echo=T}
+#| code-caption: Moje caption
+#| code-label: zpracovani-python
 set.seed(78)
 x <- rnorm(n = 100, mean = 1, sd = 1)
 t.test(x = x, mu = 0,
        alternative = "two.sided", conf.level = 0.95)
 ```
+
+
+\ref{zpracovani-python}
 
 Simulace alfa = chyba 1. druhu
 
@@ -21,9 +26,9 @@ Simulace alfa = chyba 1. druhu
 library(dplyr)
 library(ggplot2)
 # Nastavení
-K   <- 1000   # Počet simulací
+K   <- 1000   # Pocet simulaci
 n   <- 200    # Velikost vzorku
-mu0 <- 0      # Skutečný průměr
+mu0 <- 0      # Skutecny prumer
 sd0 <- 2      # Populační směrodatná odchylka
 alpha <- 0.05 # Hladina významnosti
 set.seed(639)

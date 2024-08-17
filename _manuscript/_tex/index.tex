@@ -51,46 +51,6 @@
   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{241,243,245}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
@@ -131,7 +91,7 @@
 \def\Jazyk{cze}                  % čeština/czech
 
 %%% Definice různých užitečných maker (viz popis uvnitř souboru)
-\input{setup/makra}
+\input{./setup/makra}
 
 %%% Název práce v jazyce práce (přesně podle zadání)
 %%% Title of the thesis in the language used in the text (exact according to assignment)
@@ -328,91 +288,10 @@ Interval kredibility, ROPE, Bayesův faktor
 
 \chapter{Praktické odhady}\label{praktickuxe9-odhady}
 
-Test
-
-test
-
-\texttt{stats::t.test()}
-
-\textbf{test}
-
-Jednoduchý T-test
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{78}\NormalTok{)}
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =} \DecValTok{100}\NormalTok{, }\AttributeTok{mean =} \DecValTok{1}\NormalTok{, }\AttributeTok{sd =} \DecValTok{1}\NormalTok{)}
-\FunctionTok{t.test}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{mu =} \DecValTok{0}\NormalTok{,}
-       \AttributeTok{alternative =} \StringTok{"two.sided"}\NormalTok{, }\AttributeTok{conf.level =} \FloatTok{0.95}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-
-    One Sample t-test
-
-data:  x
-t = 8.8438, df = 99, p-value = 3.621e-14
-alternative hypothesis: true mean is not equal to 0
-95 percent confidence interval:
- 0.7158758 1.1300282
-sample estimates:
-mean of x 
- 0.922952 
-\end{verbatim}
-
-Simulace alfa = chyba 1. druhu
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(dplyr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(ggplot2)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Nastavení}
-\NormalTok{K   }\OtherTok{\textless{}{-}} \DecValTok{1000}   \CommentTok{\# Počet simulací}
-\NormalTok{n   }\OtherTok{\textless{}{-}} \DecValTok{200}    \CommentTok{\# Velikost vzorku}
-\NormalTok{mu0 }\OtherTok{\textless{}{-}} \DecValTok{0}      \CommentTok{\# Skutečný průměr}
-\NormalTok{sd0 }\OtherTok{\textless{}{-}} \DecValTok{2}      \CommentTok{\# Populační směrodatná odchylka}
-\NormalTok{alpha }\OtherTok{\textless{}{-}} \FloatTok{0.05} \CommentTok{\# Hladina významnosti}
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{639}\NormalTok{)}
-\NormalTok{vzorky }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{()}
-
-\CommentTok{\# Simulace}
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(K)) \{}
-\NormalTok{    x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{mean =}\NormalTok{ mu0, }\AttributeTok{sd =}\NormalTok{ sd0)}
-\NormalTok{    test }\OtherTok{\textless{}{-}} \FunctionTok{t.test}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{mu =}\NormalTok{ mu0, }\AttributeTok{conf.level =} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ alpha)}
-\NormalTok{    vzorky }\OtherTok{\textless{}\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(vzorky, }\FunctionTok{tibble}\NormalTok{(}\AttributeTok{n =}\NormalTok{ i, }\AttributeTok{vysledek =}\NormalTok{ test}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}=}\NormalTok{ alpha))}
-\NormalTok{\}}
-\NormalTok{vzorky}\SpecialCharTok{$}\NormalTok{cvysledky }\OtherTok{\textless{}{-}} \FunctionTok{cummean}\NormalTok{(vzorky}\SpecialCharTok{$}\NormalTok{vysledek)}
-\FunctionTok{ggplot}\NormalTok{(vzorky, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ n, }\AttributeTok{y =}\NormalTok{ cvysledky)) }\SpecialCharTok{+}
-    \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
-    \FunctionTok{geom\_hline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ .}\DecValTok{05}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{), }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
-    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{2}\NormalTok{)) }\SpecialCharTok{+}
-    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{()) }\SpecialCharTok{+}
-    \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
-    \FunctionTok{labs}\NormalTok{(}
-        \AttributeTok{title =} \StringTok{"Procento falešných zamítnutí h0 se blíží hladině významnosti"}\NormalTok{,}
-        \AttributeTok{y =} \StringTok{"Chyba I. druhu"}\NormalTok{,}
-        \AttributeTok{x =} \StringTok{"Počet simulací"}
-\NormalTok{    )}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{index_files/figure-pdf/unnamed-chunk-2-1.pdf}
-
 \section{Balíčky pro frekventistickou
 inferenci}\label{baluxedux10dky-pro-frekventistickou-inferenci}
 
-\subsection{base r}\label{base-r}
+\subsection{Klasické test poměru}\label{klasickuxe9-test-pomux11bru}
 
 Test
 
@@ -424,14 +303,12 @@ test
 
 Jednoduchý T-test
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{78}\NormalTok{)}
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =} \DecValTok{100}\NormalTok{, }\AttributeTok{mean =} \DecValTok{1}\NormalTok{, }\AttributeTok{sd =} \DecValTok{1}\NormalTok{)}
-\FunctionTok{t.test}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{mu =} \DecValTok{0}\NormalTok{,}
-       \AttributeTok{alternative =} \StringTok{"two.sided"}\NormalTok{, }\AttributeTok{conf.level =} \FloatTok{0.95}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{code}{R}{Moje caption}{zpracovani-python}
+set.seed(78)
+x <- rnorm(n = 100, mean = 1, sd = 1)
+t.test(x = x, mu = 0,
+       alternative = "two.sided", conf.level = 0.95)
+\end{code}
 
 \begin{verbatim}
 
@@ -447,51 +324,46 @@ mean of x
  0.922952 
 \end{verbatim}
 
+\ref{zpracovani-python}
+
 Simulace alfa = chyba 1. druhu
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(dplyr)}
-\FunctionTok{library}\NormalTok{(ggplot2)}
-\CommentTok{\# Nastavení}
-\NormalTok{K   }\OtherTok{\textless{}{-}} \DecValTok{1000}   \CommentTok{\# Počet simulací}
-\NormalTok{n   }\OtherTok{\textless{}{-}} \DecValTok{200}    \CommentTok{\# Velikost vzorku}
-\NormalTok{mu0 }\OtherTok{\textless{}{-}} \DecValTok{0}      \CommentTok{\# Skutečný průměr}
-\NormalTok{sd0 }\OtherTok{\textless{}{-}} \DecValTok{2}      \CommentTok{\# Populační směrodatná odchylka}
-\NormalTok{alpha }\OtherTok{\textless{}{-}} \FloatTok{0.05} \CommentTok{\# Hladina významnosti}
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{639}\NormalTok{)}
-\NormalTok{vzorky }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{()}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+library(dplyr)
+\end{code}
 
-\CommentTok{\# Simulace}
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(K)) \{}
-\NormalTok{    x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{mean =}\NormalTok{ mu0, }\AttributeTok{sd =}\NormalTok{ sd0)}
-\NormalTok{    test }\OtherTok{\textless{}{-}} \FunctionTok{t.test}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{mu =}\NormalTok{ mu0, }\AttributeTok{conf.level =} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ alpha)}
-\NormalTok{    vzorky }\OtherTok{\textless{}\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(vzorky, }\FunctionTok{tibble}\NormalTok{(}\AttributeTok{n =}\NormalTok{ i, }\AttributeTok{vysledek =}\NormalTok{ test}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}=}\NormalTok{ alpha))}
-\NormalTok{\}}
-\NormalTok{vzorky}\SpecialCharTok{$}\NormalTok{cvysledky }\OtherTok{\textless{}{-}} \FunctionTok{cummean}\NormalTok{(vzorky}\SpecialCharTok{$}\NormalTok{vysledek)}
-\FunctionTok{ggplot}\NormalTok{(vzorky, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ n, }\AttributeTok{y =}\NormalTok{ cvysledky)) }\SpecialCharTok{+}
-    \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
-    \FunctionTok{geom\_hline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ .}\DecValTok{05}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{), }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
-    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{2}\NormalTok{)) }\SpecialCharTok{+}
-    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{()) }\SpecialCharTok{+}
-    \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
-    \FunctionTok{labs}\NormalTok{(}
-        \AttributeTok{title =} \StringTok{"Procento falešných zamítnutí h0 se blíží hladině významnosti"}\NormalTok{,}
-        \AttributeTok{y =} \StringTok{"Chyba I. druhu"}\NormalTok{,}
-        \AttributeTok{x =} \StringTok{"Počet simulací"}
-\NormalTok{    )}
-\end{Highlighting}
-\end{Shaded}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+library(ggplot2)
+# Nastavení
+K   <- 1000   # Pocet simulaci
+n   <- 200    # Velikost vzorku
+mu0 <- 0      # Skutecny prumer
+sd0 <- 2      # Populační směrodatná odchylka
+alpha <- 0.05 # Hladina významnosti
+set.seed(639)
+vzorky <- tibble()
+
+# Simulace
+for (i in seq_len(K)) {
+    x <- rnorm(n = n, mean = mu0, sd = sd0)
+    test <- t.test(x = x, mu = mu0, conf.level = 1 - alpha)
+    vzorky <<- bind_rows(vzorky, tibble(n = i, vysledek = test$p.value <= alpha))
+}
+vzorky$cvysledky <- cummean(vzorky$vysledek)
+ggplot(vzorky, aes(x = n, y = cvysledky)) +
+    geom_line() +
+    geom_hline(aes(yintercept = .05, color = "red"), linetype = "dashed") +
+    scale_y_continuous(limits = c(0, .2)) +
+    scale_x_continuous(labels = scales::label_number()) +
+    theme_bw() +
+    labs(
+        title = "Procento falešných zamítnutí h0 se blíží hladině významnosti",
+        y = "Chyba I. druhu",
+        x = "Počet simulací"
+    )
+\end{code}
 
 \includegraphics{index_files/figure-pdf/unnamed-chunk-4-1.pdf}
-
-\subsection{easystats}\label{easystats}
-
-použití, výhody/nevýhody
-
-\subsection{inferencer}\label{inferencer}
-
-použití, výhody/nevýhody
 
 \section{Software pro bayesovskou
 statistiku}\label{software-pro-bayesovskou-statistiku}
@@ -500,46 +372,42 @@ statistiku}\label{software-pro-bayesovskou-statistiku}
 
 podporuje WinBUGS, OpenBUGS
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{, .}\DecValTok{6}\NormalTok{)}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+set.seed(123)
+x <- rbinom(10, 1, .6)
 
-\NormalTok{bugs }\OtherTok{\textless{}{-}}\NormalTok{ R2WinBUGS}\SpecialCharTok{::}\FunctionTok{bugs}\NormalTok{(}
-    \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}
-        \AttributeTok{N     =} \FunctionTok{length}\NormalTok{(x), }\CommentTok{\# Počet pozorování}
-        \AttributeTok{x     =}\NormalTok{ x,         }\CommentTok{\# Vstupní data}
-        \AttributeTok{alpha =} \FloatTok{0.01}\NormalTok{,      }\CommentTok{\# Hodnota parametru alpha}
-        \AttributeTok{beta  =} \FloatTok{0.01}       \CommentTok{\# Hodnota parametru beta}
-\NormalTok{    ),}
-    \CommentTok{\# Počáteční hodnoty}
-    \AttributeTok{inits =} \FunctionTok{list}\NormalTok{(}
-        \FunctionTok{list}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.5}\NormalTok{),}
-        \FunctionTok{list}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.5}\NormalTok{)}
-\NormalTok{    ),}
-    \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{, }\AttributeTok{n.iter =} \DecValTok{5000}\NormalTok{, }\AttributeTok{n.burnin =} \DecValTok{1000}\NormalTok{, }\AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
-    \CommentTok{\# Parametry, které uložit}
-    \AttributeTok{parameters.to.save =} \FunctionTok{c}\NormalTok{(}\StringTok{"p"}\NormalTok{),}
-    \CommentTok{\# Cesta k modelu}
-    \AttributeTok{working.directory =} \StringTok{"prakticka"}\NormalTok{,}
-    \AttributeTok{model.file =} \StringTok{"r2winbugs.txt"}\NormalTok{,}
-    \CommentTok{\# Cesta k programu WinBUGS}
-    \AttributeTok{bugs.directory =}\NormalTok{ r}\StringTok{"(C:\textbackslash{}Users\textbackslash{}Mike\textbackslash{}Downloads\textbackslash{}WinBUGS14\textbackslash{}WinBUGS14)"}\NormalTok{,}
-    \CommentTok{\# Odstraň pracovní soubory}
-    \AttributeTok{clearWD =}\NormalTok{ T,}
-    \CommentTok{\# Replikovatelnost}
-    \AttributeTok{bugs.seed =} \DecValTok{123}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+bugs <- R2WinBUGS::bugs(
+    data = list(
+        N     = length(x), # Počet pozorování
+        x     = x,         # Vstupní data
+        alpha = 0.01,      # Hodnota parametru alpha
+        beta  = 0.01       # Hodnota parametru beta
+    ),
+    # Počáteční hodnoty
+    inits = list(
+        list(p = 0.5),
+        list(p = 0.5)
+    ),
+    n.chains = 2, n.iter = 5000, n.burnin = 1000, n.thin = 1,
+    # Parametry, které uložit
+    parameters.to.save = c("p"),
+    # Cesta k modelu
+    working.directory = "prakticka",
+    model.file = "r2winbugs.txt",
+    # Cesta k programu WinBUGS
+    bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",
+    # Odstraň pracovní soubory
+    clearWD = T,
+    # Replikovatelnost
+    bugs.seed = 123
+)
+\end{code}
 
 Výsledek
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(bugs)}
-\end{Highlighting}
-\end{Shaded}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+print(bugs)
+\end{code}
 
 \begin{verbatim}
 Inference for Bugs model at "r2winbugs.txt", fit using WinBUGS,
@@ -559,47 +427,41 @@ DIC is an estimate of expected predictive error (lower deviance is better).
 
 Odhad parametru p.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{mcmcplots}\SpecialCharTok{::}\FunctionTok{caterplot}\NormalTok{(}\AttributeTok{mcmcout =}\NormalTok{ bugs,             }\CommentTok{\# Výstup modelu}
-                     \AttributeTok{parms =} \StringTok{"p"}\NormalTok{,                }\CommentTok{\# Vybraný parametr}
-                     \AttributeTok{val.lim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{),          }\CommentTok{\# Limity na ose X}
-                     \AttributeTok{quantiles =} \FunctionTok{list}\NormalTok{(}
-                        \AttributeTok{outer =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.975}\NormalTok{), }\CommentTok{\# 95\% interval kredibility}
-                        \AttributeTok{inner =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.055}\NormalTok{, }\FloatTok{0.945}\NormalTok{)  }\CommentTok{\# 89\% interval kredibility}
-\NormalTok{                     )}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
+                     parms = "p",                # Vybraný parametr
+                     val.lim = c(0, 1),          # Limity na ose X
+                     quantiles = list(
+                        outer = c(0.025, 0.975), # 95% interval kredibility
+                        inner = c(0.055, 0.945)  # 89% interval kredibility
+                     )
+)
+\end{code}
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-7-1.pdf}
+\includegraphics{index_files/figure-pdf/unnamed-chunk-6-1.pdf}
 
 Posteriorní rozdělení jednotlivých chainů.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{mcmcplots}\SpecialCharTok{::}\FunctionTok{denplot}\NormalTok{(}\AttributeTok{mcmcout =}\NormalTok{ bugs, }\CommentTok{\# Výstup modelu}
-                   \AttributeTok{parms =} \StringTok{"p"}\NormalTok{,    }\CommentTok{\# Vybraný parametr}
-                   \AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }\CommentTok{\# Limity na ose X}
-                   \AttributeTok{ci =} \FloatTok{0.89}       \CommentTok{\# 89\% Interval kredibility}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   xlim = c(0, 1), # Limity na ose X
+                   ci = 0.89       # 89% Interval kredibility
+)
+\end{code}
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-8-1.pdf}
+\includegraphics{index_files/figure-pdf/unnamed-chunk-7-1.pdf}
 
 Vývoj jednotlivých chainů.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{mcmcplots}\SpecialCharTok{::}\FunctionTok{traplot}\NormalTok{(}\AttributeTok{mcmcout =}\NormalTok{ bugs, }\CommentTok{\# Výstup modelu}
-                   \AttributeTok{parms =} \StringTok{"p"}\NormalTok{,    }\CommentTok{\# Vybraný parametr}
-                   \AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{)  }\CommentTok{\# Limity na ose Y}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+mcmcplots::traplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   ylim = c(0, 1)  # Limity na ose Y
+)
+\end{code}
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-9-1.pdf}
+\includegraphics{index_files/figure-pdf/unnamed-chunk-8-1.pdf}
 
 \subsection{Balíček jags}\label{baluxedux10dek-jags}
 
@@ -625,6 +487,18 @@ Bayes vs.~vybraný vzorec vs.~binomic
 \subsection{Porovnání výsledků}\label{porovnuxe1nuxed-vuxfdsledkux16f}
 
 Jak testy dopadly
+
+\include{interim/apendix.tex}
+
+\chapter{Bayesovské modely}\label{bayesovskuxe9-modely}
+
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+print(1 + 1)
+\end{code}
+
+\begin{verbatim}
+[1] 2
+\end{verbatim}
 
 
 

@@ -1,6 +1,11 @@
 podporuje WinBUGS, OpenBUGS
 
-```{r echo=TRUE}
+```{r r2winbugs, echo=TRUE}
+#| latex-env: code
+#| latex-env-args: 
+#|   - python
+#|   - "My Python Code"
+#|   - fig:pycode
 set.seed(123)
 x <- rbinom(10, 1, .6)
 

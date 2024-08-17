@@ -25,6 +25,28 @@
 ```{=tex}
 \include{uvod.tex}
 ```
+```{r include=FALSE, echo=FALSE}
+library(rlang)
+library(ggplot2)
+```
+
+```{r include=FALSE}
+library(rlang)
+
+knitr::knit_hooks$set(source = function(x, options) {
+  paste0(
+    "\\begin{code}{", 
+      options[["code-lang"]] %||% "R", 
+    "}{", 
+      options[["code-caption"]] %||% "NENÍ CAPTION", 
+    "}{", 
+      options[["code-label"]] %||% "NENÍ LABEL", 
+    "}\n",
+      paste0(x, collapse = "\n"),
+    "\n\\end{code}\n"
+  )
+})
+```
 
 # Statistické metody
 
@@ -82,21 +104,12 @@ Interval kredibility, ROPE, Bayesův faktor
 
 # Praktické odhady
 
-{{< include prakticka/base_r.qmd >}}
-
 ## Balíčky pro frekventistickou inferenci
 
-### base r
+### Klasické test poměru
 
-{{< include prakticka/base_r.qmd >}}
+{{< include prakticka/base-r.qmd >}}
 
-### easystats
-
-použití, výhody/nevýhody
-
-### inferencer
-
-použití, výhody/nevýhody
 
 ## Software pro bayesovskou statistiku
 
@@ -128,3 +141,8 @@ Bayes vs. vybraný vzorec vs. binomic
 ### Porovnání výsledků
 
 Jak testy dopadly
+
+```{=tex}
+\include{interim/apendix.tex}
+```
+{{< include appendix_modely.qmd >}}
