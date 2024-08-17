@@ -1,30 +1,123 @@
 ```{=tex}
-\include{interim/intro.tex}
+%%% Intro
+\pagestyle{empty}
+\hypersetup{pageanchor=false}
+
+\begin{center}
+\Huge\sffamily
+\VSE\\
+\FIS
+
+\vspace{\stretch{1}}
+
+\includegraphics[width=.5\textwidth]{img/FIS_2_logo_2_rgb_CZ}
+
+\vspace{\stretch{2}}
+
+\bfseries\NazevPrace
+
+\vspace{8mm}
+\mdseries\TypPraceText
+
+\vspace{8mm}
+\large
+\begin{tabular}{rl}
+\StudijniProgramText: & \StudijniProgram \\
+\ifthenelse{\equal{\Specializace}{}}{%
+	% empty value
+	}{
+	\rule{0pt}{6mm}%
+	\SpecializaceText: & \Specializace \\
+}
+\end{tabular}
+
+\vspace{\stretch{8}}
+
+\begin{tabular}{rl}
+\AutorText: & \AutorPrace \\
+\noalign{\vspace{2mm}}
+\VedouciText: & \Vedouci \\
+\ifthenelse{\equal{\Konzultant}{}}{%
+	% empty value
+	}{
+	\rule{0pt}{6mm}%
+	\KonzultantText: & \Konzultant \\
+}
+\end{tabular}
+
+\vspace{8mm}
+\Praha, \DatumOdevzdani
+\end{center}
+
+
+%%% Poděkování
+\hypersetup{pageanchor=true}
+\cleardoublepage
+\pagestyle{plain}
+\openright
+\vspace*{\fill}
+\section*{\PodekovaniText}
+\noindent
+\Podekovani
+\vspace{1cm}
+
+
+%%% Povinná informační strana práce
+\openright
+\section*{Abstrakt}
+\noindent
+\Abstrakt
+\subsection*{Klíčová slova}
+\noindent
+\KlicovaSlova
+
+\bigskip\bigskip\bigskip\bigskip\bigskip
+\section*{Abstract}
+\noindent
+\AbstraktEN
+\subsection*{Keywords}
+\noindent
+\KlicovaSlovaEN
+
+\openright
+
+%%% Obsah
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+%%% Seznam obrázků
+\openright
+\listoffigures
+
+%%% Seznam tabulek
+\clearpage
+\listoftables
+
+%%% Seznam kódu
+\clearpage
+\lstlistoflistings
+
+%%% Zkratky
+\chapter*{\SeznamZkratek}
+
+\begin{multicols}{2}
+\raggedright
+\begin{description}
+\item [BCC] Blind Carbon Copy
+\item [CC] Carbon Copy
+\item [CERT] Computer Emergency Response Team
+\item [CSS] Cascading Styleheets
+\item [DOI] Digital Object Identifier
+\item [HTML] Hypertext Markup Language
+\item [REST] Representational State Transfer
+\item [SOAP] Simple Object Access Protocol
+\item [URI] Uniform Resource Identifier
+\item [URL] Uniform Resource Locator
+\item [XML] eXtended Markup Language
+\end{description}
+\end{multicols}
 ```
 
-```{=tex}
-\include{interim/toc.tex}
-```
-
-```{=tex}
-\include{interim/lof.tex}
-```
-
-```{=tex}
-\include{interim/lot.tex}
-```
-
-```{=tex}
-\include{interim/lol.tex}
-```
-
-```{=tex}
-\include{interim/zkratky.tex}
-```
-
-```{=tex}
-\include{uvod.tex}
-```
 ```{r include=FALSE, echo=FALSE}
 library(rlang)
 library(ggplot2)
@@ -47,6 +140,13 @@ knitr::knit_hooks$set(source = function(x, options) {
   )
 })
 ```
+
+```{=tex}
+\chapter*{Úvod}
+\addcontentsline{toc}{chapter}{Úvod}
+```
+ 
+{{< include kapitoly/uvod.qmd >}}
 
 # Statistické metody
 
@@ -108,14 +208,13 @@ Interval kredibility, ROPE, Bayesův faktor
 
 ### Klasické test poměru
 
-{{< include prakticka/base-r.qmd >}}
-
+{{< include kapitoly/prakticka/base-r.qmd >}}
 
 ## Software pro bayesovskou statistiku
 
 ### Balíček R2WinBUGS
 
-{{< include prakticka/r2winbugs.qmd >}}
+{{< include kapitoly/prakticka/r2winbugs.qmd >}}
 
 ### Balíček jags
 
@@ -143,6 +242,35 @@ Bayes vs. vybraný vzorec vs. binomic
 Jak testy dopadly
 
 ```{=tex}
-\include{interim/apendix.tex}
+%%% Závěr
+{
+\pagestyle{plain}
+\chapter*{Závěr}
+\addcontentsline{toc}{chapter}{Závěr}
 ```
-{{< include appendix_modely.qmd >}}
+<!-- Takhle hloupě musí být závěr aby byla dodržena konvence -->
+{{< include kapitoly/zaver.qmd >}}
+```{=tex}
+
+\section{Jak citovat v textu}
+\begin{center}
+\begin{tabularx}{\textwidth}{l@{~~$\longrightarrow$~~}X}
+\verb|\parencite{Cermak2018}|&\parencite{Cermak2018}\\
+\verb|\parencite{Hladik2018,Jasek2018}|&\parencite{Hladik2018,Jasek2018}\\
+\verb|\parencite[kap. 3]{Pecakova2018}|&\parencite[kap. 3]{Pecakova2018}\\
+\end{tabularx}
+\end{center}
+
+}
+
+%%% Literatura
+\printbibliography[title={\bibnamex},heading={bibintoc}]
+
+%%% Přílohy
+\part*{\Prilohy\thispagestyle{empty}}
+\appendix
+```
+
+# Bayesovské modely
+
+{{< include kapitoly/appendix_modely.qmd >}}

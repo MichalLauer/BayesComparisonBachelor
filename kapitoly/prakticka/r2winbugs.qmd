@@ -25,7 +25,7 @@ bugs <- R2WinBUGS::bugs(
     # Parametry, které uložit
     parameters.to.save = c("p"),
     # Cesta k modelu
-    working.directory = "prakticka",
+    working.directory = "kapitoly/prakticka",
     model.file = "r2winbugs.txt",
     # Cesta k programu WinBUGS
     bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",

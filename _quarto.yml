@@ -15,9 +15,4 @@ format:
     lang: cs
     notebook-links: false
     keep-tex: true
-    
-bibliography: references.bib
-
-
-
 

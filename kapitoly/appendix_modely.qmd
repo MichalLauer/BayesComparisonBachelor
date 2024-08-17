@@ -1,4 +1,3 @@
-# Bayesovské modely
 ```{r echo=T}
 print(1 + 1)
 ```
