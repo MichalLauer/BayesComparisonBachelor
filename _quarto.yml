@@ -3,6 +3,10 @@ project:
   post-render: 
    - R/cleanup.r
 
+execute: 
+  echo: true
+  freeze: auto
+
 format:
   pdf:
     documentclass: report
@@ -15,6 +19,3 @@ format:
     lang: cs
     notebook-links: false
     keep-tex: true
-
-execute: 
-  echo: true 

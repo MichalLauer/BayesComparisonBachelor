@@ -1,0 +1,118 @@
+#### rjags
+
+Tvorba modelu
+
+```{r }
+set.seed(26)
+x <- rbinom(10, 1, 0.6)
+
+jags.model <- rjags::jags.model(
+    file = "./kapitoly/modely/rjags.txt", # Model
+    data = list(
+        N     = length(x), # Počet pozorování
+        x     = x,         # Vstupní data
+        alpha = 0.01,      # Hodnota parametru alpha
+        beta  = 0.01       # Hodnota parametru beta
+    ),
+    # Počáteční hodnoty
+    inits = list(
+        p = 0.5,
+        .RNG.name = "base::Super-Duper", # Generování náhodných čísel
+        .RNG.seed = 684                  # Seed
+    ),
+    n.chains = 2,   # Počet chainů
+    n.adapt  = 500, # Adaptační doba
+    quiet    = TRUE
+)
+```
+
+Adaptační doba, která se volá automaticky.
+
+```{r , eval=FALSE}
+rjags::adapt(object = jags.model)
+```
+
+Burn-in generování, je to pro každý chainu.
+
+```{r }
+rjags:::update.jags(object = jags.model, # Model
+                    n.iter = 1000, # Počet burn-in iterací
+                    progress.bar = "none")
+```
+
+Generování vzorků z každého chainu.
+
+```{r }
+rjags.samples <- rjags::coda.samples(
+    model = jags.model,   # Model, pomocí kterého generovat
+    variable.names = c("p", "deviance"), # Proměnná, kterou sledovat
+    n.iter = 5000,        # Kolik vzorků z každého chainu generovat
+    thin = 1,
+    quiet = TRUE
+)
+
+summary(rjags.samples)
+```
+
+Základní plot
+
+
+```{r }
+plot(rjags.samples)
+```
+
+#### R2jags
+
+Divně spojený bugs and jags.
+
+- Lze komplikovaně nastavit stejný seed
+
+for (i in 1:n.chains) {
+    init.values[[i]] <- inits[[i]]
+    init.values[[i]]$.RNG.name <- RNGname
+    init.values[[i]]$.RNG.seed <- runif(1, 0, 2^31)
+}
+
+(asi by to šlo nastavit seed a pak to generovat setjně pomocí runif i nahoře)
+
+- adapt = burnin nebo adapt = 100
+
+if (n.burnin > 0) {
+    n.adapt <- n.burnin
+}
+else {
+    n.adapt <- 100
+}
+
+- Lze paralelizovat pomocí jags.parallel
+
+Výsledky jsou pořád ze stejného posteriorního rozdělení a jsou validní,
+akorát se charakteristiky nerovnají.
+
+
+#### Visualizace
+
+Catterplot.
+
+```{r }
+MCMCvis::MCMCplot(rjags.samples,
+                  params = "p")
+```
+
+Posteriorní rozdělení.
+
+```{r }
+coda::densplot(rjags.samples)
+```
+
+Trace plot.
+
+```{r }
+coda::traceplot(rjags.samples)
+```
+
+Autokorelace.
+
+```{r }
+coda::autocorr.plot(rjags.samples)
+```

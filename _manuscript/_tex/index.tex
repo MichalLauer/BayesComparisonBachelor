@@ -437,86 +437,139 @@ statistiku}\label{software-pro-bayesovskou-statistiku}
 
 \subsection{Balíček R2WinBUGS}\label{baluxedux10dek-r2winbugs}
 
-podporuje WinBUGS, OpenBUGS
-
-\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
-set.seed(123)
-x <- rbinom(10, 1, .6)
-
-bugs <- R2WinBUGS::bugs(
-    data = list(
-        N     = length(x), # Počet pozorování
-        x     = x,         # Vstupní data
-        alpha = 0.01,      # Hodnota parametru alpha
-        beta  = 0.01       # Hodnota parametru beta
-    ),
-    # Počáteční hodnoty
-    inits = list(
-        list(p = 0.5),
-        list(p = 0.5)
-    ),
-    n.chains = 2, n.iter = 5000, n.burnin = 1000, n.thin = 1,
-    # Parametry, které uložit
-    parameters.to.save = c("p"),
-    # Cesta k modelu
-    working.directory = "kapitoly/prakticka",
-    model.file = "r2winbugs.txt",
-    # Cesta k programu WinBUGS
-    bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",
-    # Odstraň pracovní soubory
-    clearWD = T,
-    # Replikovatelnost
-    bugs.seed = 123
-)
-\end{code}
+podporuje WinBUGS, OpenBUGS. Při renderování se otevírá program winbugs.
+Nefunguje správně initializace chainů. Pro grafy pomocný balíček
+\{mcmcplots\}.
 
 Výsledek
 
-\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
-# print(bugs)
-\end{code}
+\begin{verbatim}
+Inference for Bugs model at "r2winbugs.txt", fit using WinBUGS,
+ 2 chains, each with 5000 iterations (first 1000 discarded)
+ n.sims = 8000 iterations saved
+         mean  sd 2.5%  25%  50%  75% 97.5% Rhat n.eff
+p         0.6 0.1  0.3  0.5  0.6  0.7   0.9    1  4500
+deviance 14.5 1.5 13.5 13.6 13.9 14.8  18.8    1  8000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 1.0 and DIC = 15.6
+DIC is an estimate of expected predictive error (lower deviance is better).
+\end{verbatim}
 
 Odhad parametru p.
-
-\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
-mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
-                     parms = "p",                # Vybraný parametr
-                     val.lim = c(0, 1),          # Limity na ose X
-                     quantiles = list(
-                        outer = c(0.025, 0.975), # 95% interval kredibility
-                        inner = c(0.055, 0.945)  # 89% interval kredibility
-                     )
-)
-\end{code}
 
 \includegraphics{index_files/figure-pdf/unnamed-chunk-6-1.pdf}
 
 Posteriorní rozdělení jednotlivých chainů.
 
-\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
-mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
-                   parms = "p",    # Vybraný parametr
-                   xlim = c(0, 1), # Limity na ose X
-                   ci = 0.89       # 89% Interval kredibility
-)
-\end{code}
-
 \includegraphics{index_files/figure-pdf/unnamed-chunk-7-1.pdf}
 
 Vývoj jednotlivých chainů.
 
-\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
-mcmcplots::traplot(mcmcout = bugs, # Výstup modelu
-                   parms = "p",    # Vybraný parametr
-                   ylim = c(0, 1)  # Limity na ose Y
-)
-\end{code}
-
 \includegraphics{index_files/figure-pdf/unnamed-chunk-8-1.pdf}
+
+Autokorelace.
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-9-1.pdf}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-9-2.pdf}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-9-3.pdf}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-9-4.pdf}
 
 \subsection{Balíček jags}\label{baluxedux10dek-jags}
 
-aplikace, R implementace, výhody/nevýhody, používá gibse
+\subsubsection{rjags}\label{rjags}
+
+Tvorba modelu
+
+Adaptační doba, která se volá automaticky.
+
+Burn-in generování, je to pro každý chainu.
+
+Generování vzorků z každého chainu.
+
+\begin{verbatim}
+
+Iterations = 1001:6000
+Thinning interval = 1 
+Number of chains = 2 
+Sample size per chain = 5000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+          Mean             SD       Naive SE Time-series SE 
+       0.50357        0.15197        0.00152        0.00152 
+
+2. Quantiles for each variable:
+
+  2.5%    25%    50%    75%  97.5% 
+0.2104 0.3954 0.5061 0.6127 0.7879 
+\end{verbatim}
+
+Základní plot
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-14-1.pdf}
+
+\subsubsection{R2jags}\label{r2jags}
+
+Divně spojený bugs and jags.
+
+\begin{itemize}
+\tightlist
+\item
+  Lze komplikovaně nastavit stejný seed
+\end{itemize}
+
+for (i in 1:n.chains) \{ init.values{[}{[}i{]}{]} \textless-
+inits{[}{[}i{]}{]} init.values{[}{[}i{]}{]}\(.RNG.name <- RNGname
+    init.values[[i]]\).RNG.seed \textless- runif(1, 0, 2\^{}31) \}
+
+(asi by to šlo nastavit seed a pak to generovat setjně pomocí runif i
+nahoře)
+
+\begin{itemize}
+\tightlist
+\item
+  adapt = burnin nebo adapt = 100
+\end{itemize}
+
+if (n.burnin \textgreater{} 0) \{ n.adapt \textless- n.burnin \} else \{
+n.adapt \textless- 100 \}
+
+\begin{itemize}
+\tightlist
+\item
+  Lze paralelizovat pomocí jags.parallel
+\end{itemize}
+
+Výsledky jsou pořád ze stejného posteriorního rozdělení a jsou validní,
+akorát se charakteristiky nerovnají.
+
+\subsubsection{Visualizace}\label{visualizace}
+
+Catterplot.
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-15-1.pdf}
+
+Posteriorní rozdělení.
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-16-1.pdf}
+
+Trace plot.
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-17-1.pdf}
+
+Autokorelace.
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-18-1.pdf}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-18-2.pdf}
 
 \subsection{stan}\label{stan}
 
@@ -568,10 +621,6 @@ Konec práce, závěr.
 \chapter{Bayesovské modely}\label{bayesovskuxe9-modely}
 
 \begin{model}{R}{Winbugs}{NENÍ LABEL}
-::: {.cell-output .cell-output-stdout}
-
-
-```
 model {
     for (i in 1:N) {
         x[i] ~ dbern(p)
@@ -579,12 +628,6 @@ model {
 
     p ~ dbeta(alpha, beta)
 }
-```
-
-
-:::
-
-
 \end{model}
 
 

@@ -1,7 +1,7 @@
-podporuje WinBUGS, OpenBUGS
+podporuje WinBUGS, OpenBUGS. Při renderování se otevírá program winbugs. 
+Nefunguje správně initializace chainů. Pro grafy pomocný balíček {mcmcplots}.
 
-```{r r2winbugs, echo=TRUE}
-#| cache: true
+```{r r2winbugs, }
 set.seed(123)
 x <- rbinom(10, 1, .6)
 
@@ -21,7 +21,7 @@ bugs <- R2WinBUGS::bugs(
     # Parametry, které uložit
     parameters.to.save = c("p"),
     # Cesta k modelu
-    working.directory = "kapitoly/prakticka",
+    working.directory = "kapitoly/modely",
     model.file = "r2winbugs.txt",
     # Cesta k programu WinBUGS
     bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",
@@ -34,13 +34,13 @@ bugs <- R2WinBUGS::bugs(
 
 Výsledek
 
-```{r echo=TRUE}
-# print(bugs)
+```{r }
+print(bugs)
 ```
 
 Odhad parametru p.
 
-```{r echo=TRUE}
+```{r }
 mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
                      parms = "p",                # Vybraný parametr
                      val.lim = c(0, 1),          # Limity na ose X
@@ -53,7 +53,7 @@ mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
 
 Posteriorní rozdělení jednotlivých chainů.
 
-```{r echo=TRUE}
+```{r }
 mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
                    parms = "p",    # Vybraný parametr
                    xlim = c(0, 1), # Limity na ose X
@@ -63,9 +63,20 @@ mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
 
 Vývoj jednotlivých chainů.
 
-```{r echo=TRUE}
+```{r }
 mcmcplots::traplot(mcmcout = bugs, # Výstup modelu
                    parms = "p",    # Vybraný parametr
                    ylim = c(0, 1)  # Limity na ose Y
 )
+```
+
+Autokorelace.
+
+```{r }
+par(mrowf=c(1,2))
+mcmcplots::autplot1(x = mcmcplots::as.mcmc.bugs(bugs),
+                   chain = 1)
+mcmcplots::autplot1(x = mcmcplots::as.mcmc.bugs(bugs),
+                   chain = 2)
+par(mrowf=c(1,1))
 ```

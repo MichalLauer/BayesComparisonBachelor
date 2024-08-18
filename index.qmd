@@ -118,14 +118,12 @@
 \end{multicols}
 ```
 
-```{r include=FALSE, echo=FALSE}
+```{r include=FALSE, }
 library(rlang)
 library(ggplot2)
 ```
 
 ```{r include=FALSE}
-library(rlang)
-
 # Hezký kód
 knitr::knit_hooks$set(source = function(x, options) {
   if (!options$chunk.echo) {
@@ -242,7 +240,7 @@ Interval kredibility, ROPE, Bayesův faktor
 
 ### Balíček jags
 
-aplikace, R implementace, výhody/nevýhody, používá gibse
+{{< include kapitoly/prakticka/rjags.qmd >}}
 
 ### stan
 
