@@ -1,4 +1,0 @@
-tlmgr install babel-english
-tlmgr install babel-slovak
-tlmgr install babel-czech
-tinytex::tlmgr_install("colorprofiles")
