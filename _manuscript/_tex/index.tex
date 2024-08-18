@@ -1,0 +1,592 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  11pt,
+  a4paper]{report}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage[top=25mm,bottom=25mm,right=25mm,left=30mm,head=12.5mm,foot=12.5mm]{geometry}
+\let\openright=\clearpage
+
+%%% Pokud tiskneme oboustranně:
+%\documentclass[11pt,a4paper,twoside,openright]{report}
+%\usepackage[top=25mm,bottom=25mm,right=25mm,left=30mm,head=12.5mm,foot=12.5mm]{geometry}
+%\let\openright=\cleardoublepage
+
+%%% DEFINICE ZÁKLADNÍCH PROMĚNNÝCH
+\def\TypPrace{BP}                % bakalářská práce/bachelor thesis
+%\def\TypPrace{DP}               % diplomová práce/master thesis
+\def\Jazyk{cze}                  % čeština/czech
+
+%%% Definice různých užitečných maker (viz popis uvnitř souboru)
+\input{./setup/makra}
+
+%%% Název práce v jazyce práce (přesně podle zadání)
+%%% Title of the thesis in the language used in the text (exact according to assignment)
+\def\NazevPrace{Odhad relativní četnosti binomického rozdělení pomocí klasického a bayesovského přístupu v jazyce R}
+
+%%% Jméno autora
+%%% Author's name - First name Surname
+\def\AutorPrace{[Bc. Michal Lauer]}
+
+%%% Rok odevzdání a měsíc (slovně)
+%%% Year of submission and month (verbally) - month YYYY
+\def\DatumOdevzdani{Prosinec 2024}
+
+%%% Vedoucí práce: Jméno a příjmení s~tituly
+%%% Supervisor: First name and surname with titles
+\def\Vedouci{[Ing. Ondřej Vilikus, Ph.D.]}
+
+% %%% Konzultant práce: Jméno a příjmení s~tituly
+% %%% Consultant: First name and surname with titles
+\def\Konzultant{}
+
+%%% Studijní program
+%%% Study program
+\def\StudijniProgram{[Data Analytics]}
+
+%%% Studijní program - specializace
+%%% Study program - specialization
+\def\Specializace{}
+
+%%% Nepovinné poděkování (vedoucímu práce, konzultantovi, tomu, kdo zapůjčil software, literaturu apod.)
+%%% Optional thanks (the supervisor, the consultant, the borrower of software, literature, etc.)
+\def\Podekovani{%
+Děkuji svému vedoucímu za odborné vedení práce a průběžné konzultace a své přítelkyni za neocenitelnou podporu.
+}
+
+%%% Abstrakt (doporučený rozsah cca 150-250 slov; nejedná se o zadání práce)
+\def\Abstrakt{%
+Abstrakt.
+}
+\def\AbstraktEN{%
+Abstract.
+}
+
+%%% 3 až 5 klíčových slov (doporučeno)
+\def\KlicovaSlova{Bayesovská statistika, odhad relativní četnosti, jazyk R}
+\def\KlicovaSlovaEN{Bayesian statistics, relative frequency estimation, R language}
+
+% Quarto fixes
+\setcounter{secnumdepth}{2}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Obsah}
+\else
+  \newcommand\contentsname{Obsah}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Seznam obrázků}
+\else
+  \newcommand\listfigurename{Seznam obrázků}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Seznam tabulek}
+\else
+  \newcommand\listtablename{Seznam tabulek}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Obrázek}
+\else
+  \newcommand\figurename{Obrázek}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabulka}
+\else
+  \newcommand\tablename{Tabulka}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Výpis}
+\newcommand*\listoflistings{\listof{codelisting}{Seznam výpisů}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{czech}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdflang={cs},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+%%% Intro
+\pagestyle{empty}
+\hypersetup{pageanchor=false}
+
+\begin{center}
+\Huge\sffamily
+\VSE\\
+\FIS
+
+\vspace{\stretch{1}}
+
+\includegraphics[width=.5\textwidth]{img/FIS_2_logo_2_rgb_CZ}
+
+\vspace{\stretch{2}}
+
+\bfseries\NazevPrace
+
+\vspace{8mm}
+\mdseries\TypPraceText
+
+\vspace{8mm}
+\large
+\begin{tabular}{rl}
+\StudijniProgramText: & \StudijniProgram \\
+\ifthenelse{\equal{\Specializace}{}}{%
+    % empty value
+    }{
+    \rule{0pt}{6mm}%
+    \SpecializaceText: & \Specializace \\
+}
+\end{tabular}
+
+\vspace{\stretch{8}}
+
+\begin{tabular}{rl}
+\AutorText: & \AutorPrace \\
+\noalign{\vspace{2mm}}
+\VedouciText: & \Vedouci \\
+\ifthenelse{\equal{\Konzultant}{}}{%
+    % empty value
+    }{
+    \rule{0pt}{6mm}%
+    \KonzultantText: & \Konzultant \\
+}
+\end{tabular}
+
+\vspace{8mm}
+\Praha, \DatumOdevzdani
+\end{center}
+
+
+%%% Poděkování
+\hypersetup{pageanchor=true}
+\cleardoublepage
+\pagestyle{plain}
+\openright
+\vspace*{\fill}
+\section*{\PodekovaniText}
+\noindent
+\Podekovani
+\vspace{1cm}
+
+
+%%% Povinná informační strana práce
+\openright
+\section*{Abstrakt}
+\noindent
+\Abstrakt
+\subsection*{Klíčová slova}
+\noindent
+\KlicovaSlova
+
+\bigskip\bigskip\bigskip\bigskip\bigskip
+\section*{Abstract}
+\noindent
+\AbstraktEN
+\subsection*{Keywords}
+\noindent
+\KlicovaSlovaEN
+
+\openright
+
+%%% Obsah
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+%%% Seznam obrázků
+\openright
+\listoffigures
+
+%%% Seznam tabulek
+\clearpage
+\listoftables
+
+%%% Seznam kódu
+\clearpage
+\lstlistoflistings
+
+%%% Zkratky
+\chapter*{\SeznamZkratek}
+
+\begin{multicols}{2}
+\raggedright
+\begin{description}
+\item [BCC] Blind Carbon Copy
+\item [CC] Carbon Copy
+\item [CERT] Computer Emergency Response Team
+\item [CSS] Cascading Styleheets
+\item [DOI] Digital Object Identifier
+\item [HTML] Hypertext Markup Language
+\item [REST] Representational State Transfer
+\item [SOAP] Simple Object Access Protocol
+\item [URI] Uniform Resource Identifier
+\item [URL] Uniform Resource Locator
+\item [XML] eXtended Markup Language
+\end{description}
+\end{multicols}
+
+\chapter*{Úvod}
+\addcontentsline{toc}{chapter}{Úvod}
+
+Tohle je \textbf{úvodní} \emph{text}.
+
+\chapter{Statistické metody}\label{statistickuxe9-metody}
+
+Krátký úvod do historie, bayes, inferenční bayes (rozdělení)
+vs.~inference (bod) citace Karla
+
+\section{Inference}\label{inference}
+
+proč to používáme, výběr vs.~populace, reprezentativnost
+
+\subsection{Problematika výběrových
+šetření}\label{problematika-vuxfdbux11brovuxfdch-ux161etux159enuxed}
+
+reprezentativnost, definice populace, čas sběru, organizace
+sběru\ldots{}
+
+\section{Frekventistická inference}\label{frekventistickuxe1-inference}
+
+Jak to funguje, jak to spoléhá na sampling distributions
+
+\subsection{Testování hypotéz}\label{testovuxe1nuxed-hypotuxe9z}
+
+hladina významnosti, úroveň spolehlivosti, Testovací statistika,
+kritický obor, 1/2 stranný test p-hodnota, interval spolehlivosti
+
+\subsection{Metriky při testování
+hypotéz}\label{metriky-pux159i-testovuxe1nuxed-hypotuxe9z}
+
+Chyba I. a II. druhu, síla testu, velikost efektu
+
+\subsection{Jednovýběrový odhad poměru s velkým
+vzorkem}\label{jednovuxfdbux11brovuxfd-odhad-pomux11bru-s-velkuxfdm-vzorkem}
+
+použití, předpoklady, poměrový Z test, binomický test, síla testu,
+velikost efektu
+
+\subsection{Jednovýběrový odhad poměru s malým
+vzorkem}\label{jednovuxfdbux11brovuxfd-odhad-pomux11bru-s-maluxfdm-vzorkem}
+
+Proč jsou důležité speciální metody, nějaké typy (wiki)
+
+\section{Bayesovská inference}\label{bayesovskuxe1-inference}
+
+Odvození bayesova vzorce, popis likelihood/aprior/data, druhy
+aprior/posterior
+
+\chapter{Monte Carlo generování}\label{monte-carlo-generovuxe1nuxed}
+
+Halsing, Gibs, HMC
+
+\section{Vyhodnocení generovaného
+rozdělení}\label{vyhodnocenuxed-generovanuxe9ho-rozdux11blenuxed}
+
+korelace, ESS, monte carlo error\ldots{}
+
+\subsection{Vyhodocení hypotéz}\label{vyhodocenuxed-hypotuxe9z}
+
+Interval kredibility, ROPE, Bayesův faktor
+
+\subsection{Odhad poměru}\label{odhad-pomux11bru}
+
+\chapter{Praktické odhady}\label{praktickuxe9-odhady}
+
+\section{Balíčky pro frekventistickou
+inferenci}\label{baluxedux10dky-pro-frekventistickou-inferenci}
+
+\subsection{Klasické test poměru}\label{klasickuxe9-test-pomux11bru}
+
+Test
+
+test
+
+\texttt{stats::t.test()}
+
+\textbf{test}
+
+Jednoduchý T-test
+
+\begin{verbatim}
+
+    One Sample t-test
+
+data:  x
+t = 8.8438, df = 99, p-value = 3.621e-14
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 0.7158758 1.1300282
+sample estimates:
+mean of x 
+ 0.922952 
+\end{verbatim}
+
+\ref{zpracovani-python}
+
+Simulace alfa = chyba 1. druhu
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-4-1.pdf}
+
+\section{Software pro bayesovskou
+statistiku}\label{software-pro-bayesovskou-statistiku}
+
+\subsection{Balíček R2WinBUGS}\label{baluxedux10dek-r2winbugs}
+
+podporuje WinBUGS, OpenBUGS
+
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+set.seed(123)
+x <- rbinom(10, 1, .6)
+
+bugs <- R2WinBUGS::bugs(
+    data = list(
+        N     = length(x), # Počet pozorování
+        x     = x,         # Vstupní data
+        alpha = 0.01,      # Hodnota parametru alpha
+        beta  = 0.01       # Hodnota parametru beta
+    ),
+    # Počáteční hodnoty
+    inits = list(
+        list(p = 0.5),
+        list(p = 0.5)
+    ),
+    n.chains = 2, n.iter = 5000, n.burnin = 1000, n.thin = 1,
+    # Parametry, které uložit
+    parameters.to.save = c("p"),
+    # Cesta k modelu
+    working.directory = "kapitoly/prakticka",
+    model.file = "r2winbugs.txt",
+    # Cesta k programu WinBUGS
+    bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",
+    # Odstraň pracovní soubory
+    clearWD = T,
+    # Replikovatelnost
+    bugs.seed = 123
+)
+\end{code}
+
+Výsledek
+
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+# print(bugs)
+\end{code}
+
+Odhad parametru p.
+
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
+                     parms = "p",                # Vybraný parametr
+                     val.lim = c(0, 1),          # Limity na ose X
+                     quantiles = list(
+                        outer = c(0.025, 0.975), # 95% interval kredibility
+                        inner = c(0.055, 0.945)  # 89% interval kredibility
+                     )
+)
+\end{code}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-6-1.pdf}
+
+Posteriorní rozdělení jednotlivých chainů.
+
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   xlim = c(0, 1), # Limity na ose X
+                   ci = 0.89       # 89% Interval kredibility
+)
+\end{code}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-7-1.pdf}
+
+Vývoj jednotlivých chainů.
+
+\begin{code}{R}{NENÍ CAPTION}{NENÍ LABEL}
+mcmcplots::traplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   ylim = c(0, 1)  # Limity na ose Y
+)
+\end{code}
+
+\includegraphics{index_files/figure-pdf/unnamed-chunk-8-1.pdf}
+
+\subsection{Balíček jags}\label{baluxedux10dek-jags}
+
+aplikace, R implementace, výhody/nevýhody, používá gibse
+
+\subsection{stan}\label{stan}
+
+aplikace, R implementace, výhody/nevýhody, používá hmc
+
+\section{Simulace}\label{simulace}
+
+jak budou simulace provedné, jak budou vyhodnocené, nastavení
+ROPE/alternativ. pro odhad chyb
+
+\subsection{Malý vzorek}\label{maluxfd-vzorek}
+
+Bayes vs.~vybraný vzorec vs.~binomic
+
+\subsection{Velký vzorek}\label{velkuxfd-vzorek}
+
+Bayes vs.~vybraný vzorec vs.~binomic
+
+\subsection{Porovnání výsledků}\label{porovnuxe1nuxed-vuxfdsledkux16f}
+
+Jak testy dopadly
+
+%%% Závěr
+{
+\pagestyle{plain}
+\chapter*{Závěr}
+\addcontentsline{toc}{chapter}{Závěr}
+
+Konec práce, závěr.
+
+\section{Jak citovat v textu}
+\begin{center}
+\begin{tabularx}{\textwidth}{l@{~~$\longrightarrow$~~}X}
+\verb|\parencite{Cermak2018}|&\parencite{Cermak2018}\\
+\verb|\parencite{Hladik2018,Jasek2018}|&\parencite{Hladik2018,Jasek2018}\\
+\verb|\parencite[kap. 3]{Pecakova2018}|&\parencite[kap. 3]{Pecakova2018}\\
+\end{tabularx}
+\end{center}
+
+}
+
+%%% Literatura
+\printbibliography[title={\bibnamex},heading={bibintoc}]
+
+%%% Přílohy
+\part*{\Prilohy\thispagestyle{empty}}
+\appendix
+
+\chapter{Bayesovské modely}\label{bayesovskuxe9-modely}
+
+\begin{model}{R}{Winbugs}{NENÍ LABEL}
+::: {.cell-output .cell-output-stdout}
+
+
+```
+model {
+    for (i in 1:N) {
+        x[i] ~ dbern(p)
+    }
+
+    p ~ dbeta(alpha, beta)
+}
+```
+
+
+:::
+
+
+\end{model}
+
+
+
+\end{document}
