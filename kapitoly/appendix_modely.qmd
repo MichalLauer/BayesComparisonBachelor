@@ -1,3 +1,5 @@
-```{r echo=T}
-print(1 + 1)
+```{r echo=F}
+#| results: asis
+#| model-caption: Winbugs
+cat(paste(readLines("./kapitoly/prakticka/r2winbugs.txt"), collapse = "\n"))
 ```

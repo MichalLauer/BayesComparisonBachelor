@@ -1,11 +1,7 @@
 podporuje WinBUGS, OpenBUGS
 
 ```{r r2winbugs, echo=TRUE}
-#| latex-env: code
-#| latex-env-args: 
-#|   - python
-#|   - "My Python Code"
-#|   - fig:pycode
+#| cache: true
 set.seed(123)
 x <- rbinom(10, 1, .6)
 
@@ -39,7 +35,7 @@ bugs <- R2WinBUGS::bugs(
 Výsledek
 
 ```{r echo=TRUE}
-print(bugs)
+# print(bugs)
 ```
 
 Odhad parametru p.

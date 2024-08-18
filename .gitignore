@@ -4,3 +4,9 @@ _book/
 *.aux
 *.lol
 /.quarto/
+
+index_*
+
+_manuscript/*
+!_manuscript/index.pdf
+!_manuscript/_tex/index.tex

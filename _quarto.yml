@@ -16,3 +16,5 @@ format:
     notebook-links: false
     keep-tex: true
 
+execute: 
+  echo: true 
