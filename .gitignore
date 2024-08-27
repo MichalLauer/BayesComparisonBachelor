@@ -7,3 +7,5 @@ index_cache/
 
 *.aux
 *.lol
+
+/.quarto/

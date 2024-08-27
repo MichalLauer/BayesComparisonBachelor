@@ -5,7 +5,7 @@ project:
 
 execute: 
   echo: true
-  freeze: auto
+  eval: false
 
 format:
   pdf:
@@ -19,3 +19,4 @@ format:
     lang: cs
     notebook-links: false
     keep-tex: true
+
