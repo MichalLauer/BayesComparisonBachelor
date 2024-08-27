@@ -103,22 +103,12 @@
 \begin{multicols}{2}
 \raggedright
 \begin{description}
-\item [BCC] Blind Carbon Copy
-\item [CC] Carbon Copy
-\item [CERT] Computer Emergency Response Team
-\item [CSS] Cascading Styleheets
-\item [DOI] Digital Object Identifier
-\item [HTML] Hypertext Markup Language
-\item [REST] Representational State Transfer
-\item [SOAP] Simple Object Access Protocol
-\item [URI] Uniform Resource Identifier
-\item [URL] Uniform Resource Locator
-\item [XML] eXtended Markup Language
+\item [BUGS] Bayesian inference Using Gibbs Sampling
 \end{description}
 \end{multicols}
 ```
 
-```{r include=FALSE, }
+```{r include=FALSE}
 library(rlang)
 library(ggplot2)
 ```
@@ -126,7 +116,7 @@ library(ggplot2)
 ```{r include=FALSE}
 # Hezký kód
 knitr::knit_hooks$set(source = function(x, options) {
-  if (!options$chunk.echo) {
+  if (!options$echo || !options$chunk.echo) {
     return(NULL)
   }
 
@@ -234,17 +224,17 @@ Interval kredibility, ROPE, Bayesův faktor
 
 ## Software pro bayesovskou statistiku
 
-### Balíček R2WinBUGS
+### Software BUGS
 
 {{< include kapitoly/prakticka/r2winbugs.qmd >}}
 
-### Balíček jags
+### Balíček JAGS
 
 {{< include kapitoly/prakticka/rjags.qmd >}}
 
 ### stan
 
-aplikace, R implementace, výhody/nevýhody, používá hmc
+{{< include kapitoly/prakticka/stan.qmd >}}
 
 ## Simulace
 
@@ -273,20 +263,11 @@ Jak testy dopadly
 <!-- Takhle hloupě musí být závěr aby byla dodržena konvence -->
 {{< include kapitoly/zaver.qmd >}}
 ```{=tex}
-
-\section{Jak citovat v textu}
-\begin{center}
-\begin{tabularx}{\textwidth}{l@{~~$\longrightarrow$~~}X}
-\verb|\parencite{Cermak2018}|&\parencite{Cermak2018}\\
-\verb|\parencite{Hladik2018,Jasek2018}|&\parencite{Hladik2018,Jasek2018}\\
-\verb|\parencite[kap. 3]{Pecakova2018}|&\parencite[kap. 3]{Pecakova2018}\\
-\end{tabularx}
-\end{center}
-
 }
 
 %%% Literatura
-\printbibliography[title={\bibnamex},heading={bibintoc}]
+\printbibliography[keyword={literature},title={\bibnamex},heading={bibintoc}]
+\printbibliography[keyword={package},title={\bibnamey},heading={bibintoc}]
 
 %%% Přílohy
 \part*{\Prilohy\thispagestyle{empty}}

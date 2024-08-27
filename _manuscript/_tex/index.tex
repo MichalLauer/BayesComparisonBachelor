@@ -51,6 +51,46 @@
   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
@@ -316,17 +356,7 @@ Abstract.
 \begin{multicols}{2}
 \raggedright
 \begin{description}
-\item [BCC] Blind Carbon Copy
-\item [CC] Carbon Copy
-\item [CERT] Computer Emergency Response Team
-\item [CSS] Cascading Styleheets
-\item [DOI] Digital Object Identifier
-\item [HTML] Hypertext Markup Language
-\item [REST] Representational State Transfer
-\item [SOAP] Simple Object Access Protocol
-\item [URI] Uniform Resource Identifier
-\item [URL] Uniform Resource Locator
-\item [XML] eXtended Markup Language
+\item [BUGS] Bayesian inference Using Gibbs Sampling
 \end{description}
 \end{multicols}
 
@@ -412,78 +442,118 @@ test
 
 Jednoduchý T-test
 
-\begin{verbatim}
-
-    One Sample t-test
-
-data:  x
-t = 8.8438, df = 99, p-value = 3.621e-14
-alternative hypothesis: true mean is not equal to 0
-95 percent confidence interval:
- 0.7158758 1.1300282
-sample estimates:
-mean of x 
- 0.922952 
-\end{verbatim}
-
 \ref{zpracovani-python}
 
 Simulace alfa = chyba 1. druhu
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-4-1.pdf}
-
 \section{Software pro bayesovskou
 statistiku}\label{software-pro-bayesovskou-statistiku}
 
-\subsection{Balíček R2WinBUGS}\label{baluxedux10dek-r2winbugs}
+\subsection{Software BUGS}\label{software-bugs}
 
-podporuje WinBUGS, OpenBUGS. Při renderování se otevírá program winbugs.
-Nefunguje správně initializace chainů. Pro grafy pomocný balíček
-\{mcmcplots\}.
+První software, který se snažil zpopularizovat bayesovské metody je
+software BUGS (\emph{Bayesian inference Using Gibbs Sampling}). Projekt,
+jehož cílem bylo vytvořit software pro bayesovskou statistiku, započal
+už v roce 1989 na oddělní biostatistiky na univerzitě Cambridge a vedl k
+vytvoření programu BUGS. Postupem času se program vyvynul do nástroje
+WinBUGS, který je prezentován v této práci
+\parencite{TheBayesianScientificWorkingGroup2024_BayesianScientificWork}.
+
+Prví verze programu byla představena na Bayesovské konferenci ve
+Valencii v roce 1991 a později byla distribuovaná na disketách. Z
+počátku byly implementovány s Gibsovým vzorkováním pouze jendnoduché
+metody a úpravy, jako adaptivní vzorkování nebo bayesovské inverze. Po
+čase byla implementována i velmi limitující verze
+Metropolisova-Hastingova algoritmu, která fungovala na bázi mřížek
+\footnote{Jedná se o tzn. \emph{grid-search}, kdy se hledají správné
+  hodnoty v předem definované tabulce.}.
+
+V 90. letech 20. století se projekt přesunul do Imperial College v
+Londýně a program BUGS se začal vyvíjet i pro osobní počítače se
+systémem Windows. Do verze WinBUGS se časem implementovala komplexní a
+plnohodnotná verze Metropolisova-Hestingova algoritmu, která dokázala
+pracovat bez aproximační tabulky. Velkou sílou však bylo, že uživatel
+dokázal definovat své apriorní předpoklady, data, vztahy a cykly v
+grafickém prostředí. Díky tomu mohli program WinBUGS používat i lidé bez
+zkušeností v programování.
+
+V roce 2004 započala na univerzitě v Helsinách práce na projektu s
+názvem OpenBUGS, který měl za úkol splnit tři primární cíle:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  rozdělit funkčnost softwaru od jejího vzhledu,
+\item
+  udělat verzi nezávislou na operačním prostředí, a
+\item
+  vytvožit experimentálnější prostředí pro zkoušení nových metod.
+\end{enumerate}
+
+Pro splnění prvního cíle byl vyvynut nástroj s názevm BRugs. Díky
+oddělení funkčnosti a vzhledu lze BRugs napojit na další programy jako
+SAS, Excel nebo R a využívat tak simulací BUGS i mimo jeho prostředí. Ke
+splnění druhého cíle byla vyvynutá další verze softwaru bugs s názvem
+LinBUGS pro vývoj v linuxovém prostředí procesory Intel. Experimentální
+prostředí pro testování nových metod byla vytvořena open-source
+\footnote{software, který má veřejný zdrojový kód; tzn. \emph{otevřený
+  software}.} verze OpenBUGS. Vývoj obou aplikací se časem rozdělil a
+obě mají silné stránky v něčem jiném. Software OpenBUGS dokáže
+flexibilně měnit simulační metody nebo simulace provádět paralelně.
+Vývoj softwaru WinBUGS mířil primárně na excelenci v epidemiologickém a
+farmakokinetikou.
+
+Aplikace z rodiny BUGS však trpěli několika nedostatky. Tím hlavním je,
+že jejich vývoj závisí na hrstce vývojářu a i přes to, že je kód
+(alespoň pro software OpenBUGS) veřejně dostupný, je vývoj
+problematický. To je způsobeno primárně komplexitou kódu a programovacím
+jazykem, ve kterém je software napsaný. Druhou velkou nevýhodou je právě
+programovací jazyk, který se nedokáže vyrovnat např. jazyku C++, ve
+kterém jsou napsána většina novodobých simulačních programů
+\parencite{LunnEtAl2009_BUGSProjectEvolution}.
+
+V programovacím jazyce R lze s programy BUGS komunikovat pomocí hned
+několika balíčků. První možností jsou balíčku R2WinBUGS a R2OpenBUGS
+\parencite{SturtzEtAl2005_R2WinBUGSPackageRunning}, které umí
+komunikovat s programy WinBUGS a OpenBUGS. Jelikož byl balíček OpenBUGS
+aktualizován naposledy v r. 2020, je smysluplnější\footnote{aktuální k
+  27. Sprnu, 2024.} v případě zájmu používat balíček R2WinBUGS, který
+poslední aktualizaci obdržel v r. 2024. Balíčky nenabízejí aplikační
+přístup, ale slouží jako automatizační pomůcka. Pokud funkcím předáte
+data, model a parametry simulací, tak se spustí zvolený software
+(OpenBUGS nebo WinBUGS), do kterého jsou automaticky zvoleny preference
+uživatel pomocí skriptu. Po dokončení se program sám zavře a výsledky
+jsou dopstupné v jazyce R.
+
+Druhou možností je balíček BRugs
+\parencite{ThomasEtAl2006_MakingBUGSOpen}, který dokáže komunikovat s
+OpenBUGS pomocí programatického prostředí a není tedy nutné, aby
+balíček/funkce na pozadí spouštěli samotné programy. Na rozdíl od
+balíčku R2WinBUGS, který externě spouští program, je BRugs více
+flexibilní. Nastavení probíhá pomocí metod, které nastavují, spouští a
+inicializují jednotlivé řetěze a simulace. Nevýhodou balíčku je, že je
+nutné ho kompilovat, což může být pro méně zkušené uživatele náročné.
+
+\subsubsection{Balíček \{R2WinBUGS\}}\label{baluxedux10dek-r2winbugs}
 
 Výsledek
 
-\begin{verbatim}
-Inference for Bugs model at "r2winbugs.txt", fit using WinBUGS,
- 2 chains, each with 5000 iterations (first 1000 discarded)
- n.sims = 8000 iterations saved
-         mean  sd 2.5%  25%  50%  75% 97.5% Rhat n.eff
-p         0.6 0.1  0.3  0.5  0.6  0.7   0.9    1  4500
-deviance 14.5 1.5 13.5 13.6 13.9 14.8  18.8    1  8000
-
-For each parameter, n.eff is a crude measure of effective sample size,
-and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
-
-DIC info (using the rule, pD = Dbar-Dhat)
-pD = 1.0 and DIC = 15.6
-DIC is an estimate of expected predictive error (lower deviance is better).
-\end{verbatim}
-
 Odhad parametru p.
-
-\includegraphics{index_files/figure-pdf/unnamed-chunk-6-1.pdf}
 
 Posteriorní rozdělení jednotlivých chainů.
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-7-1.pdf}
-
 Vývoj jednotlivých chainů.
-
-\includegraphics{index_files/figure-pdf/unnamed-chunk-8-1.pdf}
 
 Autokorelace.
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-9-1.pdf}
+\subsection{Balíček JAGS}\label{baluxedux10dek-jags}
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-9-2.pdf}
+2003 https://www.jstor.org/stable/26447820
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-9-3.pdf}
+JAGS - Just Another Gibbs Sampler
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-9-4.pdf}
-
-\subsection{Balíček jags}\label{baluxedux10dek-jags}
-
-\subsubsection{rjags}\label{rjags}
+\subsubsection{Balíček \{rjags\}}\label{baluxedux10dek-rjags}
 
 Tvorba modelu
 
@@ -493,30 +563,11 @@ Burn-in generování, je to pro každý chainu.
 
 Generování vzorků z každého chainu.
 
-\begin{verbatim}
-
-Iterations = 1001:6000
-Thinning interval = 1 
-Number of chains = 2 
-Sample size per chain = 5000 
-
-1. Empirical mean and standard deviation for each variable,
-   plus standard error of the mean:
-
-          Mean             SD       Naive SE Time-series SE 
-       0.50357        0.15197        0.00152        0.00152 
-
-2. Quantiles for each variable:
-
-  2.5%    25%    50%    75%  97.5% 
-0.2104 0.3954 0.5061 0.6127 0.7879 
-\end{verbatim}
-
 Základní plot
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-14-1.pdf}
+\subsubsection{Balíček \{R2jags\}}\label{baluxedux10dek-r2jags}
 
-\subsubsection{R2jags}\label{r2jags}
+Možná úplně vynechat???
 
 Divně spojený bugs and jags.
 
@@ -555,25 +606,52 @@ akorát se charakteristiky nerovnají.
 
 Catterplot.
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-15-1.pdf}
-
 Posteriorní rozdělení.
-
-\includegraphics{index_files/figure-pdf/unnamed-chunk-16-1.pdf}
 
 Trace plot.
 
-\includegraphics{index_files/figure-pdf/unnamed-chunk-17-1.pdf}
-
 Autokorelace.
-
-\includegraphics{index_files/figure-pdf/unnamed-chunk-18-1.pdf}
-
-\includegraphics{index_files/figure-pdf/unnamed-chunk-18-2.pdf}
 
 \subsection{stan}\label{stan}
 
+Stan 1.0, 2012
+
+http://www.stat.columbia.edu/\textasciitilde gelman/research/published/stan\_jebs\_2.pdf
+
+Stan (není delší název).
+
 aplikace, R implementace, výhody/nevýhody, používá hmc
+
+\subsubsection{Balíček \{rstan\}}\label{baluxedux10dek-rstan}
+
+Model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{26}\NormalTok{)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.6}\NormalTok{)}
+
+\CommentTok{\# stan.model \textless{}{-} rstan::stan(}
+\CommentTok{\#     model\_code = readLines("./kapitoly/modely/stan.txt"),}
+\CommentTok{\#     model\_name = "Jednaoduchý příklad",}
+\CommentTok{\#     data = list(}
+\CommentTok{\#         N     = length(x), \# Počet pozorování}
+\CommentTok{\#         x     = x,         \# Vstupní data}
+\CommentTok{\#         alpha = 0.1,       \# Hodnota parametru alpha}
+\CommentTok{\#         beta  = 0.1        \# Hodnota parametru beta}
+\CommentTok{\#     ),}
+\CommentTok{\#     init = list(}
+\CommentTok{\#         list(p = 0.5),}
+\CommentTok{\#         list(p = 0.5)}
+\CommentTok{\#     ),}
+\CommentTok{\#     chains = 2,}
+\CommentTok{\#     iter = 2000 + 5000,}
+\CommentTok{\#     warmup = 2000,}
+\CommentTok{\#     thin = 1,}
+\CommentTok{\#     seed = 59}
+\CommentTok{\# )}
+\end{Highlighting}
+\end{Shaded}
 
 \section{Simulace}\label{simulace}
 
@@ -600,35 +678,17 @@ Jak testy dopadly
 
 Konec práce, závěr.
 
-\section{Jak citovat v textu}
-\begin{center}
-\begin{tabularx}{\textwidth}{l@{~~$\longrightarrow$~~}X}
-\verb|\parencite{Cermak2018}|&\parencite{Cermak2018}\\
-\verb|\parencite{Hladik2018,Jasek2018}|&\parencite{Hladik2018,Jasek2018}\\
-\verb|\parencite[kap. 3]{Pecakova2018}|&\parencite[kap. 3]{Pecakova2018}\\
-\end{tabularx}
-\end{center}
-
 }
 
 %%% Literatura
-\printbibliography[title={\bibnamex},heading={bibintoc}]
+\printbibliography[keyword={literature},title={\bibnamex},heading={bibintoc}]
+\printbibliography[keyword={package},title={\bibnamey},heading={bibintoc}]
 
 %%% Přílohy
 \part*{\Prilohy\thispagestyle{empty}}
 \appendix
 
 \chapter{Bayesovské modely}\label{bayesovskuxe9-modely}
-
-\begin{model}{R}{Winbugs}{NENÍ LABEL}
-model {
-    for (i in 1:N) {
-        x[i] ~ dbern(p)
-    }
-
-    p ~ dbeta(alpha, beta)
-}
-\end{model}
 
 
 

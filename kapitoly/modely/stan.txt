@@ -1,0 +1,18 @@
+// Definice vstupních dat
+data {
+    int<lower=1> N;               // Velikost vzorku
+    int x[N];                     // Data
+    real<lower=0, upper=1> alpha; // Parametr alpha
+    real<lower=0, upper=1> beta;  // Parametr beta
+}
+
+// Definice parametrů
+parameters {
+    real<lower=0, upper=1> p;      // Odhadovaná relativní četnost
+}
+
+// Definice modelu
+model {
+    x ~ bernoulli(p);      // Rozdělení dat 
+    p ~ beta(alpha, beta); // Rozdělení parametru p
+}

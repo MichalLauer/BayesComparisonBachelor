@@ -1,8 +1,13 @@
-#### rjags
+2003 https://www.jstor.org/stable/26447820
+
+JAGS - Just Another Gibbs Sampler
+
+#### Balíček {rjags}
 
 Tvorba modelu
 
-```{r }
+```{r jags}
+#| results: hide
 set.seed(26)
 x <- rbinom(10, 1, 0.6)
 
@@ -20,9 +25,8 @@ jags.model <- rjags::jags.model(
         .RNG.name = "base::Super-Duper", # Generování náhodných čísel
         .RNG.seed = 684                  # Seed
     ),
-    n.chains = 2,   # Počet chainů
-    n.adapt  = 500, # Adaptační doba
-    quiet    = TRUE
+    n.chains = 2,  # Počet chainů
+    n.adapt  = 500 # Adaptační doba
 )
 ```
 
@@ -61,7 +65,9 @@ Základní plot
 plot(rjags.samples)
 ```
 
-#### R2jags
+#### Balíček {R2jags}
+
+Možná úplně vynechat???
 
 Divně spojený bugs and jags.
 

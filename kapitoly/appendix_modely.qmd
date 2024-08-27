@@ -1,5 +1,11 @@
 ```{r }
 #| results: asis
-#| model-caption: Winbugs
+#| model-caption: Příklad modelu definovaném pro software WinBUGS
 cat(paste(readLines("./kapitoly/modely/r2winbugs.txt"), collapse = "\n"))
+```
+
+```{r }
+#| results: asis
+#| model-caption: Příklad modelu definovaném pro software JAGS
+cat(paste(readLines("./kapitoly/modely/rjags.txt"), collapse = "\n"))
 ```

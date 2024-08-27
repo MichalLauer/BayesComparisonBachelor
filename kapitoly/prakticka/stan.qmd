@@ -1,0 +1,42 @@
+Stan 1.0, 2012
+
+http://www.stat.columbia.edu/~gelman/research/published/stan_jebs_2.pdf
+
+Stan (není delší název).
+
+aplikace, R implementace, výhody/nevýhody, používá hmc
+
+#### Balíček {rstan}
+
+Model.
+
+```{r stan}
+#| echo: true
+#| results: hide
+set.seed(26)
+x <- rbinom(10, 1, 0.6)
+
+# stan.model <- rstan::stan(
+#     model_code = readLines("./kapitoly/modely/stan.txt"),
+#     model_name = "Jednaoduchý příklad",
+#     data = list(
+#         N     = length(x), # Počet pozorování
+#         x     = x,         # Vstupní data
+#         alpha = 0.1,       # Hodnota parametru alpha
+#         beta  = 0.1        # Hodnota parametru beta
+#     ),
+#     init = list(
+#         list(p = 0.5),
+#         list(p = 0.5)
+#     ),
+#     chains = 2,
+#     iter = 2000 + 5000,
+#     warmup = 2000,
+#     thin = 1,
+#     seed = 59
+# )
+```
+
+```{r include=FALSE}
+# print(stan.model)
+```
