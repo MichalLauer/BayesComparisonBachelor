@@ -216,6 +216,8 @@ Interval kredibility, ROPE, Bayesův faktor
 
 # Praktické odhady
 
+{{< include kapitoly/prakticka/uvod.qmd >}}
+
 ## Balíčky pro frekventistickou inferenci
 
 ### Klasické test poměru
@@ -226,7 +228,7 @@ Interval kredibility, ROPE, Bayesův faktor
 
 ### Software BUGS
 
-{{< include kapitoly/prakticka/r2winbugs.qmd >}}
+{{< include kapitoly/prakticka/bugs.qmd >}}
 
 ### Balíček JAGS
 

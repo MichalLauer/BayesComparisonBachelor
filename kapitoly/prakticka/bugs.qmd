@@ -10,9 +10,9 @@ Prví verze programu byla představena na Bayesovské konferenci ve Valencii v
 roce 1991 a později byla distribuovaná na disketách. Z počátku byly implementovány
 s Gibsovým vzorkováním pouze jendnoduché metody a úpravy, jako adaptivní vzorkování
 nebo bayesovské inverze. Po čase byla implementována i velmi limitující verze
-Metropolisova-Hastingova algoritmu, která fungovala na bázi mřížek [^r2winbugs-grid].
+Metropolisova-Hastingova algoritmu, která fungovala na bázi mřížek [^bugs-grid].
 
-[^r2winbugs-grid]: Jedná se o tzn. *grid-search*, kdy se hledají správné hodnoty v předem
+[^bugs-grid]: Jedná se o tzn. *grid-search*, kdy se hledají správné hodnoty v předem
 definované tabulce.
 
 V 90. letech 20. století se projekt přesunul do Imperial College v Londýně a 
@@ -35,13 +35,13 @@ funkčnosti a vzhledu lze BRugs napojit na další programy jako SAS, Excel nebo
 R a využívat tak simulací BUGS i mimo jeho prostředí. Ke splnění druhého
 cíle byla vyvynutá další verze softwaru bugs s názvem LinBUGS pro vývoj v
 linuxovém prostředí procesory Intel. Experimentální prostředí pro testování
-nových metod byla vytvořena open-source [^r2winbugs-os] verze OpenBUGS. Vývoj
+nových metod byla vytvořena open-source [^bugs-os] verze OpenBUGS. Vývoj
 obou aplikací se časem rozdělil a obě mají silné stránky v něčem jiném.
 Software OpenBUGS dokáže flexibilně měnit simulační metody nebo simulace 
 provádět paralelně. Vývoj softwaru WinBUGS mířil primárně na excelenci v 
 epidemiologickém a farmakokinetikou.
 
-[^r2winbugs-os]: software, který má veřejný zdrojový kód; tzn. *otevřený software*.
+[^bugs-os]: software, který má veřejný zdrojový kód; tzn. *otevřený software*.
 
 Aplikace z rodiny BUGS však trpěli několika nedostatky. Tím hlavním je, že 
 jejich vývoj závisí na hrstce vývojářu a i přes to, že je kód (alespoň pro 
@@ -55,7 +55,7 @@ V programovacím jazyce R lze s programy BUGS komunikovat pomocí hned
 několika balíčků. První možností jsou balíčku R2WinBUGS a R2OpenBUGS
 \parencite{SturtzEtAl2005_R2WinBUGSPackageRunning},
 které umí komunikovat s programy WinBUGS a OpenBUGS. Jelikož byl balíček
-OpenBUGS aktualizován naposledy v r. 2020, je smysluplnější[^r2winbugs-pkgs]
+OpenBUGS aktualizován naposledy v r. 2020, je smysluplnější[^bugs-pkgs]
 v případě zájmu používat balíček R2WinBUGS, který poslední aktualizaci obdržel
 v r. 2024. Balíčky nenabízejí aplikační přístup, ale slouží jako automatizační
 pomůcka. Pokud funkcím předáte data, model a parametry simulací, tak se spustí
@@ -63,7 +63,7 @@ zvolený software (OpenBUGS nebo WinBUGS), do kterého jsou automaticky zvoleny
 preference uživatel pomocí skriptu. Po dokončení se program sám zavře a 
 výsledky jsou dopstupné v jazyce R.
 
-[^r2winbugs-pkgs]: aktuální k 27. Sprnu, 2024.
+[^bugs-pkgs]: aktuální k 27. Sprnu, 2024.
 
 Druhou možností je balíček BRugs 
 \parencite{ThomasEtAl2006_MakingBUGSOpen}, který dokáže komunikovat s OpenBUGS

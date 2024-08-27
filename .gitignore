@@ -4,6 +4,7 @@ _freeze/
 index_files/
 index_cache/
 .quarto/
+_manuscript/
 
 *.aux
 *.lol
