@@ -75,8 +75,6 @@ je, že je nutné ho kompilovat, což může být pro méně zkušené uživatel
 
 #### Balíček {R2WinBUGS}
 
-
-
 ```{r r2winbugs}
 set.seed(123)
 x <- rbinom(10, 1, .6)

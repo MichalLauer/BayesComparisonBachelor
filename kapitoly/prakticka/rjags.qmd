@@ -32,7 +32,7 @@ jags.model <- rjags::jags.model(
 
 Adaptační doba, která se volá automaticky.
 
-```{r , eval=FALSE}
+```{r eval=FALSE}
 rjags::adapt(object = jags.model)
 ```
 

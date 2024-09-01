@@ -1,6 +1,50 @@
-V praktické části budou 
+Praktická část práce je rozdělená na dvě části. V první kapitole jsou 
+představeny balíčky v jazyce R, které lze použít ke klasické a bayesovské 
+inferenci. ... Popis klasických balíčků a tak... .
 
+Pro bayesovskou statistiku
+existuje hned několik balíčků a nástrojů, které umožňuji relativně jednoduchým
+způsobem simulovat data z několika posteriorních rozdělení. Každý nástroj je zasazen do 
+historického kontextu a následně je ukázáno, jak lze daný software použít v 
+jazyce R a vytvořit jednoduchý model pro odhad relativní četnosti. Zároveň
+jsou představeny pomocné balíčky, které dokáží jednoduše ukázat kvalitu simulací,
+přesnosti výsledků nebo grafy řetězců. Všechny aplikace jsou na konci kapitoly
+porovnány a na základě odborné literatury je doporučen nástroj, který je v 
+dnešní době nejvhodnější.
 
+Jednotlivé balíčky, ať už z klasické nebo bayesovské statistiky, využívají
+identický náhodný vzorek z binomického rozdělení 
+\parencite[str. 130]{Marek2012_Pravdepodobnost}
+s parametry $n = 1$, $\pi = 0.33$ a počtem vzorků $x = 24$. Pro reprodukovatelnost
+je v každém procesu náhodného generování nastaven náhodný seed, díky kterému
+je celá praktická část reprodukovatelná. Data, která budou použita, jsou 
+generována v kódu \ref{code-prakticka-data}.
 
+```{r }
+#| code-run: true
+#| code-caption: Generovaná data pro praktickou ukázku
+#| code-label: code-prakticka-data
+set.seed(748)
+simulovana_data <- rbinom(
+    n = 24,    # Parametr x
+    size = 1,  # Parametr n
+    prob = 1/3 # Parametr pi
+)
+```
 
-dostupné balíčku bugs, jags, stan, jazyk R
+Konkrétně budou použity hodnoty
+`r paste0("$", paste0(simulovana_data, collapse  = ", "), "$")` s reletavní
+četností `r mean(simulovana_data)`.
+
+V druhé části je použit klasický a bayesovský přístup k odhadu relativní četnosti
+na reálném problému, kde není dostatek dat. Pro tyto účely je vybrán velký 
+vzorek dat, ze kterého bude vybrán náhodný vzorek 24 dat. Z těchto dat bude
+pomocí obou metod odhadnuta skutečná[^pr-uvod-vzorek] relativní četnost. Obě
+metody budou následně porovnány vzhledem k tomu jak jsou přesné a jaké další
+informace metody poskytují.
+
+[^pr-uvod-vzorek]: Samozřejmě skutečná hodnota je pořád neznámá, protože v tomto
+případě je vzorek považován za populaci a inference je provedená z náhodného, 
+malého vzorku. Také o skutečné relativní četnosti lze mluvit pouze v klasické,
+frekventistické, statistice. V terminologii bayesovské statistiky by bylo 
+vhodnější použít termín *skutečné rozdělení relativní četnosti*.

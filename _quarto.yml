@@ -3,10 +3,6 @@ project:
   post-render: 
    - R/cleanup.r
 
-execute: 
-  echo: true
-  eval: false
-
 format:
   pdf:
     documentclass: report

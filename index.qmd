@@ -114,23 +114,26 @@ library(ggplot2)
 ```
 
 ```{r include=FALSE}
-# Hezký kód
+hook_default_source <- knitr::knit_hooks$get("source")
 knitr::knit_hooks$set(source = function(x, options) {
-  if (!options$echo || !options$chunk.echo) {
-    return(NULL)
+  if (isTRUE(options[['code-run']])) {
+    r <- paste0(
+      "\\begin{code}{", 
+        options[["code-lang"]] %||% "R", 
+      "}{", 
+        options[["code-caption"]] %||% "NENÍ CAPTION", 
+      "}{", 
+        options[["code-label"]] %||% "NENÍ LABEL", 
+      "}\n",
+        paste0(x, collapse = "\n"),
+      "\n\\end{code}\n"
+      )
+  } else {
+    options$echo = FALSE
+    r <- hook_default_source(x, options)
   }
 
-  paste0(
-    "\\begin{code}{", 
-      options[["code-lang"]] %||% "R", 
-    "}{", 
-      options[["code-caption"]] %||% "NENÍ CAPTION", 
-    "}{", 
-      options[["code-label"]] %||% "NENÍ LABEL", 
-    "}\n",
-      paste0(x, collapse = "\n"),
-    "\n\\end{code}\n"
-  )
+  return(r)
 })
 
 # Hezké modely v appendixu
@@ -151,6 +154,10 @@ knitr::knit_hooks$set(chunk = function(x, options) {
     return(x)
   }
 })
+```
+
+```{r test}
+#| code-run: true
 ```
 
 ```{=tex}
@@ -268,8 +275,8 @@ Jak testy dopadly
 }
 
 %%% Literatura
-\printbibliography[keyword={literature},title={\bibnamex},heading={bibintoc}]
-\printbibliography[keyword={package},title={\bibnamey},heading={bibintoc}]
+\printbibliography[keyword={literatura},title={\bibnamex},heading={bibintoc}]
+\printbibliography[keyword={balicek},title={\bibnamey},heading={bibintoc}]
 
 %%% Přílohy
 \part*{\Prilohy\thispagestyle{empty}}
