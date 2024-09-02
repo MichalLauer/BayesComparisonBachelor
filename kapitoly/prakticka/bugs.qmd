@@ -63,7 +63,7 @@ zvolený software (OpenBUGS nebo WinBUGS), do kterého jsou automaticky zvoleny
 preference uživatel pomocí skriptu. Po dokončení se program sám zavře a 
 výsledky jsou dopstupné v jazyce R.
 
-[^bugs-pkgs]: aktuální k 27. Sprnu, 2024.
+[^bugs-pkgs]: aktuální k 2024-08-27.
 
 Druhou možností je balíček BRugs 
 \parencite{ThomasEtAl2006_MakingBUGSOpen}, který dokáže komunikovat s OpenBUGS
@@ -75,44 +75,131 @@ je, že je nutné ho kompilovat, což může být pro méně zkušené uživatel
 
 #### Balíček {R2WinBUGS}
 
-```{r r2winbugs}
-set.seed(123)
-x <- rbinom(10, 1, .6)
+Před používáním samotného balíčku je nutné stáhnout program WinBUGS. Aktuálně
+[^bugs-datum] lze program stáhnout z Google disku[^bugs-gdrive] Cambridgské
+univerzity, kde se nachází jak verze OpenBUGS a WinBUGS. Balíček R2WinBUGS
+dokáže pracovat jak s verzí OpenBUGS, tak s verzí WinBUGS. Kompletní a 
+okomentované použití balíčku je v kódu \ref{code-r2winbugs-model}.
 
+[^bugs-datum]: aktuální k 2024-09-02
+[^bugs-gdrive]: [https://drive.google.com/drive/folders/1XzG681AaZpRtPtynkuGUt2BspMTvhYoP](https://drive.google.com/drive/folders/1XzG681AaZpRtPtynkuGUt2BspMTvhYoP), popř. aktuální odkaz
+lze získat z webových stránek [https://www.mrc-bsu.cam.ac.uk/software](https://www.mrc-bsu.cam.ac.uk/software)
+
+```{r bugs-model}
+#| echo: true
+#| code-caption: Simulace pomocí balíčku R2WinBUGS a nástroje WinBUGS
+#| code-label: code-r2winbugs-model
 bugs <- R2WinBUGS::bugs(
     data = list(
-        N     = length(x), # Počet pozorování
-        x     = x,         # Vstupní data
-        alpha = 0.01,      # Hodnota parametru alpha
-        beta  = 0.01       # Hodnota parametru beta
+        N     = length(simulovana_data), # Pocet pozorovani
+        x     = simulovana_data,         # Vstupni data
+        alpha = 0.01,                    # Hodnota parametru alpha
+        beta  = 0.01                     # Hodnota parametru beta
     ),
-    # Počáteční hodnoty
-    inits = list(
+    inits = list(    # Pocatecni hodnoty
         list(p = 0.5),
         list(p = 0.5)
     ),
-    n.chains = 2, n.iter = 5000, n.burnin = 1000, n.thin = 1,
-    # Parametry, které uložit
-    parameters.to.save = c("p"),
-    # Cesta k modelu
-    working.directory = "kapitoly/modely",
-    model.file = "r2winbugs.txt",
-    # Cesta k programu WinBUGS
-    bugs.directory = r"(C:\Users\Mike\Downloads\WinBUGS14\WinBUGS14)",
-    # Odstraň pracovní soubory
-    clearWD = T,
-    # Replikovatelnost
-    bugs.seed = 123
+    n.chains = 2,    # Pocet retezu
+    n.iter = 5000,   # Pocet iteraci
+    n.burnin = 1000, # Pocet warm-up iteraci
+    n.thin = 1,      # Thining konstanta
+    parameters.to.save = c("p"),                          # Parametry, ktere ulozit
+    working.directory = "kapitoly/modely",                # Nastaveni adresare
+    model.file = "r2winbugs.txt",                         # Cesta k modelu
+    bugs.directory = r"(R:/BachelorBayes/sw/WinBUGS14/)", # Cesta k WinBUGS
+    clearWD = T,    # Odstran pracovni soubory
+    bugs.seed = 123 # Replikovatelnost
 )
 ```
 
-Výsledek
+Nejprve je nutné definovat vstupní data, se kterými bude modle pracovat (řádky
+2 -- 7). Dále je vhodné nastavit počáteční hodnoty, které se použijí pro 
+simulaci (řádky 8 --- 11). Jelikož jsou v tomto případě použité dva řetězce,
+je nutné definovat dva listy s počátečními hodnotamy. Poté jsou nastavené
+parametry simulace (řádky 12 -- 15) a uložení vybraných parametrů (řádek 16).
+Pro správnou funkčnost je nutné metodě `bugs` sdělit, s jakým modelem a jakou
+verzí programu WinBUGS/OpenBUGS bude pracovat. Řádky 17 --- 19 nastavují 
+pracovní adresář, cestu k modelu a cestu k samotnému programu. Při spuštění
+simulace metoda ukládá mezivýstupy[^bugs-meziv], které lze deaktivovat
+pomocí parametru `clearWD` na řádku 20. Na závěr je
+velmi důležité nastavit parametr `bugs.seed`, díky kterému (v kombinaci s 
+počátečními hodnotami) lze dosáhnout replikovatelnosti. 
 
-```{r }
-print(bugs)
+V celku netradiční je definice modelu, která musí být uložena v externím souboru
+s příponou `.txt`, popř. `.bugs`. Model je definovaný ve výpise \ref{model-bugs}.
+
+```{r bugs-model-print}
+#| results: model
+#| model-caption: Příklad modelu definovaném pro software WinBUGS
+#| model-label: model-bugs
+cat(paste(readLines("./kapitoly/modely/r2winbugs.txt"), collapse = "\n"))
 ```
 
-Odhad parametru p.
+Na řádku 1 je začátek bloku s názvem **model**, ve kterém je definovaný 
+libovolný bayesovský model. Řáded 3 popisuje rozdělení dat; v tomto případě
+zápis řiká, že každé jednotlivé pozorování má Alternativní[^bugs-bern]
+rozdělení
+\parencite[str. 129]{Marek2012_Pravdepodobnost}
+s parametrem $\pi = p$. Zápis je ve *for* cyklu, který rozdělení
+přiřazuje každému pozorování od 1 do `N`. Na řádku 6 je pak definované
+apriorní rozdělení pro parametr `p`, které je v tomto případě Beta 
+\parencite[str. 32]{Mala2016_VybraneKapitolyTeorie} s parametry $\alpha$ a 
+$\beta$. Všechny předem známé proměnné, tedy proměnné `x`, `N`, $\alpha$ a 
+$\beta$ jsou definované ve funkci `bugs` v kódu \ref{code-r2winbugs-model}
+na řádcích 2 --- 7. Po spuštění funkce se spustí program WinBUGS a výsledky
+se uloží do proměnné `bugs`, jejíž výpis je v \ref{model-r2winbugs-out}.
+
+[^bugs-bern]: V literatuře je místo pojmu *Alternativní* rozdělení občas
+používáno *Bernoulliho* rozdělení, význam však zůstává identický a jde pouze
+o záměnu názvu.
+
+```{r bugs-print}
+#| results: model
+#| model-caption: test
+#| model-label: model-r2winbugs-out
+print(bugs, digits.summary = 3)
+```
+
+První řádek slouží čistě k rekapitulaci toho, jaký model a jaký program byli k
+inferenci použity. Druhý řádek popisuje nastavení simulace, v tomto případě
+byly generovány dva řetězce o 5 000 vzorcích, z čehož bylo prvních 1 000 vzorků
+smazáno jako rozehřívací období; dohromady je v proměnné bugs uloženo 8 0000
+vzorků. Po krátkém popisu následuje na řádcích 4 -- 6 deskriptivní statistika,
+která popisuje
+uložené parametry. Navíc je zde uložen parametr `deviance`, který popisuje
+rozdělení **??????**. Střední hodnota posteriorního rozdělení parametru `p`
+je `r fmt_num(bugs$summary["p", "mean"])` se směrodatnou odchylkou 
+`r fmt_num(bugs$summary["p", "sd"])`. Statistika $R_{hat}$ se prakticky rovná
+jedné, což naznačuje nulovou autokorelaci. Efektivní velikost vzorků je 8 000,
+což dále potvrzuje uspokojivou konvergenci. **Co ten konec???**
+
+#### Vizualizace
+
+Software BUGS dokáže výsledky automaticky vizualizovat, což však nelze 
+do prostředí R jednoduše přenést a balíček R2WinBUGS nabízí pouze základní
+vizualizaci pomocí funkce `plot`, které však nejsou velmi uživatelsky 
+přívětivé (viz. ukázka v příloze **REF na appendix**). Pro pokročilejší 
+vizuální zobrazení lze použít balíček mcmcplots
+(\parencite{Curtis2018_McmcplotsCreatePlots}).
+
+Pro zobrazení posteriorního rozdělení jednotlivých řetězců lze použít funkce
+`denplot`. Obrázek @fig-mcmcplots-posterior zobrazuje posteriorní rozdělení jednotlivých řetězců
+s 89% intervalem kredibility, který je vygenerován pomocí výpisku 
+\ref{mcmcplots-posteriorni}.
+
+```{r bugs-mcmcplots-posterior}
+#| echo: true
+#| code-caption: Kód pro generování posteriorních rozdělení pomocí balíčku mcmcplots
+#| code-label: mcmcplots-posteriorni
+#| fig-cap: Posteriorní rozdělení z balíčku R2WinBUGS
+#| label: fig-mcmcplots-posterior
+mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
+                   parms = "p",    # Vybraný parametr
+                   xlim = c(0, 1), # Limity na ose X
+                   ci = 0.89       # 89% Interval kredibility
+)
+```
 
 ```{r }
 mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
@@ -127,13 +214,7 @@ mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
 
 Posteriorní rozdělení jednotlivých chainů.
 
-```{r }
-mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
-                   parms = "p",    # Vybraný parametr
-                   xlim = c(0, 1), # Limity na ose X
-                   ci = 0.89       # 89% Interval kredibility
-)
-```
+
 
 Vývoj jednotlivých chainů.
 

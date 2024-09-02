@@ -21,7 +21,7 @@ je celá praktická část reprodukovatelná. Data, která budou použita, jsou
 generována v kódu \ref{code-prakticka-data}.
 
 ```{r }
-#| code-run: true
+#| echo: true
 #| code-caption: Generovaná data pro praktickou ukázku
 #| code-label: code-prakticka-data
 set.seed(748)

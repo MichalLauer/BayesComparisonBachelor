@@ -108,15 +108,33 @@
 \end{multicols}
 ```
 
-```{r include=FALSE}
+```{r setup, include=FALSE}
 library(rlang)
 library(ggplot2)
 ```
 
-```{r include=FALSE}
+```{r funcs, include=FALSE}
+fmt_num <- function(x, decimal = 3) {
+  formatted <- format(round(x, decimal),
+                      nsmall = decimal, decimal.mark = ",",
+                      big.mark = " ", scientific = FALSE)
+  
+  # # Ensure trailing zeros are kept
+  # parts <- strsplit(formatted, ",")[[1]]
+  # if (length(parts) > 1) {
+  #   decimal_part <- parts[2]
+  #   decimal_part <- sprintf(paste0("%0", decimal, "d"), as.numeric(decimal_part))
+  #   formatted <- paste(parts[1], decimal_part, sep = ",")
+  # }
+  
+  return(formatted)
+}
+```
+
+```{r hooks, include=FALSE}
 hook_default_source <- knitr::knit_hooks$get("source")
 knitr::knit_hooks$set(source = function(x, options) {
-  if (isTRUE(options[['code-run']])) {
+  if (isTRUE(options$chunk.echo)) {
     r <- paste0(
       "\\begin{code}{", 
         options[["code-lang"]] %||% "R", 
@@ -129,7 +147,6 @@ knitr::knit_hooks$set(source = function(x, options) {
       "\n\\end{code}\n"
       )
   } else {
-    options$echo = FALSE
     r <- hook_default_source(x, options)
   }
 
@@ -137,13 +154,14 @@ knitr::knit_hooks$set(source = function(x, options) {
 })
 
 # Hezké modely v appendixu
-knitr::knit_hooks$set(chunk = function(x, options) {
-  if ( !is.null(options[["model-caption"]]) ) {
-    model <- paste0(
+hook_default_output <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+  if (options$results == "model") {
+    r <- paste0(
       "\\begin{model}{", 
         options[["model-lang"]] %||% "R", 
       "}{", 
-        options[["model-caption"]], 
+        options[["model-caption"]] %||% "NENÍ CAPTION", 
       "}{", 
         options[["model-label"]] %||% "NENÍ LABEL", 
       "}\n",
@@ -151,13 +169,11 @@ knitr::knit_hooks$set(chunk = function(x, options) {
       "\n\\end{model}\n"
   )
   } else {
-    return(x)
+    r <- hook_default_output(x, options)
   }
-})
-```
 
-```{r test}
-#| code-run: true
+  return(r)
+})
 ```
 
 ```{=tex}
@@ -232,6 +248,8 @@ Interval kredibility, ROPE, Bayesův faktor
 {{< include kapitoly/prakticka/base-r.qmd >}}
 
 ## Software pro bayesovskou statistiku
+
+{{< include kapitoly/prakticka/uvod-bayes.qmd >}}
 
 ### Software BUGS
 

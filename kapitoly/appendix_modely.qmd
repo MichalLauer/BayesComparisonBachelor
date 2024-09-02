@@ -1,11 +1,12 @@
-```{r }
-#| results: asis
-#| model-caption: Příklad modelu definovaném pro software WinBUGS
-cat(paste(readLines("./kapitoly/modely/r2winbugs.txt"), collapse = "\n"))
+
+```{r bugs-basic-plot}
+# CITOVAT V OpenBUGS
+plot(bugs, which = 1)
 ```
 
-```{r }
-#| results: asis
+```{r model-jags}
+#| results: model
 #| model-caption: Příklad modelu definovaném pro software JAGS
+#| model-label: model-jags
 cat(paste(readLines("./kapitoly/modely/rjags.txt"), collapse = "\n"))
 ```
