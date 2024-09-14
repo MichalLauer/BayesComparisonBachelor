@@ -166,72 +166,49 @@ inferenci použity. Druhý řádek popisuje nastavení simulace, v tomto přípa
 byly generovány dva řetězce o 5 000 vzorcích, z čehož bylo prvních 1 000 vzorků
 smazáno jako rozehřívací období; dohromady je v proměnné bugs uloženo 8 0000
 vzorků. Po krátkém popisu následuje na řádcích 4 -- 6 deskriptivní statistika,
-která popisuje
-uložené parametry. Navíc je zde uložen parametr `deviance`, který popisuje
-rozdělení **??????**. Střední hodnota posteriorního rozdělení parametru `p`
+která popisuje uložené parametry. Navíc je zde automaticky uložen parametr 
+`deviance`, který popisuje míru shody modelu s daty a jeho predikční schopnost.
+Střední hodnota posteriorního rozdělení parametru `p`
 je `r fmt_num(bugs$summary["p", "mean"])` se směrodatnou odchylkou 
 `r fmt_num(bugs$summary["p", "sd"])`. Statistika $R_{hat}$ se prakticky rovná
 jedné, což naznačuje nulovou autokorelaci. Efektivní velikost vzorků je 8 000,
-což dále potvrzuje uspokojivou konvergenci. **Co ten konec???**
+což dále potvrzuje uspokojivou konvergenci.
 
-#### Vizualizace
+Na konci výpisu je slovní popis výsledků, který může pomoct pro prvotní 
+zorientování ve výstupu. Je zde také popsán parametr pD a DIC. Výsledky simulací jsou uložené ve formátu listu. Ke vygenerovaným řetězcům se lze dostat například pomocí `<objekt>$sims.list` nebo `<objekt>$sims.matrix`.
 
-Software BUGS dokáže výsledky automaticky vizualizovat, což však nelze 
-do prostředí R jednoduše přenést a balíček R2WinBUGS nabízí pouze základní
-vizualizaci pomocí funkce `plot`, které však nejsou velmi uživatelsky 
-přívětivé (viz. ukázka v příloze **REF na appendix**). Pro pokročilejší 
-vizuální zobrazení lze použít balíček mcmcplots
-(\parencite{Curtis2018_McmcplotsCreatePlots}).
+!!! Výpočet deviance, možná se bude hodit.
 
-Pro zobrazení posteriorního rozdělení jednotlivých řetězců lze použít funkce
-`denplot`. Obrázek @fig-mcmcplots-posterior zobrazuje posteriorní rozdělení jednotlivých řetězců
-s 89% intervalem kredibility, který je vygenerován pomocí výpisku 
-\ref{mcmcplots-posteriorni}.
+```{r }
+#| results: hide
+ll <- function(y, p) {
+    return(y * log(p) + (1 - y) * log(1 - p))
+}
 
-```{r bugs-mcmcplots-posterior}
-#| echo: true
-#| code-caption: Kód pro generování posteriorních rozdělení pomocí balíčku mcmcplots
-#| code-label: mcmcplots-posteriorni
-#| fig-cap: Posteriorní rozdělení z balíčku R2WinBUGS
-#| label: fig-mcmcplots-posterior
-mcmcplots::denplot(mcmcout = bugs, # Výstup modelu
-                   parms = "p",    # Vybraný parametr
-                   xlim = c(0, 1), # Limity na ose X
-                   ci = 0.89       # 89% Interval kredibility
-)
+deviance <- function(y, p) {
+    return(-2 * ll(y, p))
+}
+
+posterior_samples <- bugs$sims.list$p
+deviances <- sapply(posterior_samples, \(x) sum(deviance(simulovana_data, x)))
+
+D_bar <- mean(deviances)
+D_bar
 ```
 
 ```{r }
-mcmcplots::caterplot(mcmcout = bugs,             # Výstup modelu
-                     parms = "p",                # Vybraný parametr
-                     val.lim = c(0, 1),          # Limity na ose X
-                     quantiles = list(
-                        outer = c(0.025, 0.975), # 95% interval kredibility
-                        inner = c(0.055, 0.945)  # 89% interval kredibility
-                     )
-)
+#| results: hide
+mean_posterior <- mean(posterior_samples)
+D_hat <- sum(deviance(simulovana_data, mean_posterior))
+D_hat
 ```
 
-Posteriorní rozdělení jednotlivých chainů.
-
-
-
-Vývoj jednotlivých chainů.
-
 ```{r }
-mcmcplots::traplot(mcmcout = bugs, # Výstup modelu
-                   parms = "p",    # Vybraný parametr
-                   ylim = c(0, 1)  # Limity na ose Y
-)
+#| results: hide
+D_bar - D_hat
 ```
 
-Autokorelace.
-
 ```{r }
-par(mrowf=c(1,2))
-mcmcplots::autplot1(x = mcmcplots::as.mcmc.bugs(bugs),
-                   chain = 1)
-mcmcplots::autplot1(x = mcmcplots::as.mcmc.bugs(bugs),
-                   chain = 2)
-par(mrowf=c(1,1))
+#| results: hide
+bugs
 ```
