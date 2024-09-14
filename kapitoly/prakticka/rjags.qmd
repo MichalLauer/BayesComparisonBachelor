@@ -85,52 +85,124 @@ analýzu dat s diskrétními číselnými proměnnými
 
 #### Balíček {rjags}
 
-Tvorba modelu
+Pro generování vzorků z definovaného modelu je nejprve nutné model definovat.
+K tomu slouží funkce `jags.model`, která je použitá ve kódu \ref{code-jags-model}.
 
-```{r jags}
-#| results: hide
-set.seed(26)
-x <- rbinom(10, 1, 0.6)
-
+```{r jags-model}
+#| echo: true
+#| code-caption: Simulace pomocí balíčku rjags a nástroje JAGS
+#| code-label: code-jags-model
 jags.model <- rjags::jags.model(
     file = "./kapitoly/modely/rjags.txt", # Model
     data = list(
-        N     = length(x), # Počet pozorování
-        x     = x,         # Vstupní data
-        alpha = 0.01,      # Hodnota parametru alpha
-        beta  = 0.01       # Hodnota parametru beta
+        N     = length(simulovana_data), # Pocet pozorovani
+        x     = simulovana_data,         # Vstupni data
+        alpha = 0.01,                    # Hodnota parametru alpha
+        beta  = 0.01                     # Hodnota parametru beta
     ),
-    # Počáteční hodnoty
     inits = list(
-        p = 0.5,
-        .RNG.name = "base::Super-Duper", # Generování náhodných čísel
+        p = 0.5,                         # Pocatecni hodnota
+        .RNG.name = "base::Super-Duper", # Generator nahodnych cisel
         .RNG.seed = 684                  # Seed
     ),
-    n.chains = 2,  # Počet chainů
-    n.adapt  = 500 # Adaptační doba
+    n.chains = 2,   # Pocet retezcu
+    n.adapt  = 500, # Adaptacni doba
+    quiet = TRUE    # Bez vypisu
 )
 ```
 
-Burn-in generování, je to pro každý chainu.
+Na první řádku se inicializuje objekt `jags.model`, ve kterém bude uložena 
+reference na JAGS model. Na řádku 2 parametr `file` odkazuje na definici
+modelu v textovém souboru. Pro balíček rjags lze model definovat přímo
+v kódu, ale pro jednotnost je zde použit formát se souborem. Příklad toho,
+jak definovat model přímo v kódu, je v příloze \ref{code-jags-variable}.
+
+Řádky 3 -- 8 definují data, která budou v modelu použitá. Definice počátečních
+hodnot a způsobu náhodného generování vzorků je na řádcích 9 -- 13. Díky tomu,
+že je explicitně uveden generátor a seed je zaručené, že výsledky budou
+replikovatelné. Řádek 14 nastavuje počet řetězců a řádek 15 adaptační[^jags-adapt]
+dobu.
+
+[^jags-adapt]: Jelikož se JAGS snaží generovat vzorky co nejoptimálněji a 
+nejrychleji, snaží se pro každý parametr vybrat vhodný způsob generování. K tomu
+slouží právě adaptační doba.
+
+Pokud je model definovaný správně a všechna vstupní data jsou zadána, model se
+příkazem inicializuje do proměnné `jags.model`. Objekt `jags.model` je list,
+který obsahuje různé funkce, které popisují stav modelu. Lze zjistit např.
+kolik řetězců bude použito (`jags.model$nchain()`) nebo kolik vzorků bylo
+již vygenerováno (`jags.model$iter()`).
+
+Jak již bylo zmíněno, syntaxe JAGS je založená na softwaru BUGS, a proto
+lze v tomto případě použít identickou syntaxy. Model zobrazený ve výpisu
+\ref{model-jags} je identický s modelem \ref{model-bugs}, který byl použit při
+generování vzorků pomocí BUGS.
+
+```{r jags-model-print}
+#| results: model
+#| model-caption: Příklad modelu definovaném pro software JAGS
+#| model-label: model-jags
+cat(paste(readLines("./kapitoly/modely/rjags.txt"), collapse = "\n"))
+```
+
+Dalším krokem je vygenerovat několik prvních vzorků, které budou spálené v tzn.
+spalovacím období. V kódu \ref{code-jags-burnin} je pro tyto ůčely použitá 
+funkce `update.jags`.[^jags-update]. Pro udržení jednotnosti je zde funkce
+exportovaná přímo z balíčku rjags; po načtení balíčku lze volat pouze funkci
+update, viz. kód v příloze \ref{code-jags-update}.
+
+[^jags-update]: Teoreticky lze místo funkce `update` generovat libovolný
+počet vzorků a ty nikam neuložit. Díky tomu, že si JAGS model pamatuje stav,
+ve kterém generování skončilo, by byl výsledek identický.
 
 ```{r }
+#| echo: true
+#| code-caption: Generování spálených vzorků
+#| code-label: code-jags-burnin
 rjags:::update.jags(object = jags.model, # Model
-                    n.iter = 1000, # Počet burn-in iterací
+                    n.iter = 1000,       # Pocet burn-in iterací
                     progress.bar = "none")
 ```
 
-Generování vzorků z každého chainu.
+Po spalovacím období lze generovat vzorky z posteriorního rozdělení, k čemuž
+slouží funkce `coda.samples`. Její použití je v kódu \ref{code-jags-gener}.
 
 ```{r }
-rjags.samples <- rjags::coda.samples(
-    model = jags.model,   # Model, pomocí kterého generovat
-    variable.names = c("p"), # Proměnná, kterou sledovat
-    n.iter = 5000,        # Kolik vzorků z každého chainu generovat
-    thin = 1,
+#| echo: true
+#| code-caption: Generování vzorků z JAGS modelu
+#| code-label: code-jags-gener
+jags.samples <- rjags::coda.samples(
+    model = jags.model,      # Model, pomoci ktereho generovat
+    variable.names = c("p"), # Promenna, kterou sledovat
+    n.iter = 5000,           # Kolik vzorku z kazdeho chainu generovat
+    thin = 1,                # Thinning parametr
     quiet = TRUE
 )
-
-summary(rjags.samples)
 ```
 
-Základní plot
+Na řádku 1 se ukládají výsledné generované vzorky jako typ `mcmc.list` do
+proměnné `jags.samples`. Řádek 2 říká, který model se má použít a řádek 3
+nastavuje parametry, které by se měli uložit. Řádky 4 -- 5 slouží k nastavení
+počtu iterací pro jednotlivé řetězce a thinning parametr. Výsledky lze
+sumarizovat pomocí funkce `summary`, viz. výpis \ref{model-jags-summary}.
+
+```{r }
+#| echo: false
+#| results: model
+#| model-caption: Shrnutí generovaných JAGS vzorků pomocí funkce summary
+#| model-label: model-jags-summary
+summary(jags.samples)
+```
+
+Řádky 2 -- 5 popisují způsob, jakým byly vzorky generovány. Text říká, že se
+generovalo 5 000
+vzorků ve dvou řetězcích s thinning intervalem 1. Dle řádků 2 se jedná o vzorky
+1 001 -- 6 000, což odpovídá nastavení spalovacího období, kde bylo prvních
+1 000 vzorků spáleno. Na řádcích 7 -- 12 se nachází popis posteriorního rozdělení
+pro každou sledovanou proměnnou. V tomto případě se ve výpisu nachází pouze 
+popis posteriorního rozdělení pro parametr *p*, kde je průměr 
+`r fmt_num(mean(unlist(jags.samples)))` 
+se směrodatnou odchylkou
+`r fmt_num(sd(unlist(jags.samples)))`.
+Statistiky *Naive SE* a *Time-serise SE* označují standardní chybu průměru 
+(s vlivem autokorelace) a standardní chybu časové řady \parencite{Plummer2023_RjagsBayesianGraphical}. Druhý část výpisu na řádcích 13 -- 16 popisuje jednotlivé kvantily posteriorních rozdělení. 

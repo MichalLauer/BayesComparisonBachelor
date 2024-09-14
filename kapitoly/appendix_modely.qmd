@@ -1,12 +1,49 @@
+#### Definice JAGS modelu pomocí proměnné
 
-```{r bugs-basic-plot}
-# CITOVAT V OpenBUGS
-plot(bugs, which = 1)
+```{r jags-model-variable}
+#| echo: true
+#| results: none
+#| code-caption: Použití balíčku rjags s modelem v proměnné
+#| code-label: code-jags-variable
+model <- "
+model {
+    for (i in 1:N) {
+        x[i] ~ dbern(p)
+    }
+
+    p ~ dbeta(alpha, beta)
+}
+"
+
+rjags::jags.model(
+    file = textConnection(model), # Model
+    data = list(
+        N     = length(simulovana_data), # Pocet pozorovani
+        x     = simulovana_data,         # Vstupni data
+        alpha = 0.01,                    # Hodnota parametru alpha
+        beta  = 0.01                     # Hodnota parametru beta
+    ),
+    inits = list(
+        p = 0.5,                         # Pocatecni hodnota
+        .RNG.name = "base::Super-Duper", # Generator nahodnych cisel
+        .RNG.seed = 684                  # Seed
+    ),
+    n.chains = 2,  # Pocet retezcu
+    n.adapt  = 500 # Adaptacni doba
+)
 ```
 
-```{r model-jags}
-#| results: model
-#| model-caption: Příklad modelu definovaném pro software JAGS
-#| model-label: model-jags
-cat(paste(readLines("./kapitoly/modely/rjags.txt"), collapse = "\n"))
+#### Použití základní funkce update pro spalovací období
+
+```{r jags-update}
+#| echo: true
+#| warning: false
+#| eval: false
+#| code-caption: Volání funkce update po načtení balíčku jags
+#| code-label: code-jags-update
+library(rjags)
+
+update(object = jags.model, # Model
+       n.iter = 1000,       # Pocet burn-in iteraci
+       progress.bar = "none")
 ```

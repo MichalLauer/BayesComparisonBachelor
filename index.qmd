@@ -119,16 +119,7 @@ library(ggplot2)
 fmt_num <- function(x, decimal = 3) {
   formatted <- format(round(x, decimal),
                       nsmall = decimal, decimal.mark = ",",
-                      big.mark = " ", scientific = FALSE)
-  
-  # # Ensure trailing zeros are kept
-  # parts <- strsplit(formatted, ",")[[1]]
-  # if (length(parts) > 1) {
-  #   decimal_part <- parts[2]
-  #   decimal_part <- sprintf(paste0("%0", decimal, "d"), as.numeric(decimal_part))
-  #   formatted <- paste(parts[1], decimal_part, sep = ",")
-  # }
-  
+                      big.mark = " ", scientific = FALSE)  
   return(formatted)
 }
 ```

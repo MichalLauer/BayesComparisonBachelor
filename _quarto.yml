@@ -2,6 +2,7 @@ project:
   type: manuscript
   post-render: 
    - R/cleanup.r
+   - R/bib-validation.r
 
 execute: 
   echo: false
