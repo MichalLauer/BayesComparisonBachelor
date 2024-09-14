@@ -104,6 +104,8 @@
 \raggedright
 \begin{description}
 \item [BUGS] Bayesian inference Using Gibbs Sampling
+\item [JAGS] Just Another Gibbs Sampler
+\item [CODA] Convergence Diagnosis and Output Analysis
 \end{description}
 \end{multicols}
 ```
@@ -255,11 +257,11 @@ Interval kredibility, ROPE, Bayesův faktor
 
 {{< include kapitoly/prakticka/bugs.qmd >}}
 
-### Balíček JAGS
+### Software JAGS
 
 {{< include kapitoly/prakticka/rjags.qmd >}}
 
-### stan
+### Software Stan
 
 {{< include kapitoly/prakticka/stan.qmd >}}
 

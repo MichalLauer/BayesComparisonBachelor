@@ -10,7 +10,8 @@ Prví verze programu byla představena na Bayesovské konferenci ve Valencii v
 roce 1991 a později byla distribuovaná na disketách. Z počátku byly implementovány
 s Gibsovým vzorkováním pouze jendnoduché metody a úpravy, jako adaptivní vzorkování
 nebo bayesovské inverze. Po čase byla implementována i velmi limitující verze
-Metropolisova-Hastingova algoritmu, která fungovala na bázi mřížek [^bugs-grid].
+Metropolisova-Hastingova algoritmu, která fungovala na bázi mřížek [^bugs-grid]
+\parencite{LunnEtAl2009_BUGSProjectEvolution}.
 
 [^bugs-grid]: Jedná se o tzn. *grid-search*, kdy se hledají správné hodnoty v předem
 definované tabulce.
@@ -21,7 +22,8 @@ verze WinBUGS se časem implementovala komplexní a plnohodnotná verze
 Metropolisova-Hestingova algoritmu, která dokázala pracovat bez aproximační
 tabulky. Velkou sílou však bylo, že uživatel dokázal definovat své apriorní
 předpoklady, data, vztahy a cykly v grafickém prostředí. Díky tomu mohli
-program WinBUGS používat i lidé bez zkušeností v programování.
+program WinBUGS používat i lidé bez zkušeností v programování
+\parencite{LunnEtAl2009_BUGSProjectEvolution}.
 
 V roce 2004 započala na univerzitě v Helsinách práce na projektu s názvem
 OpenBUGS, který měl za úkol splnit tři primární cíle:
@@ -39,7 +41,8 @@ nových metod byla vytvořena open-source [^bugs-os] verze OpenBUGS. Vývoj
 obou aplikací se časem rozdělil a obě mají silné stránky v něčem jiném.
 Software OpenBUGS dokáže flexibilně měnit simulační metody nebo simulace 
 provádět paralelně. Vývoj softwaru WinBUGS mířil primárně na excelenci v 
-epidemiologickém a farmakokinetikou.
+epidemiologickém a farmakokinetikou
+\parencite{LunnEtAl2009_BUGSProjectEvolution}.
 
 [^bugs-os]: software, který má veřejný zdrojový kód; tzn. *otevřený software*.
 

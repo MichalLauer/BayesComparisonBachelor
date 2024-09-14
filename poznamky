@@ -2,3 +2,9 @@ Co popsat:
  - deviance
  - pD
  - DIC
+
+
+v BUGS popsat rozdíl mezi ~ (náhodné proměnné) a = (deterministcké proměnné) v
+definici modelu
+
+V BUGS nefungujou ty inits.
