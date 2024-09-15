@@ -25,6 +25,13 @@ předpoklady, data, vztahy a cykly v grafickém prostředí. Díky tomu mohli
 program WinBUGS používat i lidé bez zkušeností v programování
 \parencite{LunnEtAl2009_BUGSProjectEvolution}.
 
+Jazyk BUGS, pomocí kterého se definují jednotlivé modely, je deklarativní.
+Modely se tedy pouze popisují a nezáleží na tom, jaká část modelu se 
+se definuje jako první. Tato flexibilita však znemožňuje většinu logických
+operací, jako jsou podmínky IF-ELSE. Pro jazyk BUGS je klíčový blok s názvem
+`model { ... }`, ve kterém se definují vztahy mezi proměnnými a jejich rozdělení
+\parencite{LunnEtAl2009_BUGSProjectEvolution}.
+
 V roce 2004 započala na univerzitě v Helsinách práce na projektu s názvem
 OpenBUGS, který měl za úkol splnit tři primární cíle:
 

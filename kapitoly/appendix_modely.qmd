@@ -2,7 +2,7 @@
 
 ```{r jags-model-variable}
 #| echo: true
-#| results: none
+#| eval: false
 #| code-caption: Použití balíčku rjags s modelem v proměnné
 #| code-label: code-jags-variable
 model <- "
@@ -46,4 +46,54 @@ library(rjags)
 update(object = jags.model, # Model
        n.iter = 1000,       # Pocet burn-in iteraci
        progress.bar = "none")
+```
+
+#### Definice Stan modelu pomocí proměnné
+
+```{r stan-model-variable}
+#| echo: true
+#| eval: false
+#| code-caption: Použití balíčku rstan s modelem v proměnné
+#| code-label: code-stan-variable
+model <- "
+// Definice vstupnich dat
+data {
+    int<lower=1> N;               // Velikost vzorku
+    int x[N];                     // Data
+    real<lower=0, upper=1> alpha; // Parametr alpha
+    real<lower=0, upper=1> beta;  // Parametr beta
+}
+
+// Definice parametrů
+parameters {
+    real<lower=0, upper=1> p;      // Odhadovana relativni cetnost
+}
+
+// Definice modelu
+model {
+    x ~ bernoulli(p);      // Rozdeleni dat 
+    p ~ beta(alpha, beta); // Rozdeleni parametru p
+}
+"
+
+rstan::stan(
+    model_code = model,
+    model_name = "Jednoduchy priklad s promennou",
+    data = list(
+        N     = length(simulovana_data), # Pocet pozorovani
+        x     = simulovana_data,         # Vstupni data
+        alpha = 0.1,                     # Hodnota parametru alpha
+        beta  = 0.1                      # Hodnota parametru beta
+    ),
+    init = list(
+        list(p = 0.5), # Pocatecni hodnoty
+        list(p = 0.5)
+    ),
+    chains = 2,         # Pocet retezcu
+    iter   = 2000 + 5000, # Pocet celkovych iteraci
+    warmup = 2000,      # Delka spalovaciho obdobi
+    thin = 1,           # Thinning parametr
+    seed = 59,          # Seed pro reprikovatelnost
+    verbose = FALSE
+)
 ```

@@ -1,42 +1,147 @@
-Stan 1.0, 2012
+Třetí nástroj, který je v této práci představen, nese název Stan. Stan je
+pojmenovaný po americkém matematikovi Stanislawu Ulamovi, který stál 40. letech 20.
+století u vývoje MCMC algoritmů. První verze byla publikována v roce 2012 v 
+jazyce C++. Celý projekt je open-source a zdrojový kód[^stan-kod] i 
+dokumentace[^stan-docs] lze najít volně na internetu
+\parencite{GelmanEtAl2015_StanProbabilisticProgramming}.
 
-http://www.stat.columbia.edu/~gelman/research/published/stan_jebs_2.pdf
+[^stan-kod]: [https://mc-stan.org](https://mc-stan.org), 
+[https://github.com/stan-dev](https://github.com/stan-dev)
 
-Stan (není delší název).
+[^stan-docs]: [https://mc-stan.org/docs](https://mc-stan.org/docs)
 
-aplikace, R implementace, výhody/nevýhody, používá hmc
+Cílem projektu Stan je *\enquote{poskytnout flexibilní pravděpodobnostní
+programovací jazyk pro statistické modelování spolu se sadou inferenčních
+nástrojů pro robustní modelování, které je škálovatelné a efektivní}*
+[^stan-goal]
+\parencite{CarpenterEtAl2017_StanProbabilisticProgramming}. Tohoto cíle
+se snaží dosáhnout pomocí nového imperitivního programovacího jazyka, který
+se výrazně liší od nástrojů jako BUGS nebo JAGS. Velkou výhodou je explicitní
+definování datových typů, možnost tvoření podmínek nebo lokálních proměnných.
+Jazyk Stan je přeložen do jazyka C++, ve kterém využívá moderní knihovny pro
+práci s maticemi, optimalizaci nelineárních rovnic a statistickými rozděleními
+\parencite{CarpenterEtAl2017_StanProbabilisticProgramming}. Pro jazyk není
+grafické rozhrání a tak stejně jako software JAGS funguje v příkazové řádce.
+Stan umí automaticky pracovat paralelně, což dále urychluje simulace
+\parencite{GelmanEtAl2015_StanProbabilisticProgramming}.
 
-#### Balíček {rstan}
+[^stan-goal]: Volně přeložené z 
+\parencite{CarpenterEtAl2017_StanProbabilisticProgramming}
+pomocí
+[https://www.deepl.com/](https://www.deepl.com/)
 
-Model.
+Stan místo Gibbsova vzorkovače používá NUTS, který je založený
+na HMC. Díky tomu je nástroj Stan vhodný pro komplexní problémy s velkým počtem
+dimenzí či parametrů, kde se dokáže NUTS lépe přizůsobit komplexnímu posteriornímu
+rozdělení než Gibbsův nebo Metropollisův-Hastingsův algoritmus
+\parencite{CarpenterEtAl2017_StanProbabilisticProgramming}. Nástroje BUGS a 
+JAGS jsou porovnatelné s nástrojem Stan hlavně v modelech s konjugativním 
+rozdělením a malou autokorelací
+\parencite{GelmanEtAl2015_StanProbabilisticProgramming}.
+
+Velikým nedostatkem v jazyce Stan je nemožnost definování diskrétních neznámých
+(odhadovaných) parametrů[^stan-discrete]. V některých případech lze diskrétní
+rozdělení marginalizovat, ale nelze tento postup provést ve všech případech.
+Kvůli chybějící podpoře diskrétních parametrů tak nelze volně přepsat modely
+z jazyka BUGS/JAGS do jazyku Stan \parencite{StanDevelopmentTeam2024}. 
+
+[^stan-discrete]: aktuální k 2024-09-15.
+
+Po vytvoření Stan programu lze použít bloky, které slouží k definici dat,
+transformaci dat a modelování. Bloky, které lze použít, jsou:
+
+- `data`: Vstupní data, která jsou použita k odhadu modelu.
+- `transformed data`: Tvorba nových proměnných a transformace dat; např. standardizace,
+logaritmování nebo exponování. 
+- `parameters`: Definice parametrů, které budou odhadnuty.
+- `transformed parameters`: Tvorba nových a transformace definovaných parametrů; např. standardizace,
+logaritmování nebo exponování. 
+- `model`: Definice modelu, který bude simulován.
+- `generated quantities`: Vytvoření a transformace proměnných, které jsou závislé
+na vygenerovaných vzorcích; např. umístnění (*rank*) nebo predikce.
+
+Ne všechny bloky jsou povinné a pro jednoduché modely jsou nejdůležitější 
+bloky `data` a `model`
+\parencite{CarpenterEtAl2017_StanProbabilisticProgramming}.
+
+Se softwarem Stan lze pracovat i v jiných programovacích jazycích, ve kterých
+existují pro tento účel speciální balíčky. V jazyce R se jedná o balíček *rstan*
+\parencite{StanDevelopmentTeam2024_RStanInterfaceStan} a v jazyce Python
+je to balíček *pystan* \parencite{pystan}. Oficiální stránky projektu Stan
+odkazují[^stan-other-pkgs] na podporu hned v několika jazycích jako 
+Julia, Mathematica, Scala nebo MATLAB.
+
+[^stan-other-pkgs]:
+[https://mc-stan.org/users/interfaces](https://mc-stan.org/users/interfaces)
+
+V jazyce R existuje hned několik balíčků, které zjednodušují bayesovské
+modelování pro uživatele, kteří se v jazyce Stan nevyznají. Balíčky
+*rstanarm* 
+\parencite{GoodrichEtAl2020_RstanarmBayesianApplied}
+a *brms* 
+\parencite{Burkner2018_AdvancedBayesianMultilevel}
+zjednodušují tvoření lineárních, nelineárních a 
+hierarchických regresních modelů pomocí klasické R syntaxe. Pro interaktivní
+pozorování bayesovských modelů a jejich konvergence slouží balíček *shinystan*
+\parencite{GabryVeen2022_ShinystanInteractiveVisual}
+,který využívá framework *R Shiny* 
+\parencite{ChangEtAl2024_ShinyWebApplication}.
+Pro automatickou vizualizaci slouží balíčky *bayesplot*
+\parencite{GabryMahr2024_BayesplotPlottingBayesian}
+nebo balíčky *see*
+\parencite{LudeckeEtAl2021_SeePackageVisualizing}
+a *bayestestR*
+\parencite{MakowskiEtAl2019_BayestestRDescribingEffects}
+z rodiny balíčků *easystats*
+\parencite{LudeckeEtAl2022_EasystatsFrameworkEasy}. Oproti jazyku JAGS s 
+jazykem Stan nekomunikuje balíček *coda*.
+
+#### Balíček rstan
+
+Pro generování vzorků pomocí nástroje Stan slouží funkce `stan` z balíčku *rstan*.
+Příkald je v kódu \ref{code-stan-model}.
 
 ```{r stan}
-#| echo: true
 #| results: hide
-set.seed(26)
-x <- rbinom(10, 1, 0.6)
-
-# stan.model <- rstan::stan(
-#     model_code = readLines("./kapitoly/modely/stan.txt"),
-#     model_name = "Jednaoduchý příklad",
-#     data = list(
-#         N     = length(x), # Počet pozorování
-#         x     = x,         # Vstupní data
-#         alpha = 0.1,       # Hodnota parametru alpha
-#         beta  = 0.1        # Hodnota parametru beta
-#     ),
-#     init = list(
-#         list(p = 0.5),
-#         list(p = 0.5)
-#     ),
-#     chains = 2,
-#     iter = 2000 + 5000,
-#     warmup = 2000,
-#     thin = 1,
-#     seed = 59
-# )
+#| echo: true
+#| code-caption: Simulace pomocí balíčku rstan a nástroje Stan
+#| code-label: code-stan-model
+stan.model <- rstan::stan(
+    model_code = readLines("./kapitoly/modely/stan.txt"),
+    model_name = "Jednoduchy priklad",
+    data = list(
+        N     = length(simulovana_data), # Pocet pozorovani
+        x     = simulovana_data,         # Vstupni data
+        alpha = 0.1,                     # Hodnota parametru alpha
+        beta  = 0.1                      # Hodnota parametru beta
+    ),
+    init = list(
+        list(p = 0.5), # Pocatecni hodnoty
+        list(p = 0.5)
+    ),
+    chains = 2,         # Pocet retezcu
+    iter   = 2000 + 5000, # Pocet celkovych iteraci
+    warmup = 2000,      # Delka spalovaciho obdobi
+    thin = 1,           # Thinning parametr
+    seed = 59,          # Seed pro reprikovatelnost
+    verbose = FALSE
+)
 ```
 
-```{r include=FALSE}
-# print(stan.model)
+Na řádku 1 se vytváří objekt, který obsahuje výsledné vzorky z modelu. Řádky
+2 --- 3 přiřazují model a nastavují jeho název. Stan umí pracovat s textem,
+který reprezentuje model, takže vytvářet externí soubor není nutné. Ukázka
+generování vzorku pomocí modelu definovaném v prostředí R je v příloze 
+\ref{code-stan-variable}. Řádky 4 -- 13 definují vstupní data a počáteční 
+hodnoty, což je identické jako u jazyků BUGS a JAGS. Konfigurace řetězců,
+iterací, spalovacího období a thinning parametru je na řádcích 14 -- 17.
+Řádek 18 nastavuje seed a zajišťuje tím reproduktibilitu.
+
+Definice modelu je ve výpisu \ref{model-stan}.
+
+```{r stan-model-print}
+#| results: model
+#| model-caption: Příklad modelu definovaném pro software Stan
+#| model-label: model-stan
+cat(paste(readLines("./kapitoly/modely/stan.txt"), collapse = "\n"))
 ```

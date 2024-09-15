@@ -106,6 +106,9 @@
 \item [BUGS] Bayesian inference Using Gibbs Sampling
 \item [JAGS] Just Another Gibbs Sampler
 \item [CODA] Convergence Diagnosis and Output Analysis
+\item [MCMC] Markov-Chain Monte-Carlo 
+\item [HMC] Hamiltonian Monte Carlo
+\item [NUTS] No U-Turn Sampler
 \end{description}
 \end{multicols}
 ```
