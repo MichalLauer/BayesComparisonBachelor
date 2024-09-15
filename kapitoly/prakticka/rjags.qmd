@@ -205,4 +205,71 @@ popis posteriorního rozdělení pro parametr *p*, kde je průměr
 se směrodatnou odchylkou
 `r fmt_num(sd(unlist(jags.samples)))`.
 Statistiky *Naive SE* a *Time-serise SE* označují standardní chybu průměru 
-(s vlivem autokorelace) a standardní chybu časové řady \parencite{Plummer2023_RjagsBayesianGraphical}. Druhý část výpisu na řádcích 13 -- 16 popisuje jednotlivé kvantily posteriorních rozdělení. 
+(s vlivem autokorelace) a standardní chybu časové řady
+\parencite{Plummer2023_RjagsBayesianGraphical}.
+Druhý část výpisu na řádcích 13 -- 16 popisuje jednotlivé kvantily 
+posteriorních rozdělení.
+
+#### Balíček coda
+
+Pomocí balíčku rjags lze provádět dva primární výkony:
+
+- komunikovat s vytvořeným modelem, a
+- generovat nové vzorky pomocí JAGS.
+
+To naznačují i samotné výstupy, které popisují pouze vygenerované vzorky z
+posteriorního rozdělení. Ve výstupech se např. nenachází různé statistiky
+popisující konvergenci dat, jako tomu je v případě balíčku R2WinBUGS ve výpisu
+\ref{model-r2winbugs-out}. K analýze posteriorního rozdělení, kvality 
+konvergence nebo tvořením základních grafů slouží právě balíček coda.
+
+Příkladem může být efektivní velikost velikost vzorku, která lze vypočítat
+pomocí funkce effectiveSize. Kód \ref{code-jags-coda-ess}
+ukazuje, jak vypočítat efektivní  velikost vzorku pro každý řetěz, který byl
+pro generování použit.
+
+```{r }
+#| echo: true
+#| code-caption: Výpočet efektivní velikosti vzorku pomocí balíčku coda
+#| code-label: code-jags-coda-ess
+#| results: model
+#| model-caption: Efektivní velikost vzorků pro jednotlivé řetězce
+#| model-label: model-jags-coda-ess
+sizes <- sapply(X = seq_along(jags.samples),
+                FUN = \(i) coda::effectiveSize(jags.samples[i]))
+names(sizes) <- paste("ESS", seq_along(jags.samples))
+
+print(sizes)
+```
+
+Výpis \ref{model-jags-coda-ess} ukazuje, že efektivní velikost je rovna 
+5 000 v obou případech; autokorelace je tedy prakticky nulová a konvergence
+proběhla v pořádku.
+
+Balíček coda take nabízí možnost podívat se na autokorelaci pomocí funkce
+`autocorr.plot`
+
+```{r }
+#| label: fig-jags-autocor
+#| fig-cap: Autokorelace jednotlivých vzorků
+js1p <- jags.samples[[1]]
+dimnames(js1p)[[2]] <- "Autokorelace prvního řetězce pro parametr P"
+coda::autocorr.plot(x = js1p)
+```
+
+Na obrázku [@fig-jags-autocor] lze pozorovat velmi nízkou autokorelaci od
+zpoždění (*lagu*) jedna. Velmi jednoduše lze také zobrazit výsledné
+nenormalizované posteriorní rozdělení parametru p pomocí funkce 
+`densplot`.
+
+```{r }
+#| label: fig-jags-poster
+#| fig-cap: Posteriorní rozdělení parametru p
+coda::densplot(x = jags.samples[[1]],
+               main = "Nenormalizované posteriorní rozdělení parametru p",
+               xlab = "p")
+```
+
+Na obrázku [@fig-jags-poster] lze vidět posteriorní rozdělení parametru p.
+Pod křivkou hustoty se nachází body, které reprezentují jednlivé vzorky,
+které byly vygenerovány.

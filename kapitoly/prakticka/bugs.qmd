@@ -159,7 +159,7 @@ o záměnu názvu.
 
 ```{r bugs-print}
 #| results: model
-#| model-caption: test
+#| model-caption: Výstup z objektu vytvořeným baličkem R2WinBUGS
 #| model-label: model-r2winbugs-out
 print(bugs, digits.summary = 3)
 ```

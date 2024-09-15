@@ -48,3 +48,9 @@ případě je vzorek považován za populaci a inference je provedená z náhodn
 malého vzorku. Také o skutečné relativní četnosti lze mluvit pouze v klasické,
 frekventistické, statistice. V terminologii bayesovské statistiky by bylo 
 vhodnější použít termín *skutečné rozdělení relativní četnosti*.
+
+V praktické části se předpokládá, že má čtenář základní povědomí o programování
+v jazyce R. V případě potřeby existuje několik učebnic od českých autorů,
+jazyk R představují; jmenovitě \parencite{NovakovaVesely2021_JazykTvorbaGrafu},
+\parencite{DankoSafr2020_SnadnoRychleUvod} nebo
+\parencite{SafrDanko2020_SnadnoRychleVizualizace}.
