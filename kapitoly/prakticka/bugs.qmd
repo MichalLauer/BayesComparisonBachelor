@@ -99,6 +99,8 @@ lze získat z webových stránek [https://www.mrc-bsu.cam.ac.uk/software](https:
 #| echo: true
 #| code-caption: Simulace pomocí balíčku R2WinBUGS a nástroje WinBUGS
 #| code-label: code-r2winbugs-model
+wb_path <- file.path(getwd(), "sw", "WinBUGS14")
+
 bugs <- R2WinBUGS::bugs(
     data = list(
         N     = length(simulovana_data), # Pocet pozorovani
@@ -114,10 +116,10 @@ bugs <- R2WinBUGS::bugs(
     n.iter = 5000,   # Pocet iteraci
     n.burnin = 1000, # Pocet warm-up iteraci
     n.thin = 1,      # Thining konstanta
-    parameters.to.save = c("p"),                          # Parametry, ktere ulozit
-    working.directory = "kapitoly/modely",                # Nastaveni adresare
-    model.file = "r2winbugs.txt",                         # Cesta k modelu
-    bugs.directory = r"(R:/BachelorBayes/sw/WinBUGS14/)", # Cesta k WinBUGS
+    parameters.to.save = c("p"),           # Parametry, ktere ulozit
+    working.directory = "kapitoly/modely", # Nastaveni adresare
+    model.file = "r2winbugs.txt",          # Cesta k modelu
+    bugs.directory = wb_path,              # Cesta k WinBUGS
     clearWD = T,    # Odstran pracovni soubory
     bugs.seed = 123 # Replikovatelnost
 )
