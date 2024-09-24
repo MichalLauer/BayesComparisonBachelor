@@ -264,7 +264,7 @@ nenormalizované posteriorní rozdělení parametru p pomocí funkce
 
 ```{r }
 #| label: fig-jags-poster
-#| fig-cap: Posteriorní rozdělení parametru p
+#| fig-cap: Posteriorní rozdělení parametru p pomocí balíčku coda
 coda::densplot(x = jags.samples[[1]],
                main = "Nenormalizované posteriorní rozdělení parametru p",
                xlab = "p")
@@ -273,3 +273,4 @@ coda::densplot(x = jags.samples[[1]],
 Na obrázku [@fig-jags-poster] lze vidět posteriorní rozdělení parametru p.
 Pod křivkou hustoty se nachází body, které reprezentují jednlivé vzorky,
 které byly vygenerovány.
+

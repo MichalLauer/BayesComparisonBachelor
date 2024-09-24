@@ -13,3 +13,7 @@ V BUGS nefungujou ty inits.
 
 winbugs a jags musí být nainstalované
 https://sourceforge.net/projects/mcmc-jags/
+
+stan je v tom příkladu pomalejší.
+
+Různé verze N_eff

@@ -117,19 +117,21 @@ stan.model <- rstan::stan(
     ),
     init = list(
         list(p = 0.5), # Pocatecni hodnoty
+        list(p = 0.5), # Pocatecni hodnoty
+        list(p = 0.5), # Pocatecni hodnoty
         list(p = 0.5)
     ),
-    chains = 2,         # Pocet retezcu
+    chains = 4,           # Pocet retezcu
     iter   = 2000 + 5000, # Pocet celkovych iteraci
-    warmup = 2000,      # Delka spalovaciho obdobi
-    thin = 1,           # Thinning parametr
-    seed = 59,          # Seed pro reprikovatelnost
+    warmup = 2000,        # Delka spalovaciho obdobi
+    thin = 1,             # Thinning parametr
+    seed = 59,            # Seed pro reprikovatelnost
     verbose = FALSE
 )
 ```
 
 Na řádku 1 se vytváří objekt, který obsahuje výsledné vzorky z modelu. Řádky
-2 --- 3 přiřazují model a nastavují jeho název. Stan umí pracovat s textem,
+2 -- 3 přiřazují model a nastavují jeho název. Stan umí pracovat s textem,
 který reprezentuje model, takže vytvářet externí soubor není nutné. Ukázka
 generování vzorku pomocí modelu definovaném v prostředí R je v příloze 
 \ref{code-stan-variable}. Řádky 4 -- 13 definují vstupní data a počáteční 
@@ -145,3 +147,68 @@ Definice modelu je ve výpisu \ref{model-stan}.
 #| model-label: model-stan
 cat(paste(readLines("./kapitoly/modely/stan.txt"), collapse = "\n"))
 ```
+
+Na řádcích 2 -- 7 je blok *data*, který definuje vstupní data pro bayesovský 
+model. U každé proměnné je nutné nastavit správný typ. Datový typ *int*
+značí *integer* (celé číslo, řádky 3, 4) a *real* značí *reálné* číslo (řádky 5, 6). Pokud to je možné, lze nastavit i minimální a maximální hodnota, což pomáhá
+optimalizaci a rychlosti konvergence. Například u velikosti vzorku *N* (řádek 3)
+je nastavena minimální velikost vzorku 1 a u parametru *beta* (řádek 5) je
+nastaven interval $\langle 0, 1 \rangle$. Kromě skalárních proměnných je možné
+definovat i vektory. Na řádku 4 je definován vektor vstupních hodnot o 
+velikosti *N*. Velikost vektoru je nastavena v hranatých závorkách za názvem
+proměnné. V případě, že by byla vstupní proměnná matice (např. matice dat
+v regresní úloze), šla by zapsat jako `X[N, K]` kde *N* značí počet řádků
+a *K* počet regresních koeficientů.
+
+Řádky 10 -- 12 definují parametry v bloku *parameters*., které budou odhadnuty.
+V případě
+jednoduchého Binomial-Beta modelu se jedná pouze o parametr $p$, který se
+nachází v intervalu $\langle 0, 1 \rangle$.
+
+Poslední čast definice je blok *model*, který se nachází na řádcích 15 -- 18.
+Řádek 16 popisuje data, kde každé pozorování má Alternativní (Bernoulliho)
+rozdělení s parametrem *p*. Oproti nástrojům BUGS a JAGS zde není nutné psát
+*for* cyklus. Model by s *for* cyklem fungoval, ale konvergence by mohla
+být pomalejší \parencite{StanDevelopmentTeam2024}. Na řádku 17 je definované rozdělení pro parametr *p*, které je Beta s parametry $\alpha$ a $\beta$.
+
+Popis modelu, který v základu nabízí R a Stan, je ve výpisu 
+\ref{model-stan-output}.
+
+```{r stan-output}
+#| echo: false
+#| results: model
+#| model-caption: Shrnutí generovaných Stan vzorků
+#| model-label: model-stan-output
+mean(c(stan.model@sim$samples[[1]]$p, stan.model@sim$samples[[2]]$p))
+```
+
+Řádek 1 pouze informuje uživatele o modelu, který byl použit. Na řádku 2 se 
+nachází informace o nastavení konvergence, tedy počet řetězců,
+počet iterací, které byly na každém řetězci generovány, počet rozehřívacích
+vzorků a thinning parametr. Řádek 3 popisuje počet vygenerovaných vzorků, 
+které jsou použité k inferenci. Standardní popis posteriorních rozdělení se
+nachází na řádcích 5 -- 7. Střední hodnota posteriorního rozdělení parametru
+$p$ je 
+`r fmt_num(mean(c(stan.model@sim$samples[[1]]$p[2001:7000], stan.model@sim$samples[[2]]$p[2001:7000])))`
+se směrodatnou odchylkou
+`r fmt_num(sd(c(stan.model@sim$samples[[1]]$p[2001:7000], stan.model@sim$samples[[2]]$p[2001:7000])))`.
+
+#### Balíček bayesplot
+
+Jednoduchá vizualizace je možná pomocí balíčku bayesplot, který nabízí grafiku
+zaležou na frameworku ggplot2 \parencite{Wickham2016_Ggplot2ElegantGraphicsa}.
+Pomocí funkce `mcmc_areas` lze například jednoduše zobrazit jednotlivá
+posteriorní rozdělení, viz. obrázek [@fig-bayesplot-posterior].
+
+```{r }
+#| label: fig-bayesplot-posterior
+#| fig-cap: Posteriorní rozdělení parametru p pomocí balíčku bayesplot
+bayesplot::mcmc_areas(x = stan.model,
+                      pars = "p",
+                      prob = .95,
+                      prob_outer = 1,
+                      point_est = "mean")
+```
+
+Tlustá čára značí průměr posteriorního rozdělení, šedá plocha pak 95 % interval
+kredibility.
