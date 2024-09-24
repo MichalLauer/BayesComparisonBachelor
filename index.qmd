@@ -259,6 +259,10 @@ Interval kredibility, ROPE, Bayesův faktor
 
 {{< include kapitoly/prakticka/stan.qmd >}}
 
+### Porovnání
+
+{{< include kapitoly/prakticka/porovnani.qmd >}}
+
 ## Simulace
 
 jak budou simulace provedné, jak budou vyhodnocené, nastavení ROPE/alternativ.
