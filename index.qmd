@@ -115,6 +115,7 @@
 
 ```{r setup, include=FALSE}
 library(rlang)
+library(glue)
 library(ggplot2)
 ```
 
@@ -237,11 +238,15 @@ Interval kredibility, ROPE, Bayesův faktor
 
 {{< include kapitoly/prakticka/uvod.qmd >}}
 
-## Balíčky pro frekventistickou inferenci
+## Frekventistické testování
 
-### Klasické test poměru
+### Binomický test
 
-{{< include kapitoly/prakticka/base-r.qmd >}}
+{{< include kapitoly/prakticka/binom-test.qmd >}}
+
+### Wilsonův odhad
+
+{{< include kapitoly/prakticka/wilson-interval.qmd >}}
 
 ## Software pro bayesovskou statistiku
 
@@ -259,9 +264,13 @@ Interval kredibility, ROPE, Bayesův faktor
 
 {{< include kapitoly/prakticka/stan.qmd >}}
 
-### Porovnání
+## Porovnání nástrojů pro bayesovskou statistiku
 
 {{< include kapitoly/prakticka/porovnani.qmd >}}
+
+## Interpretace frekventistických a bayesovských výsledků
+
+{{< include kapitoly/prakticka/interpretace.qmd >}}
 
 ## Simulace
 

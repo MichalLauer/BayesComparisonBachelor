@@ -7,6 +7,9 @@ project:
 execute: 
   echo: false
 
+crossref: 
+  tbl-prefix: ""
+
 format:
   pdf:
     documentclass: report

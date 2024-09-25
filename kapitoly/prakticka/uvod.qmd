@@ -1,6 +1,6 @@
 Praktická část práce je rozdělená na dvě části. V první kapitole jsou 
-představeny balíčky v jazyce R, které lze použít ke klasické a bayesovské 
-inferenci. ... Popis klasických balíčků a tak... .
+představeny balíčky a funkce v jazyce R, které lze použít pro provedení
+binomického testu a odhadu Wilsonových intervalů.
 
 Pro bayesovskou statistiku
 existuje hned několik balíčků a nástrojů, které umožňuji relativně jednoduchým

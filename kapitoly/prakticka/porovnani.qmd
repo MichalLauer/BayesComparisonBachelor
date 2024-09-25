@@ -1,0 +1,89 @@
+V předchozích sekcích byli tři nástroje, které lze použít pro generování
+vzorků z posteriorních rozdělení. V této sekci jsou shrnuty nejdůležitější
+vlastnosti každého nástroje a na základě představené literatury jsou doporučena
+pro různé případy.
+
+Nástroj BUGS je nejstarší představený způsob, pomocí kterého lze generovat
+vzorky. Jeho největší nedostatek je jazyk, ve kterém je napsán a fakt, že jeho
+prvotní verze byly vytvořené pouze pro operační systém Windows. Tyto nedostatky
+se snaží řešit iterace jako OpenBUGS nebo WinBUGS, ale jejich vývoj je omezen
+znalostí jazyka Fortran. Při hledání informací o programech z rodiny BUGS je
+mnoho odkazů mrtvých[^porovnani-smrt] a nejnovější verze se publikují pomocí
+Google Disku spravovaného na Cambridgskou univerzitou.
+
+[^porovnani-smrt]: Při hledání výrazů jako *winbugs14* nebo *winbugs14 download*
+jsou sice nalezené odkazy, ale mnoho z nich odkazuje na neexistující stránky nebo
+nejsou velice důveryhodné.
+
+Jelikož nástroj BUGS
+nabízí jako jediný z představených grafické prostředí, lze ho využít na studijní
+účely a vysvětlení relativně složitých konceptů, jako jsou např. hierarchické
+modely. Studenti tedy nemusí se začátku bojovat s psaným kódem, ale dokáží si
+vytvořit bayesovské modely graficky.
+
+Druhý nástroj JAGS ostraňuje několik nedostatků nástroje BUGS. Je od počátku
+vyvíjen jako open source, není omezen pouze na systém Windows a je napsán v
+jazyce C++. Funguje pouze přes rozhraní příkazové řádky a díky tomu lze
+jednoduše ovládat z ostatních programovacích nástrojů. Nabízí také možnost
+rozšíření základního programu uživateli pomocí programovatelných rozšíření.
+Pokud je nějaký uživatel zvyklý psát kód v nástroji BUGS, přechod na JAGS je
+velmi intuitivní, jelikož oba nástroje používají stejnou syntaxy. Nevýhodou by
+mohl být nedostatek grafického rozhraní, které JAGS v základu nenabízí.
+
+Nejnovější, a zároveň třetí představený software pro inferenci, je nástroj Stan.
+Ten je vytvořen úplně mimo svět BUGS a JAGS; používá vlastní syntaxy, výpočty a
+implementace optimalizačních nástrojů. Kompilované modely jsou napsány v jazyce
+C++, ve kterém využívají nejmodernější knihovny pro matematické operace, práci
+s integrály a pravděpodobnostní výpočty. Narozdíl od předchozích nástrojů
+používá k optimalizaci algoritmus NUTS-HMC, který je efektivnější pro komplexní
+modely.
+
+Velikým nedostatkem je však chybějící podpora diskrétních náhodných parametrů.
+To lze sice pomocí různých přepisů obejít, nicméně to nelze ve všech případech
+a některé modely tedy nelze vůbec odhadnout a je nutné použít jiný vzorkovač.
+
+Výsledky ze všech tří metod jsou v tabulce [@tbl-comparison-all]. První řádek představuje
+skutečné posteriorní rozdělení $Beta$. Důležité je si uvědomit, že všechny
+tři metody popisují stejné posteriorní rozdělení, ale způsob konvergence a
+generování vzorků se může lišit. Porovnány jsou pouze jednoduché statistiky
+jako průměr a směrodatná odchylka, protože ostatní výpočty se mohou mezi
+nástroji lišit.
+
+```{r }
+#| warning: false
+#| echo: false
+#| label: tbl-comparison-all
+#| tbl-cap: Porovnání vzorkovačů se skutečným posteriorním rozdělením
+beta_a <- 1 + sum(simulovana_data == 1)
+beta_b <- 1 + sum(simulovana_data == 0)
+beta_desc <- glue("Beta({beta_a}, {beta_b})")
+beta_mean <- (beta_a)/(beta_a + beta_b)
+beta_sd <- sqrt(
+    (beta_a*beta_b)/( (beta_a + beta_b)^2*(beta_a + beta_b + 1))
+)
+library(rstan)
+tibble::tribble(
+    ~"Model",  ~"Průměr",                                ~"Směrod. odch.",
+    beta_desc, beta_mean,                                beta_sd,
+    "BUGS",    bugs$mean$p,                              bugs$sd$p,
+    "JAGS",    mean(unlist(jags.samples)),               sd(unlist(jags.samples)),
+    "Stan",    summary(stan.model)$summary["p", "mean"], summary(stan.model)$summary["p", "sd"]
+) |> 
+    gt::gt() |> 
+    gt::fmt_number(columns = 2:3,
+                   decimals = 4,
+                   dec_mark = ",")
+```
+
+```{r}
+#| include: false
+unloadNamespace("rstan")
+```
+
+Ná základě těchto poznatků se v této práci bude nadále používat nástroj Stan,
+a to primárně ze dvou důvodů. Tím prvním je jeho aktivní rozvoj a využití moderních
+přístupů, které umožňují nejpřesnější odhady[^porovnani-stan]. Tím druhým je
+veliký ekosystém R balíčků, které usnadní tvorbu grafů a různých pomocných 
+výstupů. 
+
+

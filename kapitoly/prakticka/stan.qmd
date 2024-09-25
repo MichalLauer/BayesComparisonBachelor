@@ -196,7 +196,7 @@ se směrodatnou odchylkou
 #### Balíček bayesplot
 
 Jednoduchá vizualizace je možná pomocí balíčku bayesplot, který nabízí grafiku
-zaležou na frameworku ggplot2 \parencite{Wickham2016_Ggplot2ElegantGraphicsa}.
+zaležou na frameworku ggplot2 \parencite{Wickham2016_Ggplot2ElegantGraphics}.
 Pomocí funkce `mcmc_areas` lze například jednoduše zobrazit jednotlivá
 posteriorní rozdělení, viz. obrázek [@fig-bayesplot-posterior].
 
