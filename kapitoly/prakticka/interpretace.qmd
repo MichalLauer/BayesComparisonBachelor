@@ -1,0 +1,63 @@
+
+Výsledky ze všech tří metod jsou v tabulce [@tbl-comparison-all]. První řádek představuje
+skutečné posteriorní rozdělení $Beta$. Důležité je si uvědomit, že všechny
+tři metody popisují stejné posteriorní rozdělení, ale způsob konvergence a
+generování vzorků se může lišit. Porovnány jsou pouze jednoduché statistiky
+jako průměr a směrodatná odchylka, protože ostatní výpočty se mohou mezi
+nástroji lišit.
+
+```{r }
+#| warning: false
+#| echo: false
+#| label: tbl-comparison-all
+#| tbl-cap: Porovnání vzorkovačů se skutečným posteriorním rozdělením
+# Beta rozdělení
+beta_a <- 1 + sum(simulovana_data == 1)
+beta_b <- 1 + sum(simulovana_data == 0)
+beta_desc <- glue("Beta({beta_a}, {beta_b})")
+beta_mean <- (beta_a)/(beta_a + beta_b)
+beta_q1   <- qbeta(0.025, beta_a, beta_b)
+beta_q2   <- qbeta(0.975, beta_a, beta_b)
+
+# BUGS
+bs <- bugs$summary["p", ]
+
+# JAGS vzorky
+jgs <- unlist(jags.samples)
+
+# STAN shrnutí
+suppressWarnings(library(rstan))
+stn <- summary(stan.model)$summary["p", ]
+unloadNamespace("rstan")
+
+# Typy
+tT <- "Populační charakteristiky"
+tF <- "Frekventistický odhad"
+tB <- "Bayesovský odhad"
+
+# Výstupní tabulka
+tibble::tribble(
+    ~"Typ", ~"Metoda",        ~"p",        ~"q0.025",            ~"q0.975",
+    tF,     "Binomický test", b$estimate,  b$conf.int[1],        b$conf.int[2],
+    tF,     "Wilsonův odhad", w$p,         w$ci_lower,           w$ci_upper,
+    tB,     beta_desc,        beta_mean,   beta_q1,              beta_q2,
+    tB,     "BUGS",           bs["mean"],  bs["2.5%"],           bs["97.5%"],
+    tB,     "JAGS",           mean(jgs),   quantile(jgs, 0.025), quantile(jgs, 0.975),
+    tB,     "Stan",           stn["mean"], stn["2.5%"],          stn["2.5%"]
+) |> 
+    gt::gt(groupname_col  = "Typ",
+           row_group_as_column = TRUE) |>
+    gt::fmt_number(columns = 3:4,
+                   decimals = 4,
+                   dec_mark = ",") |>
+    gt::cols_width(
+      1 ~ gt::px(200)
+    )
+```
+
+
+Ná základě těchto poznatků se v této práci bude nadále používat nástroj Stan,
+a to primárně ze dvou důvodů. Tím prvním je jeho aktivní rozvoj a využití moderních
+přístupů, které umožňují nejpřesnější odhady[^porovnani-stan]. Tím druhým je
+veliký ekosystém R balíčků, které usnadní tvorbu grafů a různých pomocných 
+výstupů. 
