@@ -1,4 +1,4 @@
-Pro binomický test nabízí jazyk R defaultní funkci binom.test, která je
+Pro binomický test nabízí jazyk R defaultní funkci `binom.test`, která je
 použitá v kódu \ref{code-binom-test}.
 
 ```{r}
@@ -15,7 +15,7 @@ binom.test(x = s, n = n, p = h0,
 ```
 
 Na řádcích 1 -- 3 jsou definované proměnné, které jsou k výpočtu nutné.
-Řádek 4 volá funkci binom.test a předává jí všechny nutné hodnoty. Pro určení
+Řádek 4 volá funkci `binom.test` a předává jí všechny nutné hodnoty. Pro určení
 typu hypotézy (jednostranná, dvoustranná) slouží řádek 5 a hladina významonsti
 je nastavená na řádku 6. Výpis \ref{code-binom-test-out} pak ukazuje konkrétní 
 výstup funkce.
@@ -33,4 +33,5 @@ b
 
 Statistický výstup začíná na řádku 5, kde jsou popsaná data a příslušná
 p-hodnota. Řádek 6 definuje alternativní hypotézu $H_1$ a řádky 7 -- 8 popisují
-interval spolehlivosti.
+interval spolehlivosti. Na základě výsledků lze na 5% hladině významnosti 
+zamítnout $H_0$ o tom, že se populační parametr $\pi = 0,05$.

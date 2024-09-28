@@ -1,8 +1,8 @@
-Pro bayesovskou inferenci je nutné generovat vzorky z daného posteriorního,
-rozdělení k čemuž slouží hned několik nástrojů. Všechny nástroje, které jsou
+Pro bayesovskou inferenci je nutné generovat vzorky z daného posteriorního
+rozdělení, k čemuž slouží hned několik nástrojů. Všechny nástroje, které jsou
 v této kapitole představeny, existují i mimo prostředí R a lze je používat
 v nástrojích jako Python[^uvod-bayes-python] nebo Juliia[^uvod-bayes-juliia].
-Posteriorní rozdělení, které je ke generování použito, je defináno v **TODO**.
+Bayesovský modek, které je nadále použit, je definán v **TODO**.
 
 [^uvod-bayes-python]: Například balíčky pyjags, pystan nebo PyMC
 [^uvod-bayes-juliia]: Například balíčky jags.jl nebo stan.jl

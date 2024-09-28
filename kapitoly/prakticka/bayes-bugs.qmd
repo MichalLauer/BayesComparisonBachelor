@@ -6,7 +6,7 @@ Postupem času se program vyvynul do nástroje WinBUGS, který je prezentován
 v této práci 
 \parencite{TheBayesianScientificWorkingGroup2024_BayesianScientificWork}.
 
-Prví verze programu byla představena na Bayesovské konferenci ve Valencii v
+První verze programu byla představena na Bayesovské konferenci ve Valencii v
 roce 1991 a později byla distribuovaná na disketách. Z počátku byly implementovány
 s Gibsovým vzorkováním pouze jendnoduché metody a úpravy, jako adaptivní vzorkování
 nebo bayesovské inverze. Po čase byla implementována i velmi limitující verze
@@ -43,12 +43,12 @@ Pro splnění prvního cíle byl vyvynut nástroj s názevm BRugs. Díky odděle
 funkčnosti a vzhledu lze BRugs napojit na další programy jako SAS, Excel nebo 
 R a využívat tak simulací BUGS i mimo jeho prostředí. Ke splnění druhého
 cíle byla vyvynutá další verze softwaru bugs s názvem LinBUGS pro vývoj v
-linuxovém prostředí procesory Intel. Experimentální prostředí pro testování
+linuxovém prostředí a pro procesory Intel. Experimentální prostředí pro testování
 nových metod byla vytvořena open-source [^bugs-os] verze OpenBUGS. Vývoj
 obou aplikací se časem rozdělil a obě mají silné stránky v něčem jiném.
 Software OpenBUGS dokáže flexibilně měnit simulační metody nebo simulace 
 provádět paralelně. Vývoj softwaru WinBUGS mířil primárně na excelenci v 
-epidemiologickém a farmakokinetikou
+epidemiologii a farmakokinetice
 \parencite{LunnEtAl2009_BUGSProjectEvolution}.
 
 [^bugs-os]: software, který má veřejný zdrojový kód; tzn. *otevřený software*.
@@ -62,24 +62,22 @@ např. jazyku C++, ve kterém jsou napsána většina novodobých simulačních 
 \parencite{LunnEtAl2009_BUGSProjectEvolution}.
 
 V programovacím jazyce R lze s programy BUGS komunikovat pomocí hned
-několika balíčků. První možností jsou balíčku R2WinBUGS a R2OpenBUGS
+několika balíčků. První možností jsou balíčku `{R2WinBUGS}` a `{R2OpenBUGS}`
 \parencite{SturtzEtAl2005_R2WinBUGSPackageRunning},
 které umí komunikovat s programy WinBUGS a OpenBUGS. Jelikož byl balíček
 OpenBUGS aktualizován naposledy v r. 2020, je smysluplnější[^bugs-pkgs]
-v případě zájmu používat balíček R2WinBUGS, který poslední aktualizaci obdržel
+v případě zájmu používat balíček `{R2WinBUGS}`, který poslední aktualizaci obdržel
 v r. 2024. Balíčky nenabízejí aplikační přístup, ale slouží jako automatizační
-pomůcka. Pokud funkcím předáte data, model a parametry simulací, tak se spustí
-zvolený software (OpenBUGS nebo WinBUGS), do kterého jsou automaticky zvoleny
-preference uživatel pomocí skriptu. Po dokončení se program sám zavře a 
-výsledky jsou dopstupné v jazyce R.
+pomůcka. Funkcím jsou předána data, model a parametry simulací, se kterými je
+následně zvolený software (OpenBUGS nebo WinBUGS) spuštěn v novém okně. Po dokončení se program sám zavře a výsledky jsou dopstupné v jazyce R.
 
 [^bugs-pkgs]: aktuální k 2024-08-27.
 
-Druhou možností je balíček BRugs 
+Druhou možností je balíček `{BRugs}` 
 \parencite{ThomasEtAl2006_MakingBUGSOpen}, který dokáže komunikovat s OpenBUGS
 pomocí programatického prostředí a není tedy nutné, aby balíček/funkce na pozadí
-spouštěli samotné programy. Na rozdíl od balíčku R2WinBUGS, který externě spouští
-program, je BRugs více flexibilní. Nastavení probíhá pomocí metod, které
+spouštěli samotné programy. Na rozdíl od balíčku `{R2WinBUGS}`, který externě spouští
+program, je {BRugs}` více flexibilní. Nastavení probíhá pomocí metod, které
 nastavují, spouští a inicializují jednotlivé řetěze a simulace. Nevýhodou balíčku
 je, že je nutné ho kompilovat, což může být pro méně zkušené uživatele náročné.
 
@@ -87,7 +85,7 @@ je, že je nutné ho kompilovat, což může být pro méně zkušené uživatel
 
 Před používáním samotného balíčku je nutné stáhnout program WinBUGS. Aktuálně
 [^bugs-datum] lze program stáhnout z Google disku[^bugs-gdrive] Cambridgské
-univerzity, kde se nachází jak verze OpenBUGS a WinBUGS. Balíček R2WinBUGS
+univerzity, kde se nachází verze OpenBUGS a WinBUGS. Balíček `{R2WinBUGS}`
 dokáže pracovat jak s verzí OpenBUGS, tak s verzí WinBUGS. Kompletní a 
 okomentované použití balíčku je v kódu \ref{code-r2winbugs-model}.
 
@@ -126,17 +124,20 @@ bugs <- R2WinBUGS::bugs(
 ```
 
 Nejprve je nutné definovat vstupní data, se kterými bude modle pracovat (řádky
-2 -- 7). Dále je vhodné nastavit počáteční hodnoty, které se použijí pro 
-simulaci (řádky 8 --- 11). Jelikož jsou v tomto případě použité dva řetězce,
+4 -- 9). Dále je vhodné nastavit počáteční hodnoty, které se použijí pro 
+simulaci (řádky 10 --- 13). Jelikož jsou v tomto případě použité dva řetězce,
 je nutné definovat dva listy s počátečními hodnotamy. Poté jsou nastavené
-parametry simulace (řádky 12 -- 15) a uložení vybraných parametrů (řádek 16).
+parametry simulace (řádky 14 -- 17) a uložení vybraných parametrů (řádek 18).
 Pro správnou funkčnost je nutné metodě `bugs` sdělit, s jakým modelem a jakou
-verzí programu WinBUGS/OpenBUGS bude pracovat. Řádky 17 --- 19 nastavují 
+verzí programu bude pracovat. Řádky 19 --- 21 nastavují 
 pracovní adresář, cestu k modelu a cestu k samotnému programu. Při spuštění
 simulace metoda ukládá mezivýstupy[^bugs-meziv], které lze deaktivovat
 pomocí parametru `clearWD` na řádku 20. Na závěr je
-velmi důležité nastavit parametr `bugs.seed`, díky kterému (v kombinaci s 
-počátečními hodnotami) lze dosáhnout replikovatelnosti. 
+velmi důležité nastavit parametr `bugs.seed`, díky kterému lze dosáhnout
+replikovatelnosti. 
+
+[^bugs-meziv]: Jedná se o textové soubory, které jsou použity v samotném programu.
+Jedná se například o počáteční hodnoty nebo vložená data.
 
 V celku netradiční je definice modelu, která musí být uložena v externím souboru
 s příponou `.txt`, popř. `.bugs`. Model je definovaný ve výpise \ref{model-bugs}.
@@ -149,7 +150,7 @@ cat(paste(readLines("./kapitoly/modely/r2winbugs.txt"), collapse = "\n"))
 ```
 
 Na řádku 1 je začátek bloku s názvem **model**, ve kterém je definovaný 
-libovolný bayesovský model. Řáded 3 popisuje rozdělení dat; v tomto případě
+libovolný bayesovský model. Řádek 3 popisuje rozdělení dat; v tomto případě
 zápis řiká, že každé jednotlivé pozorování má Alternativní[^bugs-bern]
 rozdělení
 \parencite[str. 129]{Marek2012_Pravdepodobnost}
@@ -159,8 +160,8 @@ apriorní rozdělení pro parametr `p`, které je v tomto případě Beta
 \parencite[str. 32]{Mala2016_VybraneKapitolyTeorie} s parametry $\alpha$ a 
 $\beta$. Všechny předem známé proměnné, tedy proměnné `x`, `N`, $\alpha$ a 
 $\beta$ jsou definované ve funkci `bugs` v kódu \ref{code-r2winbugs-model}
-na řádcích 2 --- 7. Po spuštění funkce se spustí program WinBUGS a výsledky
-se uloží do proměnné `bugs`, jejíž výpis je v \ref{model-r2winbugs-out}.
+na řádcích 4 -- 9. Po spuštění funkce se spustí program WinBUGS a výsledky
+se uloží do proměnné `bugs`, jejíž výpis je ve výpisu \ref{model-r2winbugs-out}.
 
 [^bugs-bern]: V literatuře je místo pojmu *Alternativní* rozdělení občas
 používáno *Bernoulliho* rozdělení, význam však zůstává identický a jde pouze
@@ -179,7 +180,8 @@ byly generovány dva řetězce o 5 000 vzorcích, z čehož bylo prvních 1 000 
 smazáno jako rozehřívací období; dohromady je v proměnné bugs uloženo 8 0000
 vzorků. Po krátkém popisu následuje na řádcích 4 -- 6 deskriptivní statistika,
 která popisuje uložené parametry. Navíc je zde automaticky uložen parametr 
-`deviance`, který popisuje míru shody modelu s daty a jeho predikční schopnost.
+`deviance`, který popisuje míru shody modelu s daty a jeho predikční schopnost
+\parencite{spiegelhalter2003winbugs}.
 Střední hodnota posteriorního rozdělení parametru `p`
 je `r fmt_num(bugs$summary["p", "mean"])` se směrodatnou odchylkou 
 `r fmt_num(bugs$summary["p", "sd"])`. Statistika $R_{hat}$ se prakticky rovná
@@ -187,40 +189,4 @@ jedné, což naznačuje nulovou autokorelaci. Efektivní velikost vzorků je 8 0
 což dále potvrzuje uspokojivou konvergenci.
 
 Na konci výpisu je slovní popis výsledků, který může pomoct pro prvotní 
-zorientování ve výstupu. Je zde také popsán parametr pD a DIC. Výsledky simulací jsou uložené ve formátu listu. Ke vygenerovaným řetězcům se lze dostat například pomocí `<objekt>$sims.list` nebo `<objekt>$sims.matrix`.
-
-!!! Výpočet deviance, možná se bude hodit.
-
-```{r }
-#| results: hide
-ll <- function(y, p) {
-    return(y * log(p) + (1 - y) * log(1 - p))
-}
-
-deviance <- function(y, p) {
-    return(-2 * ll(y, p))
-}
-
-posterior_samples <- bugs$sims.list$p
-deviances <- sapply(posterior_samples, \(x) sum(deviance(simulovana_data, x)))
-
-D_bar <- mean(deviances)
-D_bar
-```
-
-```{r }
-#| results: hide
-mean_posterior <- mean(posterior_samples)
-D_hat <- sum(deviance(simulovana_data, mean_posterior))
-D_hat
-```
-
-```{r }
-#| results: hide
-D_bar - D_hat
-```
-
-```{r }
-#| results: hide
-bugs
-```
+zorientování ve výstupu. Výsledky simulací jsou uložené ve formátu listu. Ke vygenerovaným řetězcům se lze dostat například pomocí `<objekt>$sims.list` nebo `<objekt>$sims.matrix`.

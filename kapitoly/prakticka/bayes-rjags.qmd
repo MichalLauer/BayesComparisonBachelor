@@ -10,7 +10,7 @@ BUGS, který používá programovací jazyk Fortran, je zdrojový kód pro JAGS 
 v jazyce C++. Díky tomu lze JAGS používat na jiných[^jags-os] platformách
 než je operační systém Windows, na kterém je verze WinBUGS závislá. Tato 
 flexibilita umožňuje i jednodušší vývoj, který není závislý na platformě a
-chyby nebo rozšíření lze psát i na jiných[^jags-oos] platformách. Větší
+oprava chyb nebo tvorba nových rozšíření lze i na jiných[^jags-oos] platformách. Větší
 rozříšenost jazyku C++ také zvětšuje počet potencionálních vývojářů
 \parencite{DepaoliEtAl2016_JustAnotherGibbs}.
 
@@ -25,11 +25,13 @@ rozdělení, funkcí a vzorkovačů. Oproti BUGS je nástroj JAGS vyvinut bez gr
 rozhrání a ovládá se pomocí příkazového řádku; primárně však k ovládání slouží
 různé balíčky v programovacích jazycích R nebo Python. Syntaxe pro tvoření
 Bayesovských modelů je založená na formátu BUGS a v jednoduchých případech je
-identická
-\parencite{DepaoliEtAl2016_JustAnotherGibbs}.
+identická, nástroj je však nutné manuálně nainstalovat z oficiálních[^jags-web]
+webových stránek \parencite{DepaoliEtAl2016_JustAnotherGibbs}.
 
-Pro generování vzorků pomocí softwaru JAGS byl vytvořen balíček rjags 
-\parencite{Plummer2023_RjagsBayesianGraphical}. Oproti balíčku R2WinBUGS se
+[^jags-web]: [mcmc-jags.sourceforge.io](https://mcmc-jags.sourceforge.io/)
+
+Pro generování vzorků pomocí softwaru JAGS byl vytvořen balíček `{rjags}` 
+\parencite{Plummer2023_RjagsBayesianGraphical}. Oproti balíčku `{R2WinBUGS}` se
 v jazyce R pracuje s dvěma hlavními objekty:
 
 - objekt, který reprezentuje kompilovaný model, a
@@ -42,18 +44,17 @@ znovu generovat další vzorky ze stejného stavu, ve kterém řetězec skončil
 \parencite{DepaoliEtAl2016_JustAnotherGibbs}.
 
 Druhým populárním balíčkem, který byl pro JAGS a prostředí R vytvořen, je 
-runjags \parencite{Denwood2016_RunjagsPackageProviding}. Jeho sílá spočívá v tom,
+`{runjags}` \parencite{Denwood2016_RunjagsPackageProviding}. Jeho sílá spočívá v tom,
 že nabízí komplexnější nástroje k tomu, jak generovat vzorky. Balíček zvládné
 paralelní generování, díky kterému lze dosáhnout aproximace posteriorního 
 rozdělení rychleji a efektivněji. Při generování lze také automaticky kontrolovat
 kvalitu konvergence a části, které nejsou kvalitní, umí nahradit.
 Balíček také nabízí funkce, které dokáží porovnat generované vzorky z dvou
-různých JAGS modelů a navzájem je porovnat
-\parencite{DepaoliEtAl2016_JustAnotherGibbs}.
+různých JAGS modelů \parencite{DepaoliEtAl2016_JustAnotherGibbs}.
 
-Třetí populární balíček pro práci se softwarem JAGS nese názevm R2jags 
+Třetí populární balíček pro práci se softwarem JAGS nese názevm `{R2jags}` 
 \parencite{SuYajima2024_R2jagsUsingRun}. Název napovídá, že jeho cílem
-je vytvořit funkce, které budou velmi podobné funkcím z balíčku R2WinBUGS
+je vytvořit funkce, které budou velmi podobné funkcím z balíčku `{R2WinBUGS}`
 pro ovládání softwaru BUGS. Díky podobnému prostředí, avšak velmi odlišnému
 nástroji, dokáží JAGS ovládat i uživatelé, kteří znají pouze práci s BUGS.
 Balíček také nabízí např. paralelizaci, automatickou kontrolu konvergence
@@ -61,24 +62,24 @@ nebo dynamické generování vzorku až do uspokojivého stavu
 \parencite{DepaoliEtAl2016_JustAnotherGibbs}.
 
 Všechny tři nástroje vrací generované vzorky v objektu, který má třídu
-`mcmc.list`, se kterým dokáže pracovat balíček coda (CODA, *Convergence
+`mcmc.list`, se kterým dokáže pracovat balíček `{coda}` (CODA, *Convergence
 Diagnosis and Output Analysis*)
-\parencite{PlummerEtAl2006_CODAConvergenceDiagnosis}. coda obsahuje funkce,
+\parencite{PlummerEtAl2006_CODAConvergenceDiagnosis}. Ten obsahuje funkce,
 které dokáží vypočítat mnoho statistik, které se týkají kvality konvergence,
 posteriorních rozdělení nebo jiných diagnostických statistik. K většině z nich
 dokáže vytvořit také obrázek v základní R grafice. Nástroj je sice připravený
 hlavně pro software JAGS, ale obsahuje funkci `as.mcmc.list`, pomocí které lze
-konvertovat BUGS výstup na objekt, který už je s balíčkem coda kompatibilní.
-Výhody a diagnostiky z balíčku coda lze tedy uplatnit i na vzorky,
+konvertovat BUGS výstup na objekt, který už je s balíčkem `{coda}` kompatibilní.
+Výhody a diagnostiky z balíčku `{coda}` lze tedy uplatnit i na vzorky,
 které jsou generovány softwarem BUGS.
 
 Kromě již zmíněných balíčků, které slouží pro obecné generování vzorků, existuje
 i několik balíčků, které jsou vytvořené ke specifickým problémům a na pozadí
-využívají právě JAGS. Jsou to například balíčku blavaan 
+využívají právě JAGS. Jsou to například balíčku `{blavaan}` 
 \parencite{MerkleRosseel2018_BlavaanBayesianStructural}
-pro analýzu latentních proměnných, blme 
+pro analýzu latentních proměnných, `{blme}` 
 \parencite{ChungEtAl2013_NondegeneratePenalizedLikelihood}
-pro pokročilou lineární regresi nebo bayescount 
+pro pokročilou lineární regresi nebo `{bayescount}` 
 \parencite{Denwood2023_BayescountPowerCalculations} pro jednoduchou
 analýzu dat s diskrétními číselnými proměnnými
 \parencite{DepaoliEtAl2016_JustAnotherGibbs}.
@@ -113,7 +114,7 @@ jags.model <- rjags::jags.model(
 
 Na první řádku se inicializuje objekt `jags.model`, ve kterém bude uložena 
 reference na JAGS model. Na řádku 2 parametr `file` odkazuje na definici
-modelu v textovém souboru. Pro balíček rjags lze model definovat přímo
+modelu v textovém souboru. Pro balíček `{rjags}` lze model definovat přímo
 v kódu, ale pro jednotnost je zde použit formát se souborem. Příklad toho,
 jak definovat model přímo v kódu, je v příloze \ref{code-jags-variable}.
 
@@ -149,7 +150,7 @@ Dalším krokem je vygenerovat několik prvních vzorků, které budou spálené
 spalovacím období. V kódu \ref{code-jags-burnin} je pro tyto ůčely použitá 
 funkce `update.jags`.[^jags-update]. Pro udržení jednotnosti je zde funkce
 exportovaná přímo z balíčku rjags; po načtení balíčku lze volat pouze funkci
-update, viz. kód v příloze \ref{code-jags-update}.
+`update`, viz. kód v příloze \ref{code-jags-update}.
 
 [^jags-update]: Teoreticky lze místo funkce `update` generovat libovolný
 počet vzorků a ty nikam neuložit. Díky tomu, že si JAGS model pamatuje stav,
@@ -200,7 +201,7 @@ vzorků ve dvou řetězcích s thinning intervalem 1. Dle řádků 2 se jedná o
 1 001 -- 6 000, což odpovídá nastavení spalovacího období, kde bylo prvních
 1 000 vzorků spáleno. Na řádcích 7 -- 12 se nachází popis posteriorního rozdělení
 pro každou sledovanou proměnnou. V tomto případě se ve výpisu nachází pouze 
-popis posteriorního rozdělení pro parametr *p*, kde je průměr 
+popis posteriorního rozdělení pro parametr $p$, kde je průměr 
 `r fmt_num(mean(unlist(jags.samples)))` 
 se směrodatnou odchylkou
 `r fmt_num(sd(unlist(jags.samples)))`.
@@ -212,20 +213,20 @@ posteriorních rozdělení.
 
 #### Balíček coda
 
-Pomocí balíčku rjags lze provádět dva primární výkony:
+Pomocí balíčku `{rjags}` lze provádět dva primární výkony:
 
 - komunikovat s vytvořeným modelem, a
 - generovat nové vzorky pomocí JAGS.
 
 To naznačují i samotné výstupy, které popisují pouze vygenerované vzorky z
 posteriorního rozdělení. Ve výstupech se např. nenachází různé statistiky
-popisující konvergenci dat, jako tomu je v případě balíčku R2WinBUGS ve výpisu
+popisující konvergenci dat, jako tomu je v případě balíčku `{R2WinBUGS}` ve výpisu
 \ref{model-r2winbugs-out}. K analýze posteriorního rozdělení, kvality 
-konvergence nebo tvořením základních grafů slouží právě balíček coda.
+konvergence nebo tvořením základních grafů slouží právě balíček `{coda}`.
 
 Příkladem může být efektivní velikost velikost vzorku, která lze vypočítat
-pomocí funkce effectiveSize. Kód \ref{code-jags-coda-ess}
-ukazuje, jak vypočítat efektivní  velikost vzorku pro každý řetěz, který byl
+pomocí funkce `effectiveSize`. Kód \ref{code-jags-coda-ess}
+ukazuje, jak vypočítat efektivní velikost vzorku pro každý řetěz, který byl
 pro generování použit.
 
 ```{r }
@@ -246,8 +247,8 @@ Výpis \ref{model-jags-coda-ess} ukazuje, že efektivní velikost je rovna
 5 000 v obou případech; autokorelace je tedy prakticky nulová a konvergence
 proběhla v pořádku.
 
-Balíček coda take nabízí možnost podívat se na autokorelaci pomocí funkce
-`autocorr.plot`
+Balíček `{coda}` take nabízí možnost podívat se na autokorelaci pomocí funkce
+`autocorr.plot`.
 
 ```{r }
 #| label: fig-jags-autocor
@@ -259,7 +260,7 @@ coda::autocorr.plot(x = js1p)
 
 Na obrázku [@fig-jags-autocor] lze pozorovat velmi nízkou autokorelaci od
 zpoždění (*lagu*) jedna. Velmi jednoduše lze také zobrazit výsledné
-nenormalizované posteriorní rozdělení parametru p pomocí funkce 
+nenormalizované posteriorní rozdělení parametru $p$ pomocí funkce 
 `densplot`.
 
 ```{r }

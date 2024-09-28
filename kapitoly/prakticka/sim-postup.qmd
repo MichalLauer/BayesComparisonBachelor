@@ -1,13 +1,13 @@
 Frekventistické odhady a hranice intervalu spolehlivosti jsou generované pomocí
-Wilsonova odhadu. Pro každou kombinaci $n$ (velikost vzorku) a $p$ (skutečný
+Wilsonova odhadu. Pro každou kombinaci $n$ (velikost vzorku) a $\pi$ (skutečný
 populační parametr) je náhodně vygenerováno 1 000 odhadů, na kterých lze
 ověřit chybu I. typu $\alpha$. Pro další účely jsou výsledné odhady
 agregované pomocí průměru a ve výsledné tabulce se nachází řádek pro každou
 kombinaci $n$ a $p$ s průměrným bodovým odhadem a průměrnými hranicemi
-intervalu spolehlivosti.
+intervalu spolehlivosti. Příklad generovaných dat je v příloze [@tbl-gens-head].
 
 Pro bayesovské odhady je použit Binomial-Beta model s neinformativním apriorním
-rozdělením $Beta(1, 1)$. Pokud by byl použit stejný postup pro bayesovské odhady,
+rozdělením $\text{Beta}(1, 1)$. Pokud by byl použit stejný postup pro bayesovské odhady,
 komplexita generování
 vzorků a následné porovnávání by se velmi zvyšila. Aby bylo možné generovat 1 000
 náhodných odhadů pro každou kombinaci, je nutné vytvořit[^sim-tvor-bayes]
@@ -20,7 +20,7 @@ odhadování generovat 1 000 krát, ale pouze $n$-krát.
 kompliace modelu, warm-up fáze, optimalizace algoritmů a následná generace
 vzorků by se musela opakovat.
 
-Předpokládejme generování pro $n = 3$ (skutečná hodnota $p$ prozatím nehraje
+Předpokládejme generování pro $n = 3$ (skutečná hodnota $\pi$ prozatím nehraje
 žádnou roli). V takovém případě existují 4 posteriorní rozdělení, která mohou 
 nastat. Pokud se $k$ rovná počtu případů, kdy se stala nějaká událost, lze je 
 zapsat jako
@@ -95,20 +95,20 @@ ggplot() +
 Odhady, které by s dostatečně velkým vzorkem vznikly, jsou označené na obrázku
 body a jedná se o průměry daného posteriorního rozdělení. Výsledný odhad bude
 tedy váženým průměrem těchto čtyř (v případě $n = 3$) bodů, kde se váhy budou
-lišit[^sim-post-lisit] podle populačního parametru $p$. Nechť $k_{n, p, i}$ značí
+lišit[^sim-post-lisit] podle populačního parametru $\pi$. Nechť $k_{n, p, i}$ značí
 počet vzorků kombinace $n$ a $p$, u kterých nastal $i$-krát úspěch a
 $E(X_{n, i})$ střední hodnotu posteriorní rozdělení $\text{Beta}(1 + i, 1 + n - i)$,
-pak
+pak lze střední hodnota odhadu zapsat jako
 
 $$
 E(P(x | p, n)) = \frac{\sum_{i=0}^n k_{n,p,i} * E(X_{n, i})}{\sum k_{n, p, i}}.
 $$ {#eq-bin-wmean}
 
-[^sim-post-lisit]: V případě velkého $p$ bude nejspíše více pravděpodobné 
-rozdělení $Beta(4, 1)$, zatímco s malým $p$ bude pravděpodobně vhodnější
+[^sim-post-lisit]: V případě velkého $\pi$ bude nejspíše více pravděpodobné 
+rozdělení $Beta(4, 1)$, zatímco s malým $\pi$ bude pravděpodobně vhodnější
 rozdělení $Beta(1, 4)$.
 
-Díky vztahu [@eq-bin-wmean] lze odhadnout populační parametr $p$ bez 
+Díky vztahu [@eq-bin-wmean] lze odhadnout populační parametr $\pi$ bez 
 kompilování a generování velkého množství modelů. Stejným způsobem jsou odhadnuté
 hranice 95% intervalu kredibility, kde se pouze $E(X_{n, i})$ zamění za
 $Q_{X_{n, i}}(0.025)$, resp. $Q_{X_{n, i}}(0.975)$ kde $Q_{X_{n, i}}$ značí

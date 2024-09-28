@@ -3,7 +3,7 @@ Výsledky ze všech tří metod jsou v tabulce [@tbl-comparison-all]. První sku
 řádků představuje odhady pomocí frekventistických metod, druhá skupina představuje
 bayesovské výsledky. Důležité je si uvědomit, že všechny
 tři bayesovské metody popisují stejné posteriorní rozdělení, ale způsob konvergence a
-generování vzorků se může lišit. Porovnány jsou odhadnut= hodnoty $\hat p$ 
+generování vzorků se může lišit. Porovnány jsou odhadnuté veličiny $p$ 
 95% interval spolehlivosti/kredibility.
 
 ```{r }
@@ -36,7 +36,7 @@ tF <- "Frekventistický odhad"
 tB <- "Bayesovský odhad"
 
 # Výstupní tabulka
-tibble::tribble(
+tribble(
     ~"Typ", ~"Metoda",        ~"p",        ~"q1",                ~"q2",
     tF,     "Binomický test", b$estimate,  b$conf.int[1],        b$conf.int[2],
     tF,     "Wilsonův odhad", w$p,         w$ci_lower,           w$ci_upper,
@@ -48,7 +48,6 @@ tibble::tribble(
     gt(groupname_col  = "Typ",
            row_group_as_column = TRUE) |>
     cols_label(
-      p =  md("$\\hat{p}$"),
       q1 = md("$\\text{q}_{0.025}$"),
       q2 = md("$\\text{q}_{0.975}$")
     ) |> 
@@ -69,24 +68,22 @@ tibble::tribble(
     )
 ```
 
-V případě frekventistických odhadů byla použita nulová hypotéza $H_0: p = 0,5$
-oproti $H_1: p \neq 0,5$ a hladina významnosti $\alpha = 0,05$. Na základě
-intervalů spolehlivosti je v obou případech nulová hypotéza zamítnuta a data
+V případě frekventistických odhadů byly použity hypotézy definované v [@eq-freq-hypo].
+Na základě intervalů spolehlivosti je v obou případech nulová hypotéza zamítnuta a data
 nasvědčují spíše tomu, že skutečný populační poměr je různý od $0,05$. V tomto
 případě jsou oba testy brány oddělené a proto není nutné korigovat hladinu $\alpha$
 pro případ zvýšené chyby I. druhu kvůli vícenásobnému porovnávání.
 
 Všechny tři bayesovské metody popisují to stejné posteriorní rozdělení, a proto
 vyhodnocovat každý řádek ohledně nulové a alternativní hypotézy nedává smysl.
-Jelikož se v praktické části bude dále pracovat primárně s balíčkem Stan, je
-vyhodnocení založené na výsledcích z této metody. Na základě výsledků lze 
-konstatovat, že interval ROPE se z žádné části nepřekrývá s 95% intervalem
+Výsledky jsou interpretované na základě nástroje Stan. Lze 
+konstatovat, že interval ROPE definovaný v [@eq-bayes-rope] se z žádné části nepřekrývá s 95% intervalem
 kredibility a proto lze nulovou hypotézu zamítnout. Skutečná pravděpodobnost,
 která byla při generování použita, se nachází na 95 % mezi $0,12$ a $0,45$.
 
 V tomto případě je skutečná populační pravděpodobnost známá a hodnota $1/3$
 se nachází jak v 95% intervalu spolehlivosti, tak 95% intervalu kredibility a 
-všechny závěry jsou správné. Cílem této sekce je spíše důraz na různé 
+všechny závěry jsou správné. Cílem této sekce je klást důraz na různé 
 interpretace. V případě frekventistického odhadu byla zamítnuta možnost toho,
 že se $p = 0,5$. Žádné další informace o tom, kde se skutečná hodnota nachází,
 však z metod nevyplívají[^interp-freq-skutecna]. Bayesovský přístup nabízí
@@ -98,7 +95,7 @@ kde se skutečná hodnota nachází. Je zde uvedený interval spolehlivosti, ale
 obecně říká to, že se při mnoha opakovaných měření skutečná hodnota nachází v
 intervalu spolehlivosti v $1 - \alpha$ % případů. Narozdíl od bayesovského
 přístupu nelze interpretovat interval spolehlivost tak, že se v něm skutečný
-parametr nachází s $(1 - \alpha)$ % pravděpodobností nachází.
+parametr nachází s $(1 - \alpha)$ % pravděpodobností .
 
 [^interp-bayes-dalsi]: Existují i ukazatele jako HDI (Highest Density Interval),
 které jsou však nad rámec bakalářské práce.

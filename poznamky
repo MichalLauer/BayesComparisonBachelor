@@ -1,24 +1,11 @@
-Co popsat:
- - deviance
- - pD
- - DIC
-
-
-v BUGS popsat rozdíl mezi ~ (náhodné proměnné) a = (deterministcké proměnné) v
-definici modelu
-
-V BUGS nefungujou ty inits.
-
-úvodní text o R; jak se volají funkce, co to je ::, očekávání že vědi atp
-
 winbugs a jags musí být nainstalované
 https://sourceforge.net/projects/mcmc-jags/
 
 stan je v tom příkladu pomalejší.
 
-Různé verze N_eff
-
 přidat interpretaci
+
+rešerše problému
 
 Binom: 10.1002/9781119196037
 

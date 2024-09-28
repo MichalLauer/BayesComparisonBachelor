@@ -1,4 +1,4 @@
-V předchozích sekcích byli tři nástroje, které lze použít pro generování
+V předchozích sekcích byli představeny tři nástroje, které lze použít pro generování
 vzorků z posteriorních rozdělení. V této sekci jsou shrnuty nejdůležitější
 vlastnosti každého nástroje a na základě představené literatury jsou doporučena
 pro různé případy.

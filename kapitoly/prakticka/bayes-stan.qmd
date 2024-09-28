@@ -13,8 +13,7 @@ dokumentace[^stan-docs] lze najít volně na internetu
 Cílem projektu Stan je *\enquote{poskytnout flexibilní pravděpodobnostní
 programovací jazyk pro statistické modelování spolu se sadou inferenčních
 nástrojů pro robustní modelování, které je škálovatelné a efektivní}*
-[^stan-goal]
-\parencite{CarpenterEtAl2017_StanProbabilisticProgramming}. Tohoto cíle
+[^stan-goal]. Tohoto cíle
 se snaží dosáhnout pomocí nového imperitivního programovacího jazyka, který
 se výrazně liší od nástrojů jako BUGS nebo JAGS. Velkou výhodou je explicitní
 definování datových typů, možnost tvoření podmínek nebo lokálních proměnných.
@@ -65,7 +64,7 @@ bloky `data` a `model`
 \parencite{CarpenterEtAl2017_StanProbabilisticProgramming}.
 
 Se softwarem Stan lze pracovat i v jiných programovacích jazycích, ve kterých
-existují pro tento účel speciální balíčky. V jazyce R se jedná o balíček *rstan*
+existují pro tento účel speciální balíčky. V jazyce R se jedná o balíček `{rstan}`
 \parencite{StanDevelopmentTeam2024_RStanInterfaceStan} a v jazyce Python
 je to balíček *pystan* \parencite{pystan}. Oficiální stránky projektu Stan
 odkazují[^stan-other-pkgs] na podporu hned v několika jazycích jako 
@@ -76,29 +75,29 @@ Julia, Mathematica, Scala nebo MATLAB.
 
 V jazyce R existuje hned několik balíčků, které zjednodušují bayesovské
 modelování pro uživatele, kteří se v jazyce Stan nevyznají. Balíčky
-*rstanarm* 
+`{rstanarm}` 
 \parencite{GoodrichEtAl2020_RstanarmBayesianApplied}
-a *brms* 
+a `{brms}` 
 \parencite{Burkner2018_AdvancedBayesianMultilevel}
 zjednodušují tvoření lineárních, nelineárních a 
 hierarchických regresních modelů pomocí klasické R syntaxe. Pro interaktivní
-pozorování bayesovských modelů a jejich konvergence slouží balíček *shinystan*
+pozorování bayesovských modelů a jejich konvergence slouží balíček `{shinystan}`
 \parencite{GabryVeen2022_ShinystanInteractiveVisual}
 ,který využívá framework *R Shiny* 
 \parencite{ChangEtAl2024_ShinyWebApplication}.
-Pro automatickou vizualizaci slouží balíčky *bayesplot*
+Pro automatickou vizualizaci slouží balíčky `{bayesplot}`
 \parencite{GabryMahr2024_BayesplotPlottingBayesian}
-nebo balíčky *see*
+nebo balíčky `{see}`
 \parencite{LudeckeEtAl2021_SeePackageVisualizing}
-a *bayestestR*
+a `{bayestestR}`
 \parencite{MakowskiEtAl2019_BayestestRDescribingEffects}
-z rodiny balíčků *easystats*
+z rodiny balíčků `{easystats}`.
 \parencite{LudeckeEtAl2022_EasystatsFrameworkEasy}. Oproti jazyku JAGS s 
-jazykem Stan nekomunikuje balíček *coda*.
+jazykem Stan nekomunikuje balíček `{coda}`.
 
 #### Balíček rstan
 
-Pro generování vzorků pomocí nástroje Stan slouží funkce `stan` z balíčku *rstan*.
+Pro generování vzorků pomocí nástroje Stan slouží funkce `stan` z balíčku `{rstan}`.
 Příkald je v kódu \ref{code-stan-model}.
 
 ```{r stan}
@@ -134,10 +133,12 @@ Na řádku 1 se vytváří objekt, který obsahuje výsledné vzorky z modelu. �
 2 -- 3 přiřazují model a nastavují jeho název. Stan umí pracovat s textem,
 který reprezentuje model, takže vytvářet externí soubor není nutné. Ukázka
 generování vzorku pomocí modelu definovaném v prostředí R je v příloze 
-\ref{code-stan-variable}. Řádky 4 -- 13 definují vstupní data a počáteční 
-hodnoty, což je identické jako u jazyků BUGS a JAGS. Konfigurace řetězců,
-iterací, spalovacího období a thinning parametru je na řádcích 14 -- 17.
-Řádek 18 nastavuje seed a zajišťuje tím reproduktibilitu.
+\ref{code-stan-variable}. Řádky 4 -- 15 definují vstupní data a počáteční 
+hodnoty, což je identické jako u jazyků BUGS a JAGS. Jediným rozdílem je
+počet řetězců, který je u Stan doporučován na 4 \parencite{StanDevelopmentTeam2024}.
+Konfigurace řetězců,
+iterací, spalovacího období a thinning parametru je na řádcích 16 -- 19.
+Řádek 20 nastavuje seed a zajišťuje tím reproduktibilitu.
 
 Definice modelu je ve výpisu \ref{model-stan}.
 
@@ -179,7 +180,7 @@ Popis modelu, který v základu nabízí R a Stan, je ve výpisu
 #| results: model
 #| model-caption: Shrnutí generovaných Stan vzorků
 #| model-label: model-stan-output
-mean(c(stan.model@sim$samples[[1]]$p, stan.model@sim$samples[[2]]$p))
+stan.model
 ```
 
 Řádek 1 pouze informuje uživatele o modelu, který byl použit. Na řádku 2 se 
@@ -195,8 +196,8 @@ se směrodatnou odchylkou
 
 #### Balíček bayesplot
 
-Jednoduchá vizualizace je možná pomocí balíčku bayesplot, který nabízí grafiku
-zaležou na frameworku ggplot2 \parencite{Wickham2016_Ggplot2ElegantGraphics}.
+Jednoduchá vizualizace je možná pomocí balíčku `{bayesplot}`, který nabízí grafiku
+zaležou na frameworku `{ggplot2}` \parencite{Wickham2016_Ggplot2ElegantGraphics}.
 Pomocí funkce `mcmc_areas` lze například jednoduše zobrazit jednotlivá
 posteriorní rozdělení, viz. obrázek [@fig-bayesplot-posterior].
 

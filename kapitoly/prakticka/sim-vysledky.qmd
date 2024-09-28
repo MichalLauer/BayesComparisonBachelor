@@ -81,24 +81,24 @@ bind_rows(
     ) +
     labs(
         x = "Velikost vzorku (n)",
-        y = "Odhad parametru p"
+        y = "Odhad p"
     )
 ```
 
-Jednotlivé čtverce označují odhady pro různé populační parametry $p$ spolu
+Jednotlivé čtverce označují odhady pro různé populační parametry $\pi$ spolu
 s intervalem spolehlivosti (pro Willsonův odhad) nebo intervalem kredibility
 (pro bayesovský odhad). Černá horizontální čára zobrazuje skutečnou hodnotu
 parametru $p$ a šedá zóna znázorňuje ROPE v intervalu
 $\langle p - 0,025, p + 0,025 \rangle$. Na obrázku lze pozorovat, že se s 
 rostoucím $n$ odhad parametru a skutečná populační hodnota přibližují a 
-interval je užší. Čím větší je absolutní vzdálenost mezi skutečnou hodnotou
-a odhadem, tím více se liší bayesovský a Willsonův odhad. U hraničních
+interval je užší. Čím větší je absolutní vzdálenost mezi skutečnou hodnotou $\pi$
+a hodnotu $0,5$, tím více se liší bayesovský a Willsonův odhad. U hraničních
 pravděpodobností (pravděpodobnostni blízko 0 nebo 1) je agregovaný bayesovský
 odhad přesnější.
 
 Jelikož je známá skutečná populační hodnota, lze v případě Willsonova odhadu 
-zkoumat chybu I. druhu. Obrázek @fig-sim-errorI ukazuje vývoj chyby podle
-skutečné populační hodnoty a s rostoucí velikostí vzorku $n$. 
+zkoumat chybu I. druhu. Obrázek @fig-sim-errorI ukazuje vývoj s rostoucí
+velikostí vzorku $n$ a pro různé parametry $\pi$. 
 
 ```{r }
 #| label: fig-sim-errorI
@@ -136,10 +136,10 @@ results |>
 
 Horizontální čárkovaná čára představuje stavenou hranici $\alpha = 0,05$. V 
 případě parametrů blízko $0,5$ je chyba relativně stabilní. S větší 
-absolutní vzdáleností od $p = 0,05$ je chyba však velmi nestabilní a u 
+absolutní vzdáleností od $\pi = 0,05$ je chyba však velmi nestabilní a u 
 hraničních pravděpodobností často významně překračuje stanovenou hranici. To
 je nejspíše způsobené nesplněnými předpoklady a kvůli tomu nespolehlivou
-konvergencí. U některých parametrů (např. $p = 0,55$) je chyba I. druhu v 
+konvergencí. U některých parametrů (např. $\pi = 0,55$) je chyba I. druhu v 
 malých vzorcích nulová. To je způsobene velmi vysokým intervalem spolehlivosti,
 který dokáže pokrýt všechny vygenerované odhady. Problém tedy zde vzniká
 kombinací hraniční populační pravděpodobnosti a malou velikostí vzorku.
@@ -184,6 +184,14 @@ bind_rows(
 
 Jednotlivé čáry naznačují vývoj RMSE s rostoucí velikostí vzorku $n$. U
 odhadů s populačním parametrem blízko $0,5$ je RMSE menší než u hraničních 
-hodnot. S rostoucí absolutní vzdáleností parametru $p$ od hodnoty $0,05$
+hodnot. S rostoucí absolutní vzdáleností parametru $\pi$ od hodnoty $0,5$
 RMSE stoupá. Ve všech případech je RMSE nižší u bayesovského odhadu než u
 Willsova odhadu.
+
+Bayesovské a Willsonovi odhady si jsou velmi blízké, u hraničních parametrů
+se liší a bayesovské odhady jsou přesnější. Chyba I. druhu je také zvýšená a
+je tedy větší pravděpodobnost, že nulová hypotéza bude chybně zamítnuta.
+Celkově je však bayesovský odhad přesnější než Willsonův odhad. Důležité je však
+podotknout, že bayesovské odhady předpokládají dostatečně velký vzorek na to,
+aby odhadnutá střední hodnota byla dostatečně blízko analytickému řešení.
+S rostoucí konvergencí modelu se analytické řešení a odhadnutá hodnota rovnají. 

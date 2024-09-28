@@ -98,6 +98,15 @@ rstan::stan(
 )
 ```
 
+```{r }
+#| echo: false
+#| label: tbl-gens-head
+#| tbl-cap: Příklad generovaných dat pro simulaci
+r <- readRDS("./data/gens.rds")
+set.seed(7)
+slice_sample(r, n = 5) |> 
+    gt()
+```
 
 ```{r }
 #| eval: false

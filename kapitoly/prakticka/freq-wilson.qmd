@@ -1,4 +1,4 @@
-Jelikož výpočet intervalu a odhadu není velmi komplikovaný, lze vytvořit
+Jelikož výpočet intervalu a odhadu není komplikovaný, lze vytvořit
 jednoduše pomocí R funkce, viz. kód \ref{code-wilson-custom}.
 
 ```{r wilson-custom-fx}
@@ -19,7 +19,8 @@ wilson_est <- function(s, n, alpha = 0.05) {
 }
 ```
 
-Na řádku 2 je vytvořen nový odhad populačního poměru (ref. na vzorec), řádek 2
+Na řádku 2 je vytvořen nový odhad populačního poměru (**TODO ref. na vzorec**), 
+řádek 2
 ukládá kvantily normovaného normálního rozdělení a konečně řádek 4 počítá
 hranice (100 - $\alpha$)% intervalu spolehlivosti. Všechny výsledky jsou na 
 řádcích 5 -- 11 uloženy a vráceny pomocí listu. Výsledné odhady jsou ve výpisu
@@ -33,14 +34,14 @@ w <- wilson_est(s = sum(simulovana_data), n = length(simulovana_data))
 w
 ```
 
-Odhad populačního parametru $p$ je
-simulovana_data s 95 % intervalem spolehlivosti
-(
-    `r fmt_num(w$ci_lower)`; `r fmt_num(w$ci_upper)`
-). Pro jednoduchost lze však použít balíček fastR2 
+Odhad populačního parametru $\pi$ je
+`r fmt_num(w$p)`
+s 95 % intervalem spolehlivosti
+(`r fmt_num(w$ci_lower)`; `r fmt_num(w$ci_upper)`). Pro jednoduchost lze 
+použít balíček `{fastR2}`
 \parencite{Pruim2023_FastR2FoundationsApplications}, který nabízí funkci
 `wilson.ci`. Ta produkuje identické výsledky jako funkce \ref{code-wilson-custom}
-s tím rozdílem, že jejím výstupem není odhad $\hat p$, viz. výpis
+s tím rozdílem, že jejím výstupem není odhad $p$, viz. výpis
 \ref{model-wilson-fastr2}.
 
 ```{r}
