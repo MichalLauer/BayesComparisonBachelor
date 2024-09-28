@@ -1,0 +1,207 @@
+V druhé části 
+
+
+
+
+```{r }
+#| cache: true
+p <- seq(from = 0.05, to = 0.95, by = 0.1)
+n <- seq(from = 1, to = 30)
+B <- 1000
+results <- tibble()
+
+set.seed(546)
+for (tn in n) {
+    for (tp in p) {
+        for (b in seq_len(B)) {
+            x <- rbinom(n = tn, size = 1, prob = tp)
+            k <- sum(x)
+            w <- wilson_est(s = k, n = tn)
+            results <<- bind_rows(
+                results,
+                tibble(
+                    metoda = "Wilson",
+                    n = tn,
+                    k = k,
+                    p = tp,
+                    odhad = w$p,
+                    spodni = w$ci_lower,
+                    horni = w$ci_upper
+                )
+            )
+        }
+
+        cat(glue("{tn} - {tp} - hotovo"))
+        cat("\n")
+    }
+}
+```
+
+```{r }
+#| cache: true
+n <- seq(from = 1, to = 30)
+betas <- tibble()
+
+for (tn in n) {
+    for (i in seq(from = 0, to = tn)) {
+        k <- tn - i
+        
+        alpha <- 1 + i
+        beta  <- 1 + k
+        
+        betas <- bind_rows(
+            betas,
+            tibble(
+                desc = glue("Beta({alpha}, {beta})"),
+                alpha = alpha,
+                beta = beta,
+                EX = alpha / (alpha + beta),
+                spodni = qbeta(0.025, alpha, beta),
+                horni  = qbeta(0.975, alpha, beta),
+                n = tn,
+                k = i
+            )
+        )
+    }
+}
+```
+
+---
+
+```{r }
+bayes_weights <-
+    results |> 
+    count(n, p, k, name = "weight") |> 
+    mutate(weight_rel = weight / sum(weight),
+          .by = c(n, p)) |> 
+    select(n, p, k, weight_rel)
+```
+
+```{r }
+betas_weights <-
+    betas |> 
+    left_join(bayes_weights, by = c("n", "k")) |> 
+    select(n, k, p, EX, spodni, horni, weight_rel) |> 
+    arrange(n, p, k)
+```
+
+```{r }
+bayes_res <-
+    betas_weights |> 
+    summarise(metoda = "Bayes",
+              odhad = sum(EX * weight_rel),
+              spodni = sum(spodni * weight_rel),
+              horni = sum(horni * weight_rel),
+              .by = c(n, p)) |> 
+    arrange(n, p, k) 
+```
+
+```{r }
+wils_res <- 
+    results |> 
+    group_by(n, p) |> 
+    summarise(metoda = "Wilson",
+              odhad = mean(odhad),
+              spodni = mean(spodni),
+              horni = mean(horni),
+              .groups = "drop")
+```
+
+Odhady jsou velmi podobné, bayes je blíž skutečné hodnotě především u malé/velké
+pravděpodobnosti a nízkého n. H0 není nikdy zamítnutá.
+
+```{r }
+bind_rows(
+    wils_res,
+    bayes_res
+) |> 
+    mutate(n = ifelse(metoda == "Wilson", n + 1/10, n - 1/10)) |>
+    ggplot(aes(x = n)) +
+
+    geom_rect(aes(xmin = -10, xmax = 40, ymin = p - 0.025, ymax = p + 0.025),
+              color = "lightgrey") +
+
+    geom_hline(aes(yintercept = p), linetype = 'dashed') +
+
+    geom_point(aes(y = odhad, color = metoda)) +
+    geom_errorbar(aes(ymin = spodni, ymax = horni, color = metoda)) +
+    
+    scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+    scale_x_continuous(breaks = c(1, seq(5, 30, by = 5))) +
+
+    coord_cartesian(xlim = c(1, 30), ylim = c(0, 1)) +
+
+    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free") +
+    theme_bw()
+```
+
+---
+
+Malé/velké pravděpodobnosti a malé vzorky mají mega velkou chybu I. typu.
+
+```{r }
+results |> 
+    mutate(ok = between(p, spodni, horni)) |> 
+    count(n, p, ok, name = "nn") |> 
+    mutate(pp = nn / sum(nn),
+           .by = c(n, p)) |> 
+    filter(!ok) |> 
+    ggplot(aes(x = n, y = pp)) +
+
+    geom_hline(aes(yintercept = 0.05), linetype = 'dashed') +
+
+    geom_col(fill = 'red') +
+
+    scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+    scale_x_continuous(breaks = c(1, seq(5, 30, by = 5))) +
+
+    coord_cartesian(xlim = c(1, 30), ylim = c(0, 0.4)) +
+
+    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free") +
+    theme_bw()
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r }
+results |> 
+    mutate(e = p - odhad) |> 
+    group_by(n, p) |> 
+    summarise(
+        RMSE = sqrt(mean(e^2)),
+        .groups = "drop"
+    ) |> 
+    ggplot(aes(x = n, y = RMSE, color = factor(p))) +
+    geom_line() +
+    scale_y_continuous(limits = c(0, 0.5)) +
+    scale_x_continuous(limits = c(1, 30)) +
+    theme_bw()
+
+
+bind_rows(
+    wils_res,
+    bayes_res
+) |> 
+    mutate(e = p - odhad) |> 
+    group_by(n, p, metoda) |> 
+    summarise(
+        RMSE = sqrt(mean(e^2)),
+        .groups = "drop"
+    ) |> 
+    ggplot(aes(x = n, y = RMSE, color = metoda)) +
+    geom_line() +
+    scale_y_continuous(limits = c(0, 0.5)) +
+    scale_x_continuous(limits = c(1, 30)) +
+
+    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free") +
+    theme_bw()
+
+```

@@ -1,10 +1,10 @@
 
-Výsledky ze všech tří metod jsou v tabulce [@tbl-comparison-all]. První řádek představuje
-skutečné posteriorní rozdělení $Beta$. Důležité je si uvědomit, že všechny
-tři metody popisují stejné posteriorní rozdělení, ale způsob konvergence a
-generování vzorků se může lišit. Porovnány jsou pouze jednoduché statistiky
-jako průměr a směrodatná odchylka, protože ostatní výpočty se mohou mezi
-nástroji lišit.
+Výsledky ze všech tří metod jsou v tabulce [@tbl-comparison-all]. První skupina
+řádků představuje odhady pomocí frekventistických metod, druhá skupina představuje
+bayesovské výsledky. Důležité je si uvědomit, že všechny
+tři bayesovské metody popisují stejné posteriorní rozdělení, ale způsob konvergence a
+generování vzorků se může lišit. Porovnány jsou odhadnut= hodnoty $\hat p$ 
+95% interval spolehlivosti/kredibility.
 
 ```{r }
 #| warning: false
@@ -26,7 +26,7 @@ bs <- bugs$summary["p", ]
 jgs <- unlist(jags.samples)
 
 # STAN shrnutí
-suppressWarnings(library(rstan))
+suppressWarnings(suppressMessages(library(rstan)))
 stn <- summary(stan.model)$summary["p", ]
 unloadNamespace("rstan")
 
@@ -37,27 +37,68 @@ tB <- "Bayesovský odhad"
 
 # Výstupní tabulka
 tibble::tribble(
-    ~"Typ", ~"Metoda",        ~"p",        ~"q0.025",            ~"q0.975",
+    ~"Typ", ~"Metoda",        ~"p",        ~"q1",                ~"q2",
     tF,     "Binomický test", b$estimate,  b$conf.int[1],        b$conf.int[2],
     tF,     "Wilsonův odhad", w$p,         w$ci_lower,           w$ci_upper,
     tB,     beta_desc,        beta_mean,   beta_q1,              beta_q2,
     tB,     "BUGS",           bs["mean"],  bs["2.5%"],           bs["97.5%"],
     tB,     "JAGS",           mean(jgs),   quantile(jgs, 0.025), quantile(jgs, 0.975),
-    tB,     "Stan",           stn["mean"], stn["2.5%"],          stn["2.5%"]
+    tB,     "Stan",           stn["mean"], stn["2.5%"],          stn["97.5%"]
 ) |> 
-    gt::gt(groupname_col  = "Typ",
+    gt(groupname_col  = "Typ",
            row_group_as_column = TRUE) |>
-    gt::fmt_number(columns = 3:4,
-                   decimals = 4,
-                   dec_mark = ",") |>
-    gt::cols_width(
-      1 ~ gt::px(200)
+    cols_label(
+      p =  md("$\\hat{p}$"),
+      q1 = md("$\\text{q}_{0.025}$"),
+      q2 = md("$\\text{q}_{0.975}$")
+    ) |> 
+    fmt_number(columns = 3:5,
+               decimals = 4,
+               dec_mark = ",") |>
+    tab_footnote(
+      footnote = "V případě frekventistického odhadu se jedná o daný bodový odhad, u bayesovských metod se jedná o střední hodnotu posteriorního rozdělení.",
+      locations = cells_column_labels(columns = 3)
+    )  |>
+    tab_footnote(
+      footnote = "V případě frekventistického odhadu se jedná o interval spolehlivosti, u bayesovských metod se jedná o interval kredibility.",
+      locations = cells_column_labels(columns = 4:5)
+    )  |>
+    opt_footnote_marks(marks = "letters") |> 
+    cols_width(
+      1 ~ px(200)
     )
 ```
 
+V případě frekventistických odhadů byla použita nulová hypotéza $H_0: p = 0,5$
+oproti $H_1: p \neq 0,5$ a hladina významnosti $\alpha = 0,05$. Na základě
+intervalů spolehlivosti je v obou případech nulová hypotéza zamítnuta a data
+nasvědčují spíše tomu, že skutečný populační poměr je různý od $0,05$. V tomto
+případě jsou oba testy brány oddělené a proto není nutné korigovat hladinu $\alpha$
+pro případ zvýšené chyby I. druhu kvůli vícenásobnému porovnávání.
 
-Ná základě těchto poznatků se v této práci bude nadále používat nástroj Stan,
-a to primárně ze dvou důvodů. Tím prvním je jeho aktivní rozvoj a využití moderních
-přístupů, které umožňují nejpřesnější odhady[^porovnani-stan]. Tím druhým je
-veliký ekosystém R balíčků, které usnadní tvorbu grafů a různých pomocných 
-výstupů. 
+Všechny tři bayesovské metody popisují to stejné posteriorní rozdělení, a proto
+vyhodnocovat každý řádek ohledně nulové a alternativní hypotézy nedává smysl.
+Jelikož se v praktické části bude dále pracovat primárně s balíčkem Stan, je
+vyhodnocení založené na výsledcích z této metody. Na základě výsledků lze 
+konstatovat, že interval ROPE se z žádné části nepřekrývá s 95% intervalem
+kredibility a proto lze nulovou hypotézu zamítnout. Skutečná pravděpodobnost,
+která byla při generování použita, se nachází na 95 % mezi $0,12$ a $0,45$.
+
+V tomto případě je skutečná populační pravděpodobnost známá a hodnota $1/3$
+se nachází jak v 95% intervalu spolehlivosti, tak 95% intervalu kredibility a 
+všechny závěry jsou správné. Cílem této sekce je spíše důraz na různé 
+interpretace. V případě frekventistického odhadu byla zamítnuta možnost toho,
+že se $p = 0,5$. Žádné další informace o tom, kde se skutečná hodnota nachází,
+však z metod nevyplívají[^interp-freq-skutecna]. Bayesovský přístup nabízí
+míru nejistoty (mimo jiné[^interp-bayes-dalsi]) v podobě intervalu kredibility.
+
+[^interp-freq-skutecna]: Mohl určitě být zvolen jednostranný test, který by 
+alespoň naznačil směr, nicméně pořád metoda nenabízí nějaoku míru jistoty toho,
+kde se skutečná hodnota nachází. Je zde uvedený interval spolehlivosti, ale ten
+obecně říká to, že se při mnoha opakovaných měření skutečná hodnota nachází v
+intervalu spolehlivosti v $1 - \alpha$ % případů. Narozdíl od bayesovského
+přístupu nelze interpretovat interval spolehlivost tak, že se v něm skutečný
+parametr nachází s $(1 - \alpha)$ % pravděpodobností nachází.
+
+[^interp-bayes-dalsi]: Existují i ukazatele jako HDI (Highest Density Interval),
+které jsou však nad rámec bakalářské práce.

@@ -112,13 +112,13 @@ stan.model <- rstan::stan(
     data = list(
         N     = length(simulovana_data), # Pocet pozorovani
         x     = simulovana_data,         # Vstupni data
-        alpha = 0.1,                     # Hodnota parametru alpha
-        beta  = 0.1                      # Hodnota parametru beta
+        alpha = 1,                       # Hodnota parametru alpha
+        beta  = 1                        # Hodnota parametru beta
     ),
     init = list(
         list(p = 0.5), # Pocatecni hodnoty
-        list(p = 0.5), # Pocatecni hodnoty
-        list(p = 0.5), # Pocatecni hodnoty
+        list(p = 0.5),
+        list(p = 0.5),
         list(p = 0.5)
     ),
     chains = 4,           # Pocet retezcu

@@ -117,6 +117,9 @@
 library(rlang)
 library(glue)
 library(ggplot2)
+library(gt)
+library(tibble)
+library(dplyr)
 ```
 
 ```{r funcs, include=FALSE}
@@ -274,18 +277,13 @@ Interval kredibility, ROPE, Bayesův faktor
 
 ## Simulace
 
-jak budou simulace provedné, jak budou vyhodnocené, nastavení ROPE/alternativ.
-pro odhad chyb
+### Postup
 
-### Malý vzorek
+{{< include kapitoly/prakticka/sim-postup.qmd >}}
 
-Bayes vs. vybraný vzorec vs. binomic
+### Výsledky
 
-### Velký vzorek
-
-Bayes vs. vybraný vzorec vs. binomic
-
-### Porovnání výsledků
+{{< include kapitoly/prakticka/sim-vysledky.qmd >}}
 
 Jak testy dopadly
 

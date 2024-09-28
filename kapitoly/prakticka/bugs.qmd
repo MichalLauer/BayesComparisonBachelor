@@ -105,8 +105,8 @@ bugs <- R2WinBUGS::bugs(
     data = list(
         N     = length(simulovana_data), # Pocet pozorovani
         x     = simulovana_data,         # Vstupni data
-        alpha = 0.01,                    # Hodnota parametru alpha
-        beta  = 0.01                     # Hodnota parametru beta
+        alpha = 1,                       # Hodnota parametru alpha
+        beta  = 1                        # Hodnota parametru beta
     ),
     inits = list(    # Pocatecni hodnoty
         list(p = 0.5),
