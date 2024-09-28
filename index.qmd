@@ -109,6 +109,7 @@
 \item [MCMC] Markov-Chain Monte-Carlo 
 \item [HMC] Hamiltonian Monte Carlo
 \item [NUTS] No U-Turn Sampler
+\item [RMSE] Root Mean Squared Error
 \end{description}
 \end{multicols}
 ```
@@ -286,8 +287,6 @@ Interval kredibility, ROPE, Bayesův faktor
 ### Výsledky
 
 {{< include kapitoly/prakticka/sim-vysledky.qmd >}}
-
-Jak testy dopadly
 
 ```{=tex}
 %%% Závěr

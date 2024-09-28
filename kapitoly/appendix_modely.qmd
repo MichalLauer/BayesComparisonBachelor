@@ -97,3 +97,74 @@ rstan::stan(
     verbose = FALSE
 )
 ```
+
+
+```{r }
+#| eval: false
+#| echo: true
+#| code-caption: Simulace frekventistických odhadů
+#| code-label: code-sim-freq
+p <- seq(from = 0.05, to = 0.95, by = 0.1)
+n <- seq(from = 1, to = 30)
+B <- 1000
+results <- tibble()
+
+set.seed(546)
+for (tn in n) {
+    for (tp in p) {
+        for (b in seq_len(B)) {
+            x <- rbinom(n = tn, size = 1, prob = tp)
+            k <- sum(x)
+            w <- wilson_est(s = k, n = tn)
+            results <<- bind_rows(
+                results,
+                tibble(
+                    metoda = "Wilson",
+                    n = tn,
+                    k = k,
+                    p = tp,
+                    odhad = w$p,
+                    spodni = w$ci_lower,
+                    horni = w$ci_upper
+                )
+            )
+        }
+
+        cat(glue("{tn} - {tp} - hotovo"))
+        cat("\n")
+    }
+}
+```
+
+```{r }
+#| eval: false
+#| echo: true
+#| code-caption: Simulace bayesovských odhadů
+#| code-label: code-sim-bayes
+p <- seq(from = 0.05, to = 0.95, by = 0.1)
+n <- seq(from = 1, to = 30)
+betas <- tibble()
+
+for (tn in n) {
+    for (i in seq(from = 0, to = tn)) {
+        k <- tn - i
+        
+        alpha <- 1 + i
+        beta  <- 1 + k
+        
+        betas <- bind_rows(
+            betas,
+            tibble(
+                desc = glue("Beta({alpha}, {beta})"),
+                alpha = alpha,
+                beta = beta,
+                EX = alpha / (alpha + beta),
+                spodni = qbeta(0.025, alpha, beta),
+                horni  = qbeta(0.975, alpha, beta),
+                n = tn,
+                k = i
+            )
+        )
+    }
+}
+```

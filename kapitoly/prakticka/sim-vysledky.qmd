@@ -1,91 +1,26 @@
-V druhé části 
-
-
-
-
 ```{r }
-#| cache: true
-p <- seq(from = 0.05, to = 0.95, by = 0.1)
-n <- seq(from = 1, to = 30)
-B <- 1000
-results <- tibble()
+#| echo: false
 
-set.seed(546)
-for (tn in n) {
-    for (tp in p) {
-        for (b in seq_len(B)) {
-            x <- rbinom(n = tn, size = 1, prob = tp)
-            k <- sum(x)
-            w <- wilson_est(s = k, n = tn)
-            results <<- bind_rows(
-                results,
-                tibble(
-                    metoda = "Wilson",
-                    n = tn,
-                    k = k,
-                    p = tp,
-                    odhad = w$p,
-                    spodni = w$ci_lower,
-                    horni = w$ci_upper
-                )
-            )
-        }
+# Načtení simulací
+results <- readRDS("./data/gens.rds")
+betas <- readRDS("./data/betas.rds")
 
-        cat(glue("{tn} - {tp} - hotovo"))
-        cat("\n")
-    }
-}
-```
-
-```{r }
-#| cache: true
-n <- seq(from = 1, to = 30)
-betas <- tibble()
-
-for (tn in n) {
-    for (i in seq(from = 0, to = tn)) {
-        k <- tn - i
-        
-        alpha <- 1 + i
-        beta  <- 1 + k
-        
-        betas <- bind_rows(
-            betas,
-            tibble(
-                desc = glue("Beta({alpha}, {beta})"),
-                alpha = alpha,
-                beta = beta,
-                EX = alpha / (alpha + beta),
-                spodni = qbeta(0.025, alpha, beta),
-                horni  = qbeta(0.975, alpha, beta),
-                n = tn,
-                k = i
-            )
-        )
-    }
-}
-```
-
----
-
-```{r }
+# Výpočet vah
 bayes_weights <-
     results |> 
     count(n, p, k, name = "weight") |> 
     mutate(weight_rel = weight / sum(weight),
           .by = c(n, p)) |> 
     select(n, p, k, weight_rel)
-```
 
-```{r }
+# Připojení vah k bayesovským odhadům
 betas_weights <-
     betas |> 
     left_join(bayes_weights, by = c("n", "k")) |> 
     select(n, k, p, EX, spodni, horni, weight_rel) |> 
     arrange(n, p, k)
-```
 
-```{r }
+# Výpočet finálních odhadů
 bayes_res <-
     betas_weights |> 
     summarise(metoda = "Bayes",
@@ -93,10 +28,9 @@ bayes_res <-
               spodni = sum(spodni * weight_rel),
               horni = sum(horni * weight_rel),
               .by = c(n, p)) |> 
-    arrange(n, p, k) 
-```
+    arrange(n, p) 
 
-```{r }
+# Agregace frekventistického odhadu
 wils_res <- 
     results |> 
     group_by(n, p) |> 
@@ -107,10 +41,16 @@ wils_res <-
               .groups = "drop")
 ```
 
-Odhady jsou velmi podobné, bayes je blíž skutečné hodnotě především u malé/velké
-pravděpodobnosti a nízkého n. H0 není nikdy zamítnutá.
+Frekventistické výsledky byly vygenerovány pomocí kódu \ref{code-sim-freq}, posteriorní 
+rozdělení $\text{Beta}$ byla určena pomocí \ref{code-sim-bayes}. Jednotlivé
+odhady lze pozorovat na obrázku [@fig-sim-estimates].
 
 ```{r }
+#| label: fig-sim-estimates
+#| fig-cap: Porovnání frekventistických a bayesovských odhadů
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 8
 bind_rows(
     wils_res,
     bayes_res
@@ -131,15 +71,41 @@ bind_rows(
 
     coord_cartesian(xlim = c(1, 30), ylim = c(0, 1)) +
 
-    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free") +
-    theme_bw()
+    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free",
+               labeller = as_labeller(function(x) {
+                paste("Parametr p =", x)
+               })) +
+    theme_bw() +
+    theme(
+        legend.position = "bottom"
+    ) +
+    labs(
+        x = "Velikost vzorku (n)",
+        y = "Odhad parametru p"
+    )
 ```
 
----
+Jednotlivé čtverce označují odhady pro různé populační parametry $p$ spolu
+s intervalem spolehlivosti (pro Willsonův odhad) nebo intervalem kredibility
+(pro bayesovský odhad). Černá horizontální čára zobrazuje skutečnou hodnotu
+parametru $p$ a šedá zóna znázorňuje ROPE v intervalu
+$\langle p - 0,025, p + 0,025 \rangle$. Na obrázku lze pozorovat, že se s 
+rostoucím $n$ odhad parametru a skutečná populační hodnota přibližují a 
+interval je užší. Čím větší je absolutní vzdálenost mezi skutečnou hodnotou
+a odhadem, tím více se liší bayesovský a Willsonův odhad. U hraničních
+pravděpodobností (pravděpodobnostni blízko 0 nebo 1) je agregovaný bayesovský
+odhad přesnější.
 
-Malé/velké pravděpodobnosti a malé vzorky mají mega velkou chybu I. typu.
+Jelikož je známá skutečná populační hodnota, lze v případě Willsonova odhadu 
+zkoumat chybu I. druhu. Obrázek @fig-sim-errorI ukazuje vývoj chyby podle
+skutečné populační hodnoty a s rostoucí velikostí vzorku $n$. 
 
 ```{r }
+#| label: fig-sim-errorI
+#| fig-cap: Porovnání frekventistických a bayesovských odhadů
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 8
 results |> 
     mutate(ok = between(p, spodni, horni)) |> 
     count(n, p, ok, name = "nn") |> 
@@ -157,35 +123,36 @@ results |>
 
     coord_cartesian(xlim = c(1, 30), ylim = c(0, 0.4)) +
 
-    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free") +
-    theme_bw()
+    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free",
+               labeller = as_labeller(function(x) {
+                paste("Parametr p =", x)
+               })) +
+    theme_bw() +
+    labs(
+        x = "Velikost vzorku (n)",
+        y = "Chyba I. druhu"
+    )
 ```
 
+Horizontální čárkovaná čára představuje stavenou hranici $\alpha = 0,05$. V 
+případě parametrů blízko $0,5$ je chyba relativně stabilní. S větší 
+absolutní vzdáleností od $p = 0,05$ je chyba však velmi nestabilní a u 
+hraničních pravděpodobností často významně překračuje stanovenou hranici. To
+je nejspíše způsobené nesplněnými předpoklady a kvůli tomu nespolehlivou
+konvergencí. U některých parametrů (např. $p = 0,55$) je chyba I. druhu v 
+malých vzorcích nulová. To je způsobene velmi vysokým intervalem spolehlivosti,
+který dokáže pokrýt všechny vygenerované odhady. Problém tedy zde vzniká
+kombinací hraniční populační pravděpodobnosti a malou velikostí vzorku.
 
-
-
-
-
-
-
-
-
+Odhady lze také porovnat pomocí metriky RMSE, která je zobrazená na obrázku
+[@fig-sim-rmse].
 
 ```{r }
-results |> 
-    mutate(e = p - odhad) |> 
-    group_by(n, p) |> 
-    summarise(
-        RMSE = sqrt(mean(e^2)),
-        .groups = "drop"
-    ) |> 
-    ggplot(aes(x = n, y = RMSE, color = factor(p))) +
-    geom_line() +
-    scale_y_continuous(limits = c(0, 0.5)) +
-    scale_x_continuous(limits = c(1, 30)) +
-    theme_bw()
-
-
+#| label: fig-sim-rmse
+#| fig-cap: Porovnání odhadů pomocí RMSE
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 8
 bind_rows(
     wils_res,
     bayes_res
@@ -201,7 +168,22 @@ bind_rows(
     scale_y_continuous(limits = c(0, 0.5)) +
     scale_x_continuous(limits = c(1, 30)) +
 
-    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free") +
-    theme_bw()
-
+    facet_wrap(~ p, ncol = 2, dir = "v", scales = "free",
+               labeller = as_labeller(function(x) {
+                paste("Parametr p =", x)
+               })) +
+    theme_bw() +
+    theme(
+        legend.position = "bottom"
+    ) +
+    labs(
+        x = "Velikost vzorku (n)",
+        y = "RMSE"
+    )
 ```
+
+Jednotlivé čáry naznačují vývoj RMSE s rostoucí velikostí vzorku $n$. U
+odhadů s populačním parametrem blízko $0,5$ je RMSE menší než u hraničních 
+hodnot. S rostoucí absolutní vzdáleností parametru $p$ od hodnoty $0,05$
+RMSE stoupá. Ve všech případech je RMSE nižší u bayesovského odhadu než u
+Willsova odhadu.

@@ -1,0 +1,124 @@
+Frekventistické odhady a hranice intervalu spolehlivosti jsou generované pomocí
+Wilsonova odhadu. Pro každou kombinaci $n$ (velikost vzorku) a $p$ (skutečný
+populační parametr) je náhodně vygenerováno 1 000 odhadů, na kterých lze
+ověřit chybu I. typu $\alpha$. Pro další účely jsou výsledné odhady
+agregované pomocí průměru a ve výsledné tabulce se nachází řádek pro každou
+kombinaci $n$ a $p$ s průměrným bodovým odhadem a průměrnými hranicemi
+intervalu spolehlivosti.
+
+Pro bayesovské odhady je použit Binomial-Beta model s neinformativním apriorním
+rozdělením $Beta(1, 1)$. Pokud by byl použit stejný postup pro bayesovské odhady,
+komplexita generování
+vzorků a následné porovnávání by se velmi zvyšila. Aby bylo možné generovat 1 000
+náhodných odhadů pro každou kombinaci, je nutné vytvořit[^sim-tvor-bayes]
+$30 \times 10 * 10000 = 300000$ různých bayesovských modelů, ze kterých se bude
+generovat vzorek. V případě analyticky známého rozdělení je toto zbytečné, jelikož
+vzorky se budou generovat z konečného množství modelů a díky tomu není nutné
+odhadování generovat 1 000 krát, ale pouze $n$-krát.
+
+[^sim-tvor-bayes]: Většina kódu by byla ve `for` cyklu, každopádné fáze jako
+kompliace modelu, warm-up fáze, optimalizace algoritmů a následná generace
+vzorků by se musela opakovat.
+
+Předpokládejme generování pro $n = 3$ (skutečná hodnota $p$ prozatím nehraje
+žádnou roli). V takovém případě existují 4 posteriorní rozdělení, která mohou 
+nastat. Pokud se $k$ rovná počtu případů, kdy se stala nějaká událost, lze je 
+zapsat jako
+
+$$
+P(p | x) = 
+\begin{cases}
+\text{Beta}(1, 4) & \text{pro }k = 0\\
+\text{Beta}(2, 3) & \text{pro }k = 1\\
+\text{Beta}(3, 4) & \text{pro }k = 2\\
+\text{Beta}(4, 1) & \text{pro }k = 3\\
+\end{cases}
+$$ {#eq-bin-cases-3}
+
+Všechna posteriorní rozdělení v rovnici [@eq-bin-cases-3] jsou zobrazená
+v [@fig-sim-bayes-n3].
+
+```{r }
+#| label: fig-sim-bayes-n3
+#| fig-cap: Možná posteriorní rozdělení pro velikost vzorku n = 3
+params <- tibble(
+    alpha = seq(1, 4),
+    beta = seq(4, 1),
+    EX = alpha / (alpha + beta),
+    desc = glue("Beta({alpha}, {beta})")
+)
+
+ggplot() +
+    purrr::pmap(params, function(alpha, beta, EX, desc) {
+             list(
+                 stat_function(
+                     aes(color = desc, fill = desc),
+                     fun = dbeta,
+                     args = list(shape1 = alpha, shape2 = beta),
+                     geom = "area", 
+                     alpha = .3,
+                     n = 1001
+                 ),
+                 geom_point(
+                     aes(x = EX, 
+                         y = dbeta(EX, shape1 = alpha, shape2 = beta),
+                         color = desc),
+                     size = 3
+                 )
+             )
+         }
+    ) +
+
+    scale_color_discrete(labels = params$desc) +
+    scale_fill_discrete(labels = params$desc) +
+    
+    scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0, 5), expand = c(0, 0)) +
+
+    theme_bw() +
+    theme(
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        legend.position = "bottom",
+        legend.text = element_text(size = 10)
+    ) +
+    labs(
+        title = "Možná posteriorní rozdělení pro Binomial-Beta model",
+        subtitle = "n = 4, P(p) = Beta(1, 1), průměry jsou označené bodem",
+        x = "p",
+        y = "P(p | x)",
+        color = "Rozdělení ",
+        fill = "Rozdělení "
+    )
+```
+
+Odhady, které by s dostatečně velkým vzorkem vznikly, jsou označené na obrázku
+body a jedná se o průměry daného posteriorního rozdělení. Výsledný odhad bude
+tedy váženým průměrem těchto čtyř (v případě $n = 3$) bodů, kde se váhy budou
+lišit[^sim-post-lisit] podle populačního parametru $p$. Nechť $k_{n, p, i}$ značí
+počet vzorků kombinace $n$ a $p$, u kterých nastal $i$-krát úspěch a
+$E(X_{n, i})$ střední hodnotu posteriorní rozdělení $\text{Beta}(1 + i, 1 + n - i)$,
+pak
+
+$$
+E(P(x | p, n)) = \frac{\sum_{i=0}^n k_{n,p,i} * E(X_{n, i})}{\sum k_{n, p, i}}.
+$$ {#eq-bin-wmean}
+
+[^sim-post-lisit]: V případě velkého $p$ bude nejspíše více pravděpodobné 
+rozdělení $Beta(4, 1)$, zatímco s malým $p$ bude pravděpodobně vhodnější
+rozdělení $Beta(1, 4)$.
+
+Díky vztahu [@eq-bin-wmean] lze odhadnout populační parametr $p$ bez 
+kompilování a generování velkého množství modelů. Stejným způsobem jsou odhadnuté
+hranice 95% intervalu kredibility, kde se pouze $E(X_{n, i})$ zamění za
+$Q_{X_{n, i}}(0.025)$, resp. $Q_{X_{n, i}}(0.975)$ kde $Q_{X_{n, i}}$ značí
+kvantilovou funkci pro rozdělení $\text{Beta}(1 + i, 1 + n - i)$. K následnému
+vyhodnocení je použita metrika RMSE (*Root Mean Squared Error*, Střední 
+kvadratická odchylka).
+
+$$
+RMSE = \sqrt{
+    \frac{\sum_{i=1}^n (p - \hat p)^2}{n}
+}
+$$
+

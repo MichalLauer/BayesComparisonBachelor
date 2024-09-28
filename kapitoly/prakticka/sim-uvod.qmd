@@ -1,0 +1,11 @@
+Jak již bylo zmíněno, frekventistická statistika často spoléha na předpoklady
+jako je normalita dat, dostatečně[^sim-ssize] veliký vzorek nebo 
+homoskedasticita. Pomocí bayesovské statistiky lze od většiny předpokladů 
+upustit a data lze popsat pomocí libovolných rozdělení. Toto je velmi praktické
+v případech, kdy je nedostatečný počet pozorování, kde často klasické testy
+nelze použít, jelikož spoléhají centrální limitní větu. Cílem simulační části je
+otestovat přesnost odhadu populačního parametru $p = 0,05, 0,15, \dots, 0,95$ ¨
+binomického rozdělení počtu vzorků $n = 1, 2, \dots, 30$. 
+
+[^sim-ssize]: Dostatečně je velmi obecné a v různých případech platí různá 
+pravidla, nejčastěji se používá hranice 30 nebo 70.
