@@ -245,37 +245,39 @@ Interval kredibility, ROPE, Bayesův faktor
 
 ### Binomický test
 
-{{< include kapitoly/prakticka/binom-test.qmd >}}
+{{< include kapitoly/prakticka/freq-binom.qmd >}}
 
 ### Wilsonův odhad
 
-{{< include kapitoly/prakticka/wilson-interval.qmd >}}
+{{< include kapitoly/prakticka/freq-wilson.qmd >}}
 
 ## Software pro bayesovskou statistiku
 
-{{< include kapitoly/prakticka/uvod-bayes.qmd >}}
+{{< include kapitoly/prakticka/bayes-uvod.qmd >}}
 
 ### Software BUGS
 
-{{< include kapitoly/prakticka/bugs.qmd >}}
+{{< include kapitoly/prakticka/bayes-bugs.qmd >}}
 
 ### Software JAGS
 
-{{< include kapitoly/prakticka/rjags.qmd >}}
+{{< include kapitoly/prakticka/bayes-rjags.qmd >}}
 
 ### Software Stan
 
-{{< include kapitoly/prakticka/stan.qmd >}}
+{{< include kapitoly/prakticka/bayes-stan.qmd >}}
 
 ## Porovnání nástrojů pro bayesovskou statistiku
 
-{{< include kapitoly/prakticka/porovnani.qmd >}}
+{{< include kapitoly/prakticka/bayes-porovnani.qmd >}}
 
 ## Interpretace frekventistických a bayesovských výsledků
 
-{{< include kapitoly/prakticka/interpretace.qmd >}}
+{{< include kapitoly/prakticka/bayes-interpretace.qmd >}}
 
 ## Simulace
+
+{{< include kapitoly/prakticka/sim-uvod.qmd >}}
 
 ### Postup
 
