@@ -218,7 +218,10 @@
     breakatwhitespace=false,           % sets if automatic breaks should only happen at whitespace
     keywordstyle=\color{RoyalBlue},    % keyword style
     commentstyle=\color{YellowGreen},  % comment style
-    stringstyle=\color{ForestGreen}    % string literal style
+    stringstyle=\color{ForestGreen},   % string literal style
+    otherkeywords={set.seed,binom.test,file.path,bugs,jags.model,update.jags,coda.samples,
+    seq_along,effectiveSize,stan},
+    deletekeywords={q,lower,upper,data,_,model.file,save,beta,path,file,model,variable.names}
   } 
 }{}
 
@@ -243,8 +246,9 @@
     tabsize=2,                         % sets default tabsize to 2 spaces
     captionpos=b,                      % sets the caption-position to bottom
     breaklines=true,                   % sets automatic line breaking
-    breakatwhitespace=false,            % sets if automatic breaks should only happen at whitespace,
-    keywords={}
+    breakatwhitespace=false,           % sets if automatic breaks should only happen at whitespace
+    deletekeywords={binomial,data,sample,is,equal,lower,upper,attr,_,model,for,dbeta,beta,mean,sd,eff,deviance,
+    For,scale,factor,variable,real,se_,diag_,__,on,split}
   } 
 }{}
 
