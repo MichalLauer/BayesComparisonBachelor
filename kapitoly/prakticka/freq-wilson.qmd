@@ -50,3 +50,5 @@ s tím rozdílem, že jejím výstupem není odhad $p$, viz. výpis
 #| model-label: model-wilson-fastr2
 fastR2::wilson.ci(x = sum(simulovana_data), n = length(simulovana_data))
 ```
+
+Na 5% hladině významnosti je tedy $H_0$ zamítnutá.

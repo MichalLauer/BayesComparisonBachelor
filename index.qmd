@@ -309,6 +309,4 @@ Interval kredibility, ROPE, Bayesův faktor
 \appendix
 ```
 
-# Bayesovské modely
-
-{{< include kapitoly/appendix_modely.qmd >}}
+{{< include kapitoly/appendix.qmd >}}
